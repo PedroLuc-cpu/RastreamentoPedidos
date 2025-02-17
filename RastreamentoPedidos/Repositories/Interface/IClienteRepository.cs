@@ -7,6 +7,5 @@ namespace RastreamentoPedidos.Repositories.Interface
         Task<IEnumerable<ClienteDto>> CarregarTodos();
         Task<ClienteDto> CarregarPorId(long id);
         Task<ClienteDto> CarregarPorEmail(string email);
-        Task<ClienteDto> AdicionarClientes(ClienteDto cliente);
-    }
+        Task<ClienteDto> AdicionarClientes(ClienteDto cliente);    }
 }

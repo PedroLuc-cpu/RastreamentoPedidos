@@ -44,7 +44,7 @@ namespace RastreamentoPedidos.Repositories
                 throw new KeyNotFoundException($"Cliente com Id {email} não encontrado.");
             }
             var clientesDTO = new ClienteDto()
-            {   id_cliente = clientePorEmail.Id,
+            {   id_cliente = clientePorEmail.id_cliente,
                 email = clientePorEmail.email,
                 nome = clientePorEmail.nome, 
                 telefone = clientePorEmail.telefone,
@@ -61,14 +61,14 @@ namespace RastreamentoPedidos.Repositories
 
         public async Task<ClienteDto> CarregarPorId(long id)
         {
-            var clientePorEmail = await _context.Clientes.Where(x => x.Id == id).FirstOrDefaultAsync();
+            var clientePorEmail = await _context.Clientes.Where(x => x.id_cliente == id).FirstOrDefaultAsync();
             if (clientePorEmail == null)
             {
                 throw new KeyNotFoundException($"Cliente com Id {id} não encontrado.");
             }
             var clientesDTO = new ClienteDto()
             {
-                id_cliente = clientePorEmail.Id,
+                id_cliente = clientePorEmail.id_cliente,
                 email = clientePorEmail.email,
                 nome = clientePorEmail.nome,
                 telefone = clientePorEmail.telefone,
@@ -87,7 +87,7 @@ namespace RastreamentoPedidos.Repositories
         {
             return await _context.Clientes.Select(x => new ClienteDto
             {
-                id_cliente = x.Id,
+                id_cliente = x.id_cliente,
                 email = x.email,
                 encomendas = x.encomendas.Select(e => new EncomendaDTO
                 {

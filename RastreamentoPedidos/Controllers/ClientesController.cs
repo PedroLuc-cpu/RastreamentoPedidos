@@ -26,9 +26,15 @@ namespace RastreamentoPedidos.Controllers
         [HttpPost]
         public async Task<IActionResult> AdicionarCliente(ClienteDto clienteDto)
         {
+            var clientePorMail = await _clienteRepository.CarregarPorEmail(clienteDto.email);
+            
             if (clienteDto == null)
             {
-                return BadRequest("O objeto clienteDTO é obrigatório.");
+                return BadRequest("o cliente é obrigatório.");
+            }
+            if (clienteDto.email ==clientePorMail.email)
+            {
+                return BadRequest("esse email já se encontra cadastrado em outro cliente");
             }
 
             var cliente = new ClienteDto
