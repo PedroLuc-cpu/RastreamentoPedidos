@@ -9,6 +9,7 @@ namespace RastreamentoPedidos.Data
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Encomenda> encomendas { get; set; }
         public DbSet<StatusEntrega> statusEntregas { get; set; }
+        public DbSet<Endereco> enderecos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

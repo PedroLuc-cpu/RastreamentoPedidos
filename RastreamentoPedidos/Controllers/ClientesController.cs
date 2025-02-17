@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RastreamentoPedidos.Model;
 using RastreamentoPedidos.Model.DTO;
 using RastreamentoPedidos.Repositories.Interface;
 
@@ -7,7 +6,7 @@ namespace RastreamentoPedidos.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClientesController : ControllerBase
+    public class ClientesController : MainController
     {
         private readonly IClienteRepository _clienteRepository;
         public ClientesController(IClienteRepository clienteRepository)
@@ -20,7 +19,7 @@ namespace RastreamentoPedidos.Controllers
         {
             var clientes = await _clienteRepository.CarregarTodos();
             return clientes.Any()
-                ? Ok(clientes) : NotFound("Clientes não encontrado");
+                ? Ok(clientes) : CustomResponse("Clientes não encontrado");
         }
 
         [HttpPost]
@@ -30,11 +29,11 @@ namespace RastreamentoPedidos.Controllers
             
             if (clienteDto == null)
             {
-                return BadRequest("o cliente é obrigatório.");
+                return CustomResponse("o cliente é obrigatório.");
             }
             if (clienteDto.email ==clientePorMail.email)
             {
-                return BadRequest("esse email já se encontra cadastrado em outro cliente");
+                return CustomResponse("esse email já se encontra cadastrado em outro cliente");
             }
 
             var cliente = new ClienteDto
@@ -48,7 +47,7 @@ namespace RastreamentoPedidos.Controllers
 
             if (clienteAdicionado == null)
             {
-                return BadRequest("Erro ao cadastrar o cliente.");
+                return CustomResponse("Erro ao cadastrar o cliente.");
             }
 
             return Ok(clienteAdicionado);

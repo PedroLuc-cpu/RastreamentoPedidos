@@ -30,9 +30,6 @@ namespace RastreamentoPedidos.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("id_cliente"));
 
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
-
                     b.Property<string>("email")
                         .IsRequired()
                         .HasColumnType("varchar")
@@ -60,9 +57,6 @@ namespace RastreamentoPedidos.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("id_encomenda"));
-
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
 
                     b.Property<DateTime>("data_encomenda")
                         .HasColumnType("timestamp")
@@ -93,9 +87,6 @@ namespace RastreamentoPedidos.Migrations
                         .HasColumnName("id_encomenda");
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("id_status_entrega"));
-
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("timestamp")

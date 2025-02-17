@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using RastreamentoPedidos.Data;
+using RastreamentoPedidos.RastreamentoEncomendaHub;
 using RastreamentoPedidos.Repositories;
 using RastreamentoPedidos.Repositories.Interface;
 
@@ -22,7 +23,7 @@ namespace StartapRastreamentoPedidos
                 .AllowAnyMethod()
                 .AllowAnyHeader();
             }));
-
+            services.AddSignalR();
             services.AddControllers().AddNewtonsoftJson(option =>
             {
                 option.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
@@ -43,7 +44,7 @@ namespace StartapRastreamentoPedidos
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "Rastreamento Pedido", Version = "v1" }));
 
         }
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -57,6 +58,7 @@ namespace StartapRastreamentoPedidos
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Rastreamento de pedidos v1"));
             }
+            
             app.UseCors("AllowAll");
             app.UseStaticFiles();
             app.UseRouting();
@@ -65,6 +67,7 @@ namespace StartapRastreamentoPedidos
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<RastreamentoHub>("/rastreamentoHub");
             });
         }
     }

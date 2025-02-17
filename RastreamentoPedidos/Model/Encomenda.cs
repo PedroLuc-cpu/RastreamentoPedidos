@@ -10,6 +10,7 @@ namespace RastreamentoPedidos.Model
         public Cliente cliente { get; set; } = new Cliente();
         public DateTime data_encomenda { get; set; }
         public string descricao { get; set; } = string.Empty;
-        public ICollection<StatusEntrega>? statusEntregas { get; set; } = new Collection<StatusEntrega>();
+        public IList<StatusEntrega> statusEntregas { get; set; } = new List<StatusEntrega>();
+        public IList<Endereco> localizacao {  get; set; } = new List<Endereco>();
     }
 }

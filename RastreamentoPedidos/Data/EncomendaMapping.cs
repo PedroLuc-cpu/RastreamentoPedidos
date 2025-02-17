@@ -35,8 +35,12 @@ namespace RastreamentoPedidos.Data
             // Configuração do relacionamento com StatusEntrega (Um para Muitos)
             builder.HasMany(x => x.statusEntregas)
                 .WithOne(s => s.encomenda)
-                .HasForeignKey(s => s.id_status_entrega)
+                .HasForeignKey(s => s.codigo)
                 .OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(e => e.localizacao)
+                 .WithOne(e => e.encomenda)
+                 .HasForeignKey(e => e.EncomendaId)
+                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
