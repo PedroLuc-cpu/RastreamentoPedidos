@@ -40,7 +40,7 @@ namespace RastreamentoPedidos.Controllers
             {
                 nome = clienteDto.nome,
                 email = clienteDto.email,
-                telefone = clienteDto.telefone
+                telefones = clienteDto.telefones
             };
 
             var clienteAdicionado = await _clienteRepository.AdicionarClientes(cliente);

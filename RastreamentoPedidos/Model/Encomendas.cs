@@ -1,12 +1,12 @@
-﻿using System.Collections.ObjectModel;
-using RastreamentoPedidos.DomainObjects;
+﻿using RastreamentoPedidos.DomainObjects;
+using RastreamentoPedidos.Model.Clientes;
 
-namespace RastreamentoPedidos.Model
+namespace RastreamentoPedidos.Model.Encomenda
 {
-    public class Encomenda : IAggregateRoot
+    public class Encomendas : IAggregateRoot
     {
         public int? id_encomenda { get; set; }
-        public int id_cliente { get; set; }
+        public int idCliente { get; set; }
         public Cliente cliente { get; set; } = new Cliente();
         public DateTime data_encomenda { get; set; }
         public string descricao { get; set; } = string.Empty;

@@ -1,4 +1,5 @@
 ﻿using RastreamentoPedidos.DomainObjects;
+using RastreamentoPedidos.Model.Clientes;
 
 namespace RastreamentoPedidos.Model.DTO
 {

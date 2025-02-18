@@ -1,17 +1,18 @@
 ﻿using RastreamentoPedidos.Model;
 using RastreamentoPedidos.Model.DTO;
+using RastreamentoPedidos.Model.Encomenda;
 using RastreamentoPedidos.Repositories.Interface;
 
 namespace RastreamentoPedidos.Repositories
 {
     public class EncomendaRepository : IEncomendaRepository
     {
-        public Task<Encomenda> AdicionarNovaEncomenda(EncomendaDTO encomenda)
+        public Task<Encomendas> AdicionarNovaEncomenda(EncomendaDTO encomenda)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Encomenda> AtualizizarStatusEncomenda(int id, StatusEntregaEnum statusCodigo)
+        public Task<Encomendas> AtualizizarStatusEncomenda(int id, StatusEntregaEnum statusCodigo)
         {
             throw new NotImplementedException();
         }

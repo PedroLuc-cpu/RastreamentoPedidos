@@ -1,11 +1,12 @@
 ﻿using RastreamentoPedidos.Model;
 using RastreamentoPedidos.Model.DTO;
+using RastreamentoPedidos.Model.Encomenda;
 
 namespace RastreamentoPedidos.Repositories.Interface
 {
-    public interface IEncomendaRepository : IRepository<Encomenda>
+    public interface IEncomendaRepository : IRepository<Encomendas>
     {
-        Task<Encomenda> AdicionarNovaEncomenda(EncomendaDTO encomenda);
-        Task<Encomenda> AtualizizarStatusEncomenda(int id, StatusEntregaEnum statusCodigo);
+        Task<Encomendas> AdicionarNovaEncomenda(EncomendaDTO encomenda);
+        Task<Encomendas> AtualizizarStatusEncomenda(int id, StatusEntregaEnum statusCodigo);
     }
 }

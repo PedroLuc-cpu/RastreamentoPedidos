@@ -2,18 +2,18 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RastreamentoPedidos.Model;
 
-namespace RastreamentoPedidos.Data
+namespace RastreamentoPedidos.Data.Map
 {
     public class StatusEntregaMapping : IEntityTypeConfiguration<StatusEntrega>
     {
         public void Configure(EntityTypeBuilder<StatusEntrega> builder)
         {
             builder.ToTable("status_entrega").HasKey(x => x.codigo);
-            builder.Property(x => x.codigo).HasColumnType("integer").UseSerialColumn();
+            builder.Property(x => x.codigo).UseSerialColumn();
             builder.Property(x => x.status)
                 .HasColumnName("status")
                 .HasColumnType("varchar")
-                .HasMaxLength(100)
+                .HasMaxLength(225)
                 .IsRequired();
 
             builder.Property(x => x.Timestamp)

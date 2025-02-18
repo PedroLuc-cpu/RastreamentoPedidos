@@ -1,4 +1,5 @@
 ﻿using RastreamentoPedidos.DomainObjects;
+using RastreamentoPedidos.Model.Encomenda;
 
 namespace RastreamentoPedidos.Model
 {
@@ -23,7 +24,7 @@ namespace RastreamentoPedidos.Model
         public string status { get; set; } = StatusEncomendaEnumToStr(StatusEntregaEnum.AguardandoPagamento);
         public string decricao { get; set; } = string.Empty;
         public DateTime Timestamp { get; set; } = DateTime.Now;
-        public Encomenda encomenda { get; set; } = new Encomenda();
+        public Encomendas encomenda { get; set; } = new Encomendas();
         public static string StatusEncomendaEnumToStr(StatusEntregaEnum value)
         {
             switch (value)

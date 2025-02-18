@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RastreamentoPedidos.Data;
 using RastreamentoPedidos.Model;
+using RastreamentoPedidos.Model.Clientes;
 using RastreamentoPedidos.Model.DTO;
 using RastreamentoPedidos.Repositories.Interface;
 
@@ -14,10 +15,14 @@ namespace RastreamentoPedidos.Repositories
 
         public async Task<ClienteDto> AdicionarClientes(ClienteDto cliente)
         {
-            var clientes = new Cliente { 
+            var clientes = new Cliente 
+            { 
                 email = cliente.email,
                 nome = cliente.nome,
-                telefone = cliente.telefone};
+                documento = cliente.documento,
+                enderecos = cliente.enderecos,
+                telefones = cliente.telefones
+            };
 
             if (clientes == null) throw new ArgumentNullException(nameof(cliente));
 
@@ -44,10 +49,10 @@ namespace RastreamentoPedidos.Repositories
                 throw new KeyNotFoundException($"Cliente com Id {email} não encontrado.");
             }
             var clientesDTO = new ClienteDto()
-            {   id_cliente = clientePorEmail.id_cliente,
+            {   idCliente = clientePorEmail.idCliente,
                 email = clientePorEmail.email,
                 nome = clientePorEmail.nome, 
-                telefone = clientePorEmail.telefone,
+                telefones = clientePorEmail.telefones,
                 encomendas = clientePorEmail.encomendas.Select(b => new EncomendaDTO
                 {
                     id_encomenda = b.id_encomenda,
@@ -61,17 +66,17 @@ namespace RastreamentoPedidos.Repositories
 
         public async Task<ClienteDto> CarregarPorId(long id)
         {
-            var clientePorEmail = await _context.Clientes.Where(x => x.id_cliente == id).FirstOrDefaultAsync();
+            var clientePorEmail = await _context.Clientes.Where(x => x.idCliente == id).FirstOrDefaultAsync();
             if (clientePorEmail == null)
             {
                 throw new KeyNotFoundException($"Cliente com Id {id} não encontrado.");
             }
             var clientesDTO = new ClienteDto()
             {
-                id_cliente = clientePorEmail.id_cliente,
+                idCliente = clientePorEmail.idCliente,
                 email = clientePorEmail.email,
                 nome = clientePorEmail.nome,
-                telefone = clientePorEmail.telefone,
+                telefones = clientePorEmail.telefones,
                 encomendas = clientePorEmail.encomendas.Select(b => new EncomendaDTO
                 {
                     id_encomenda = b.id_encomenda,
@@ -87,7 +92,7 @@ namespace RastreamentoPedidos.Repositories
         {
             return await _context.Clientes.Select(x => new ClienteDto
             {
-                id_cliente = x.id_cliente,
+                idCliente = x.idCliente,
                 email = x.email,
                 encomendas = x.encomendas.Select(e => new EncomendaDTO
                 {
@@ -97,7 +102,7 @@ namespace RastreamentoPedidos.Repositories
                     statusEntregas = e.statusEntregas
                 }).ToList(),
                 nome = x.nome,
-                telefone = x.telefone,
+                telefones = x.telefones,
             }).ToListAsync();
         }
     }

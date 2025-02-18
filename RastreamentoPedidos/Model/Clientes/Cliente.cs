@@ -1,20 +1,21 @@
 ﻿using System.Collections.ObjectModel;
 using RastreamentoPedidos.DomainObjects;
-using RastreamentoPedidos.Model.Clientes;
+using RastreamentoPedidos.Model.Encomenda;
 
-namespace RastreamentoPedidos.Model.DTO
+namespace RastreamentoPedidos.Model.Clientes
 {
-    public class ClienteDto : IAggregateRoot
+    public class Cliente : IAggregateRoot
     {
-        public long idCliente { get; set; }
+        public int idCliente { get; set; }
+        public long? id_encomenda { get; set; }
         public string nome { get; set; } = string.Empty;
         public string email { get; set; } = string.Empty;
         /// <summary>
         /// CPF e CNPJ do cliente
         /// </summary>
-        public string documento { get; set; } = string.Empty;
+        public string documento {  get; set; } = string.Empty;
         public IList<Endereco>? enderecos { get; set; } = new List<Endereco>();
         public IList<Telefone>? telefones { get; set; } = new List<Telefone>();
-        public IList<EncomendaDTO>? encomendas { get; set; } = new List<EncomendaDTO>();
+        public IList<Encomendas>? encomendas {  get; set; } = new List<Encomendas>();
     }
 }
