@@ -8,5 +8,7 @@ namespace RastreamentoPedidos.Repositories.Interface
     {
         Task<Encomendas> AdicionarNovaEncomenda(EncomendaDTO encomenda);
         Task<Encomendas> AtualizizarStatusEncomenda(int id, StatusEntregaEnum statusCodigo);
+        Task<Encomendas> CarregarEncomendaPorId(int idCliente);
+        Task<Encomendas> CarregarEncomendaPorDocumento(int documento);
     }
 }

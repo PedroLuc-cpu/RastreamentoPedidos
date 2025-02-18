@@ -2,8 +2,9 @@
 using Microsoft.OpenApi.Models;
 using RastreamentoPedidos.Data;
 using RastreamentoPedidos.RastreamentoEncomendaHub;
-using RastreamentoPedidos.Repositories;
-using RastreamentoPedidos.Repositories.Interface;
+using RastreamentoPedidos.Repositories.ClienteRepositories;
+using RastreamentoPedidos.Repositories.ClienteRepository;
+using RastreamentoPedidos.Repositories.Interface.ICliente;
 
 namespace StartapRastreamentoPedidos
 {
@@ -32,6 +33,11 @@ namespace StartapRastreamentoPedidos
             services.AddAuthorization();
             services.AddHealthChecks();
             services.AddScoped<IClienteRepository, ClienteRepository>();
+            services.AddScoped<ICidadeRepository, CidadeRepository>();
+            services.AddScoped<IEnderecoRepository, EnderecoRepository>();
+            services.AddScoped<ITelefoneRepository, TelefoneRepository>();
+            services.AddScoped<ITpLogradouroRepository, TpLogradouroRepository>();
+            services.AddScoped<IUFRepository, UFRepository>();
 
             services.AddDbContext<RastreamentoPedidosContext>(options =>
             {

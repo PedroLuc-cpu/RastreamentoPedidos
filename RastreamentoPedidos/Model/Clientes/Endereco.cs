@@ -8,6 +8,7 @@ namespace RastreamentoPedidos.Model.Clientes
         //[Key]
         public long idEnderecoCliente { get; set; }
         public TpLogradouro TpLogradouro { get; set; } = new TpLogradouro();
+        public long idTpLogradouro { get; set; }
         public string Complemento { get; set; } = string.Empty;
         public string Bairro { get; set; } = string.Empty;
         public string Numero {  get; set; } = string.Empty;

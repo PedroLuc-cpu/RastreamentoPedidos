@@ -16,5 +16,15 @@ namespace RastreamentoPedidos.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public Task<Encomendas> CarregarEncomendaPorDocumento(int documento)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Encomendas> CarregarEncomendaPorId(int idCliente)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

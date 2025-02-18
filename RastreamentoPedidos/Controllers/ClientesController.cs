@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RastreamentoPedidos.Model.DTO;
-using RastreamentoPedidos.Repositories.Interface;
+using RastreamentoPedidos.Model.Clientes;
+using RastreamentoPedidos.Model.DTO.ClienteDTO;
+using RastreamentoPedidos.Repositories.Interface.ICliente;
 
 namespace RastreamentoPedidos.Controllers
 {
@@ -23,32 +24,25 @@ namespace RastreamentoPedidos.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AdicionarCliente(ClienteDto clienteDto)
+        public async Task<IActionResult> AdicionarCliente(Cliente cliente)
         {
-            var clientePorMail = await _clienteRepository.CarregarPorEmail(clienteDto.email);
+            Cliente addCliente = new Cliente();
             
-            if (clienteDto == null)
+            if (addCliente == null)
             {
                 return CustomResponse("o cliente é obrigatório.");
             }
-            if (clienteDto.email ==clientePorMail.email)
+            if (cliente != null)
             {
-                return CustomResponse("esse email já se encontra cadastrado em outro cliente");
+                addCliente.idCliente = cliente.idCliente;
+                addCliente.nome = cliente.nome;
+                addCliente.email = cliente.email;
+                addCliente.documento = cliente.documento;
+                addCliente.encomendas = cliente.encomendas;
+                addCliente.telefones = cliente.telefones;
+                addCliente.enderecos = cliente.enderecos;
             }
-
-            var cliente = new ClienteDto
-            {
-                nome = clienteDto.nome,
-                email = clienteDto.email,
-                telefones = clienteDto.telefones
-            };
-
-            var clienteAdicionado = await _clienteRepository.AdicionarClientes(cliente);
-
-            if (clienteAdicionado == null)
-            {
-                return CustomResponse("Erro ao cadastrar o cliente.");
-            }
+            var clienteAdicionado = await _clienteRepository.Adicionar(addCliente);           
 
             return Ok(clienteAdicionado);
         }

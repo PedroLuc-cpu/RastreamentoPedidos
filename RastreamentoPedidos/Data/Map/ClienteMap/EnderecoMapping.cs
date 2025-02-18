@@ -32,7 +32,7 @@ namespace RastreamentoPedidos.Data.Map.ClienteMap
 
             builder.HasOne(x => x.TpLogradouro)
                 .WithMany()
-                .HasForeignKey("idTpLogradouro")
+                .HasForeignKey(x => x.idTpLogradouro)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne<Cliente>()

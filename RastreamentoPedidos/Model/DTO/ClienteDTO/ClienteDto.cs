@@ -2,7 +2,7 @@
 using RastreamentoPedidos.DomainObjects;
 using RastreamentoPedidos.Model.Clientes;
 
-namespace RastreamentoPedidos.Model.DTO
+namespace RastreamentoPedidos.Model.DTO.ClienteDTO
 {
     public class ClienteDto : IAggregateRoot
     {
