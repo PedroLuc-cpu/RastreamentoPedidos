@@ -28,3 +28,13 @@ Sistema desenvolvido em .NET para gerenciamento e rastreamento de pedidos, com a
 1. Clone o repositório:
    ```bash
    git clone https://github.com/PedroLuc-cpu/RastreamentoPedidos.git
+2. Construa e inicie os containers:
+   ```bash
+   docker-compose up --build -d
+3. Quando terminar de usar, para tudo com:
+   ```bash
+   docker-compose down
+
+
+   
+
