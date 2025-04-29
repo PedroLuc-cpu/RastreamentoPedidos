@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using RastreamentoPedidos.Data;
+using RastreamentoPedidos.Middleware;
 using RastreamentoPedidos.RastreamentoEncomendaHub;
 using RastreamentoPedidos.Repositories.ClienteRepositories;
 using RastreamentoPedidos.Repositories.ClienteRepository;
@@ -13,9 +14,9 @@ namespace StartapRastreamentoPedidos
         public RastreamentoPedidos(IConfiguration configuration)
         {
             Configuration = configuration;
-            
+
         }
-        public IConfiguration Configuration { get;}
+        public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(option => option.AddPolicy("AllowAll", build =>
@@ -50,7 +51,7 @@ namespace StartapRastreamentoPedidos
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "Rastreamento Pedido", Version = "v1" }));
 
         }
-        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -64,7 +65,7 @@ namespace StartapRastreamentoPedidos
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Rastreamento de pedidos v1"));
             }
-            
+            app.UseErrorHandlingMiddleware();
             app.UseCors("AllowAll");
             app.UseStaticFiles();
             app.UseRouting();
