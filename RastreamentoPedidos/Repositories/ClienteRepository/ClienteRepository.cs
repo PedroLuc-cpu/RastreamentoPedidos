@@ -3,17 +3,17 @@ using RastreamentoPedidos.Data;
 using RastreamentoPedidos.Model.Clientes;
 using RastreamentoPedidos.Repositories.Interface.ICliente;
 
-namespace RastreamentoPedidos.Repositories.ClienteRepositories
+namespace RastreamentoPedidos.Repositories.ClienteRepository
 {
     public class ClienteRepository : IClienteRepository
     {
         private readonly RastreamentoPedidosContext _context;
         private readonly IEnderecoRepository _enderecoRepository;
         private readonly ITelefoneRepository _telefoneRepository;
-      
 
-        public ClienteRepository(RastreamentoPedidosContext context, IEnderecoRepository enderecoRepository, ITelefoneRepository telefoneRepository) 
-        { 
+
+        public ClienteRepository(RastreamentoPedidosContext context, IEnderecoRepository enderecoRepository, ITelefoneRepository telefoneRepository)
+        {
             _context = context;
             _enderecoRepository = enderecoRepository;
             _telefoneRepository = telefoneRepository;
@@ -54,7 +54,7 @@ namespace RastreamentoPedidos.Repositories.ClienteRepositories
             {
                 cliente = await PreencherObjeto(resultado);
             }
-            return cliente;        
+            return cliente;
         }
 
         public async Task<Cliente> CarregarPorEmail(string email)
@@ -65,7 +65,7 @@ namespace RastreamentoPedidos.Repositories.ClienteRepositories
             {
                 cliente = await PreencherObjeto(resultado);
             }
-            return cliente;            
+            return cliente;
         }
 
         public async Task<Cliente> CarregarPorId(long id)
@@ -76,7 +76,7 @@ namespace RastreamentoPedidos.Repositories.ClienteRepositories
             {
                 cliente = await PreencherObjeto(resultado);
             }
-            return cliente;            
+            return cliente;
         }
 
         public async Task<IList<Cliente>> CarregarTodos()

@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using RastreamentoPedidos.Data;
+using RastreamentoPedidos.Data.Interface;
 using RastreamentoPedidos.Middleware;
 using RastreamentoPedidos.RastreamentoEncomendaHub;
-using RastreamentoPedidos.Repositories.ClienteRepositories;
 using RastreamentoPedidos.Repositories.ClienteRepository;
 using RastreamentoPedidos.Repositories.Interface.ICliente;
 
@@ -26,6 +26,7 @@ namespace StartapRastreamentoPedidos
                 .AllowAnyHeader();
             }));
             services.AddSignalR();
+            services.AddScoped<IDapperContext, DapperContext>();
             services.AddControllers().AddNewtonsoftJson(option =>
             {
                 option.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
@@ -34,7 +35,7 @@ namespace StartapRastreamentoPedidos
             services.AddAuthorization();
             services.AddHealthChecks();
             services.AddScoped<IClienteRepository, ClienteRepository>();
-            services.AddScoped<ICidadeRepository, CidadeRepository>();
+            services.AddScoped<ICidadeRepository, ClienteRepositoryDapper>();
             services.AddScoped<IEnderecoRepository, EnderecoRepository>();
             services.AddScoped<ITelefoneRepository, TelefoneRepository>();
             services.AddScoped<ITpLogradouroRepository, TpLogradouroRepository>();
