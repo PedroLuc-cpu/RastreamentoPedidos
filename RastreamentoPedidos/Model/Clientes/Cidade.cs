@@ -8,7 +8,7 @@ namespace RastreamentoPedidos.Model.Clientes
         //[Key]
         public long idCidade { get; set; }
         public string nome { get; set; } = string.Empty;
-        public long idUF { get; set; }
+        public int idUF { get; set; }
         public UF UF { get; set; } = new UF();
     }
 }

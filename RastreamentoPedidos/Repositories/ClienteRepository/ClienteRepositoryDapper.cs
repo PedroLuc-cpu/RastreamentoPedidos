@@ -27,7 +27,8 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
                 {
                     cidade.idCidade = retorno.idCidade;
                     cidade.nome = retorno.nome;
-                    cidade.UF = retorno.UF;
+                    cidade.idUF = retorno.idUF;
+                    cidade.UF = await _ufRepository.CarregarPorId(retorno.idUF);
                 }
                 return cidade;
 

@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RastreamentoPedidos.Data;
+﻿using Dapper;
+using RastreamentoPedidos.Data.Interface;
+using RastreamentoPedidos.Data.Queries.Clientes;
 using RastreamentoPedidos.Model.Clientes;
 using RastreamentoPedidos.Repositories.Interface.ICliente;
 
@@ -7,24 +8,49 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
 {
     public class UFRepository : IUFRepository
     {
-        private readonly RastreamentoPedidosContext _context;
+        private readonly IDapperContext _dapper;
 
-        public UFRepository(RastreamentoPedidosContext context)
+        public UFRepository(IDapperContext dapper)
         {
-            _context = context;            
+            _dapper = dapper;
         }
-        public async Task<UF> CarregarPorId(long id)
+        public async Task<UF> CarregarPorId(int id)
         {
-            UF uF = new UF();
-            var retorno = await _context.uFs.FirstOrDefaultAsync(x => x.ifUF == id);
-
-            if (retorno != null)
+            UF uf = new UF();
+            using (var connection = _dapper.ConnectionCreate())
             {
-                uF.ifUF = retorno.ifUF;
-                uF.sigla = retorno.sigla;
+                var paramSQl = UfQueries.CarregarUfPorId(id);
+                var retorno = await connection.QuerySingleOrDefaultAsync(paramSQl.Sql, paramSQl.Parametros);
+                if (retorno != null)
+                {
+                   uf.idUF = retorno.idUF;
+                   uf.sigla = retorno.sigla;
+                }
+                return uf;
             }
-            return retorno;
-            
+
+        }
+
+        public async Task<List<UF>> CarregarTodasUf()
+        {
+            IList<UF> ufs = new List<UF>();
+            using (var connection = _dapper.ConnectionCreate())
+            {
+                var paramSQl = UfQueries.CarregarUf();
+                var retorno = await connection.QueryAsync(paramSQl.Sql, paramSQl.Parametros);
+                if (retorno != null)
+                {
+                    foreach (var item in retorno)
+                    {
+                        ufs.Add(new UF
+                        {
+                            idUF = item.idUF,
+                            sigla = item.sigla
+                        });
+                    }
+                }
+                return ufs.ToList();
+            }
         }
     }
 }

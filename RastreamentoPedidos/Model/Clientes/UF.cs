@@ -8,7 +8,7 @@ namespace RastreamentoPedidos.Model.Clientes
     public class UF : IAggregateRoot
     {
         //[Key]
-        public long ifUF { get; set; }
+        public int idUF { get; set; }
         public string sigla { get; set; } = string.Empty;
     }
 }
