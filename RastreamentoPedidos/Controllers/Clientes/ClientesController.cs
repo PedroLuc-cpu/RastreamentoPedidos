@@ -1,21 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RastreamentoPedidos.Model.Clientes;
+using RastreamentoPedidos.Model.DTO.ClienteDTO;
 using RastreamentoPedidos.Repositories.Interface.ICliente;
 
 namespace RastreamentoPedidos.Controllers
 {
-    [Route("api/v1/cliente")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class ClientesControllers : MainController
+    public class ClientesController : MainController
     {
         private readonly IClienteRepository _clienteRepository;
         private readonly ICidadeRepository _cidadeRepository;
-        private readonly IUFRepository _uFRepository;
-        public ClientesControllers(IClienteRepository clienteRepository, ICidadeRepository cidadeRepository, IUFRepository uFRepository)
+        public ClientesController(IClienteRepository clienteRepository, ICidadeRepository cidadeRepository)
         {
             _clienteRepository = clienteRepository;
             _cidadeRepository = cidadeRepository;
-            _uFRepository = uFRepository;
         }
 
         [HttpGet]
@@ -26,7 +25,7 @@ namespace RastreamentoPedidos.Controllers
                 ? Ok(clientes) : CustomResponse("Clientes não encontrado");
         }
 
-        [HttpGet("cidade/por-id/{id:int}")]
+        [HttpGet("cidade/id/{id:int}")]
         public async Task<IActionResult> carregarCidadaPorId(int id)
         {
             var cidades = await _cidadeRepository.CarregarPorId(id);
@@ -36,21 +35,6 @@ namespace RastreamentoPedidos.Controllers
             }
             return Ok(cidades);
         }
-
-        [HttpGet("cidade")]
-        public async Task<IActionResult> CarregarTodasCidades()
-        {
-            var cidades = await _uFRepository.CarregarTodasUf();
-            if (cidades.Count < 0)
-            {
-                return CustomResponse("Nenhuma unidade federativa encontrada.");
-            }
-
-            return Ok(cidades);
-
-        }
-
-
 
         [HttpPost]
         public async Task<IActionResult> AdicionarCliente(Cliente cliente)
