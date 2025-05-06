@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RastreamentoPedidos.Model.Clientes;
+using RastreamentoPedido.Core.Model.Clientes;
 
 namespace RastreamentoPedidos.Data.Map.ClienteMap
 {

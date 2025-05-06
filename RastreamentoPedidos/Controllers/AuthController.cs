@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using RastreamentoPedidos.DomainObjects;
+using RastreamentoPedido.Core.DomainObjects;
+using RastreamentoPedido.Core.Model.Usuario;
 using RastreamentoPedidos.Identidade;
 using RastreamentoPedidos.Model;
-using RastreamentoPedidos.Model.Usuario;
 using RastreamentoPedidos.Repositories;
 
 namespace RastreamentoPedidos.Controllers

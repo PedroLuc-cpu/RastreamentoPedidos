@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using RastreamentoPedidos.Communication;
+using RastreamentoPedido.Core.Communication;
 
 namespace RastreamentoPedidos.Controllers
 {

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RastreamentoPedidos.Model.Clientes;
-using RastreamentoPedidos.Model.DTO.ClienteDTO;
-using RastreamentoPedidos.Repositories.Interface.ICliente;
+using RastreamentoPedido.Core.Model.Clientes;
+using RastreamentoPedido.Core.Repositories.Clientes;
 
 namespace RastreamentoPedidos.Controllers
 {
