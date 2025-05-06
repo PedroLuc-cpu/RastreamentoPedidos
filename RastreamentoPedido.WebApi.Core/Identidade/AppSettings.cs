@@ -1,4 +1,4 @@
-namespace RastreamentoPedidos.Identidade
+namespace RastreamentoPedido.WebApi.Core.Identidade
 {
     public class AppSettings
     {

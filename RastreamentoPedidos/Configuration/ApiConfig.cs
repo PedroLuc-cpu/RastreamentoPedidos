@@ -1,0 +1,112 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using RastreamentoPedido.Core.Repositories.Clientes;
+using RastreamentoPedidos.RastreamentoEncomendaHub;
+using RastreamentoPedidos.Repositories.ClienteRepository;
+using RastreamentoPedidos.API.Configuration.ModelBinders;
+using RastreamentoPedido.Core.Converters;
+using Microsoft.AspNetCore.HttpOverrides;
+using RastreamentoPedido.Core.Data;
+using RastreamentoPedidos.Data;
+
+namespace RastreamentoPedidos.API.Configuration
+{
+    public static class ApiConfig
+    {
+        public static IServiceCollection AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
+        {
+            RegisterServices(services);
+
+            services.AddControllers(options =>
+            {
+                options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
+                options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build()));
+            }).AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new DateOnlyConverter());
+                options.JsonSerializerOptions.Converters.Add(new TimeOnlyConverter());
+                options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
+            });
+
+            services.Configure<IISOptions>(options =>
+            {
+                options.ForwardClientCertificate = false;
+            });
+
+            services.AddSignalR();
+
+            //UserHandler.ConnectedUsers.Clear();
+            //UserHandler.UserSections.Clear();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Total", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                        //.AllowCredentials();
+                });
+            });
+
+            services.Configure<ForwardedHeadersOptions>(options => 
+            {
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                options.KnownNetworks.Clear();
+                options.KnownProxies.Clear();
+            });
+
+            services.AddEndpointsApiExplorer();
+
+            return services;
+        }
+
+        public static WebApplication UseApiConfiguration(this WebApplication app)
+        {
+            app.MapHub<RastreamentoHub>("/rastreamentoHub");
+
+            app.UseCors("Total");
+
+            app.Use(async (context, next) =>
+            {
+                var request = context.Request;
+
+                if (request.Path.StartsWithSegments("/rastreamentoHub", StringComparison.OrdinalIgnoreCase) && request.Query.TryGetValue("access_token", out var accessToken))
+                {
+                    request.Headers.Append("Authorization", $"Bearer {accessToken}");
+                }
+                await next();
+            });
+
+            app.UseIdentityConfiguration();
+
+            app.MapControllers();
+
+            return app;
+        }
+
+        private static void RegisterServices(IServiceCollection services)
+        {
+            services.AddHealthChecks();
+            services.AddScoped<IDapperContext, DapperContext>();
+
+            //Clientes
+            services.AddScoped<IClienteRepository, ClienteRepository>();
+
+            // Endereço
+            services.AddScoped<ICidadeRepository, ClienteRepositoryDapper>();
+            services.AddScoped<IEnderecoRepository, EnderecoRepository>();
+            services.AddScoped<ITelefoneRepository, TelefoneRepository>();
+            services.AddScoped<ITpLogradouroRepository, TpLogradouroRepository>();
+            services.AddScoped<IUFRepository, UFRepository>();
+        }
+
+        public static class UserHandler
+        {
+            public static IDictionary<string, string> ConnectedUsers = new Dictionary<string, string>();
+            public static IDictionary<string, IList<string>> UserSections = new Dictionary<string, IList<string>>();
+        }
+    }
+}

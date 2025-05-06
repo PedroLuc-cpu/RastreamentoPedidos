@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{5F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RastreamentoPedido.Core", "RastreamentoPedido.Core\RastreamentoPedido.Core.csproj", "{CCC02985-7FF2-45BE-85A4-CCC1C3C00E3B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RastreamentoPedido.WebApi.Core", "RastreamentoPedido.WebApi.Core\RastreamentoPedido.WebApi.Core.csproj", "{EA1F0BA2-4F4B-46C9-88D7-505C2C4DF210}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +30,10 @@ Global
 		{CCC02985-7FF2-45BE-85A4-CCC1C3C00E3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCC02985-7FF2-45BE-85A4-CCC1C3C00E3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCC02985-7FF2-45BE-85A4-CCC1C3C00E3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA1F0BA2-4F4B-46C9-88D7-505C2C4DF210}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA1F0BA2-4F4B-46C9-88D7-505C2C4DF210}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA1F0BA2-4F4B-46C9-88D7-505C2C4DF210}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA1F0BA2-4F4B-46C9-88D7-505C2C4DF210}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -35,5 +41,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{63EBCCCF-B572-4B10-BDEE-67167320E207} = {5F85F63D-0189-450C-84F6-C3863CD7DCF9}
 		{CCC02985-7FF2-45BE-85A4-CCC1C3C00E3B} = {D18F0B03-38C4-4682-ABCB-56EA21992BA8}
+		{EA1F0BA2-4F4B-46C9-88D7-505C2C4DF210} = {D18F0B03-38C4-4682-ABCB-56EA21992BA8}
 	EndGlobalSection
 EndGlobal

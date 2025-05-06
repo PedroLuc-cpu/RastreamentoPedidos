@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using RastreamentoPedido.Core.Communication;
 
-namespace RastreamentoPedidos.Controllers
+namespace RastreamentoPedido.WebApi.Core.Controllers
 {
     [ApiController]
     public abstract class MainController : Controller

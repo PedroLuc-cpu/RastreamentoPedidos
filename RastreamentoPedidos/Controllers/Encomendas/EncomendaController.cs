@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using RastreamentoPedido.WebApi.Core.Controllers;
 using RastreamentoPedidos.RastreamentoEncomendaHub;
 
 namespace RastreamentoPedidos.Controllers

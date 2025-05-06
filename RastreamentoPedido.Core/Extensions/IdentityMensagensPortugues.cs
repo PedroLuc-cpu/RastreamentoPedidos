@@ -1,7 +1,7 @@
 
 using Microsoft.AspNetCore.Identity;
 
-namespace RastreamentoPedidos.Configuration
+namespace RastreamentoPedido.Core.Configuration
 {
     public class IdentityMensagensPortugues : IdentityErrorDescriber
     {

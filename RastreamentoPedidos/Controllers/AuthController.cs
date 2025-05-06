@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using RastreamentoPedido.Core.DomainObjects;
 using RastreamentoPedido.Core.Model.Usuario;
-using RastreamentoPedidos.Identidade;
+using RastreamentoPedido.WebApi.Core.Controllers;
+using RastreamentoPedido.WebApi.Core.Identidade;
 using RastreamentoPedidos.Model;
 using RastreamentoPedidos.Repositories;
 
@@ -16,6 +17,8 @@ namespace RastreamentoPedidos.Controllers
 
     [Produces("application/json")]
     [Route("api/identidade")]
+
+    // usar "auth-v1" para versionar a api
     [ApiExplorerSettings(GroupName = "auth-v1")]
     public class AuthController : MainController
     {
@@ -32,6 +35,12 @@ namespace RastreamentoPedidos.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Rota de autenticação
+        /// </summary>
+        /// <param name="usuario">Objeto com os parametros de nome de usuario e senha</param>
+        /// <returns>Token da autenticacao</returns>
+        /// <response code="200">Retorna os dados da autenticação</response>
         [HttpPost("autenticar")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(UsuarioRespostaLogin), 200)]
