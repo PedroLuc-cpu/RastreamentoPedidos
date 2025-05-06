@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using RastreamentoPedido.Core.Data;
+using RastreamentoPedido.Core.Repositories.Clientes;
 using RastreamentoPedidos.Data;
-using RastreamentoPedidos.Data.Interface;
 using RastreamentoPedidos.Middleware;
 using RastreamentoPedidos.RastreamentoEncomendaHub;
 using RastreamentoPedidos.Repositories.ClienteRepository;
-using RastreamentoPedidos.Repositories.Interface.ICliente;
 
 namespace StartapRastreamentoPedidos
 {

@@ -1,7 +1,7 @@
-﻿using RastreamentoPedidos.Model;
-using RastreamentoPedidos.Model.DTO;
+﻿using RastreamentoPedido.Core.Model;
+using RastreamentoPedido.Core.Model.DTO;
+using RastreamentoPedido.Core.Repositories;
 using RastreamentoPedidos.Model.Encomenda;
-using RastreamentoPedidos.Repositories.Interface;
 
 namespace RastreamentoPedidos.Repositories
 {

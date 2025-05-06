@@ -1,6 +1,6 @@
 using System.Data;
 using Npgsql;
-using RastreamentoPedidos.Data.Interface;
+using RastreamentoPedido.Core.Data;
 
 namespace RastreamentoPedidos.Data
 {

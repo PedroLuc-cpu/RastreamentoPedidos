@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using RastreamentoPedidos.Model;
-using RastreamentoPedidos.Model.Clientes;
+using RastreamentoPedido.Core.Data;
+using RastreamentoPedido.Core.Model;
+using RastreamentoPedido.Core.Model.Clientes;
 using RastreamentoPedidos.Model.Encomenda;
 
 namespace RastreamentoPedidos.Data

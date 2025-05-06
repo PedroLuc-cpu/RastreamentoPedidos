@@ -1,7 +1,8 @@
 using Dapper;
-using RastreamentoPedidos.Data.Interface;
-using RastreamentoPedidos.Model.Usuario;
-using RastreamentoPedidos.Repositories.Interface.IUsuarioRepository;
+using RastreamentoPedido.Core.Data;
+using RastreamentoPedido.Core.Model.Usuario;
+using RastreamentoPedido.Core.Repositories.Interface.IUsuarioRepository;
+
 
 namespace RastreamentoPedidos.Repositories
 {
