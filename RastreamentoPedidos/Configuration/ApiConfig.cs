@@ -8,6 +8,8 @@ using RastreamentoPedido.Core.Converters;
 using Microsoft.AspNetCore.HttpOverrides;
 using RastreamentoPedido.Core.Data;
 using RastreamentoPedidos.Data;
+using RastreamentoPedido.Core.Repositories.Interface.IUsuarioRepository;
+using RastreamentoPedidos.Repositories;
 
 namespace RastreamentoPedidos.API.Configuration
 {
@@ -47,11 +49,11 @@ namespace RastreamentoPedidos.API.Configuration
                     builder.AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader();
-                        //.AllowCredentials();
+                    //.AllowCredentials();
                 });
             });
 
-            services.Configure<ForwardedHeadersOptions>(options => 
+            services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
                 options.KnownNetworks.Clear();
@@ -92,9 +94,10 @@ namespace RastreamentoPedidos.API.Configuration
             services.AddHealthChecks();
             services.AddScoped<IDapperContext, DapperContext>();
 
+            // Usuário
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             //Clientes
             services.AddScoped<IClienteRepository, ClienteRepository>();
-
             // Endereço
             services.AddScoped<ICidadeRepository, ClienteRepositoryDapper>();
             services.AddScoped<IEnderecoRepository, EnderecoRepository>();

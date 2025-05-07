@@ -1,15 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using RastreamentoPedido.Core.Data;
 using RastreamentoPedido.Core.Model;
 using RastreamentoPedido.Core.Model.Clientes;
+using RastreamentoPedido.Core.Model.Usuario;
+using RastreamentoPedidos.Model;
 using RastreamentoPedidos.Model.Encomenda;
 
 namespace RastreamentoPedidos.Data
 {
-    public class RastreamentoPedidosContext : DbContext, IUnitOfWork
+    public class RastreamentoPedidosContext : IdentityDbContext<ApplicationUser>, IUnitOfWork
     {
-        public RastreamentoPedidosContext(DbContextOptions<RastreamentoPedidosContext> options) : base(options) 
+        public RastreamentoPedidosContext(DbContextOptions<RastreamentoPedidosContext> options) : base(options)
         {
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTrackingWithIdentityResolution;
             ChangeTracker.AutoDetectChangesEnabled = false;
@@ -21,6 +24,7 @@ namespace RastreamentoPedidos.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         }
+        public DbSet<Usuario> usuarios { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Encomendas>? encomendas { get; set; }
         public DbSet<StatusEntrega>? statusEntregas { get; set; }
@@ -29,7 +33,7 @@ namespace RastreamentoPedidos.Data
         public DbSet<Telefone>? telefones { get; set; }
         public DbSet<TpLogradouro>? tpLogradouros { get; set; }
         public DbSet<UF>? uFs { get; set; }
-       
+
         public async Task<bool> Commit()
         {
             return await base.SaveChangesAsync() > 0;

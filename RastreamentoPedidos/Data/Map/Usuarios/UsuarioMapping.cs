@@ -1,9 +1,8 @@
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RastreamentoPedido.Core.Model.Usuario;
 
-namespace RastreamentoPedidos.Data.Map.UsuarioMap
+namespace RastreamentoPedidos.Data.Map.Usuarios
 {
     public class UsuarioMapping : IEntityTypeConfiguration<Usuario>
     {

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RastreamentoPedido.Core.Model.Clientes;
 using RastreamentoPedidos.Model.Encomenda;
 
-namespace RastreamentoPedidos.Data.Map.ClienteMap
+namespace RastreamentoPedidos.Data.Map.Clientes
 {
     public class EnderecoMapping : IEntityTypeConfiguration<Endereco>
     {

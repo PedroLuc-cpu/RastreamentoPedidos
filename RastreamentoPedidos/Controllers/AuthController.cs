@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using RastreamentoPedido.Core.DomainObjects;
 using RastreamentoPedido.Core.Model.Usuario;
+using RastreamentoPedido.Core.Repositories.Interface.IUsuarioRepository;
 using RastreamentoPedido.WebApi.Core.Controllers;
 using RastreamentoPedido.WebApi.Core.Identidade;
 using RastreamentoPedidos.Model;
@@ -17,7 +18,6 @@ namespace RastreamentoPedidos.Controllers
 
     [Produces("application/json")]
     [Route("api/identidade")]
-
     // usar "auth-v1" para versionar a api
     [ApiExplorerSettings(GroupName = "auth-v1")]
     public class AuthController : MainController
@@ -25,9 +25,9 @@ namespace RastreamentoPedidos.Controllers
         private readonly ILogger<AuthController> _logger;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly UsuarioRepository _usuarioRepository;
+        private readonly IUsuarioRepository _usuarioRepository;
 
-        public AuthController(ILogger<AuthController> logger, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, UsuarioRepository usuarioRepository)
+        public AuthController(ILogger<AuthController> logger, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IUsuarioRepository usuarioRepository)
         {
             _signInManager = signInManager;
             _userManager = userManager;

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RastreamentoPedido.Core.Model.Clientes;
 
-namespace RastreamentoPedidos.Data.Map.ClienteMap
+namespace RastreamentoPedidos.Data.Map.Clientes
 {
     public class TpLogradouroMapping : IEntityTypeConfiguration<TpLogradouro>
     {
