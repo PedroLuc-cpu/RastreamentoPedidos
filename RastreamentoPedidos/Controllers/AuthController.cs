@@ -11,7 +11,8 @@ using RastreamentoPedido.Core.Repositories.Interface.IUsuarioRepository;
 using RastreamentoPedido.WebApi.Core.Controllers;
 using RastreamentoPedido.WebApi.Core.Identidade;
 using RastreamentoPedidos.Model;
-using RastreamentoPedidos.Repositories;
+
+
 
 namespace RastreamentoPedidos.Controllers
 {
