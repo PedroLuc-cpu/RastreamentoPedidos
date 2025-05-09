@@ -1,40 +1,35 @@
-# 📦 RastreamentoPedidos
+# 📦 Rastreamento de Pedidos
 
-Sistema desenvolvido em .NET para gerenciamento e rastreamento de pedidos, com arquitetura baseada em Controllers, Repositórios e DTOs.
+Sistema de gerenciamento e rastreamento de pedidos de entrega, desenvolvido com ASP.NET Core, PostgreSQL e Docker. Permite registrar pedidos, atualizar seus status e acompanhar o progresso da entrega.
 
-## 🚀 Tecnologias Utilizadas
+## 🚀 Funcionalidades
 
-- ASP.NET Core
+- 📋 Cadastro de pedidos
+- 🔄 Atualização de status de pedidos
+- 🔍 Consulta de pedidos por ID
+- 🗺️ Rastreio de status por etapas
+
+## ⚙️ Tecnologias Utilizadas
+
+- ASP.NET Core 8
 - Entity Framework Core
-- C#
-- Postgresql
-- RESTful API
+- PostgreSQL
+- Docker & Docker Compose
 
-## 📂 Estrutura do Projeto
+## 📦 Como Instalar e Executar
 
-- **Controllers**: Responsáveis por receber as requisições HTTP e retornar as respostas.
-- **Repositories**: Camada de acesso a dados, com separação da lógica de persistência.
-- **DTOs (Data Transfer Objects)**: Objetos utilizados para transferência de dados entre as camadas.
+### ✅ Requisitos
 
-## 🔄 Funcionalidades
+- [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download)
+- [Docker](https://www.docker.com/)
+- [Git](https://git-scm.com/)
 
-- Cadastro e atualização de pedidos
-- Consulta de status dos pedidos
-- Histórico de movimentações
-- Integração com possíveis sistemas externos (ex: transportadoras)
+### 🐳 Usando Docker (recomendado)
 
-## 🛠️ Como Executar
+```bash
+# Clone o projeto
+git clone https://github.com/PedroLuc-cpu/RastreamentoPedidos.git
+cd RastreamentoPedidos
 
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/PedroLuc-cpu/RastreamentoPedidos.git
-2. Construa e inicie os containers:
-   ```bash
-   docker-compose up --build -d
-3. Quando terminar de usar, para tudo com:
-   ```bash
-   docker-compose down
-
-
-   
-
+# Suba a aplicação e o banco de dados
+docker-compose up --build
