@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RastreamentoPedido.Core.DomainObjects;
 using RastreamentoPedido.Core.Model.Usuario;
@@ -34,6 +35,41 @@ namespace RastreamentoPedidos.Controllers
             _userManager = userManager;
             _usuarioRepository = usuarioRepository;
             _logger = logger;
+        }
+
+        /// <summary>
+        /// Rota para criação de nova conta
+        /// </summary>
+        /// <param name="usuario">Objeto com os dados de cadastro do usuario</param>
+        /// <returns>Retorna status code 200 caso dê certo o cadastro</returns>
+        [HttpPost("nova-conta")]
+        [AllowAnonymous]
+        public async Task<IActionResult> NovaConta(UsuarioRegistro usuario)
+        {
+            if (!ModelState.IsValid)
+            {
+                return CustomResponse(ModelState);
+            }
+            if (!usuario.ValidationResult.IsValid)
+            {
+                return CustomResponse(usuario.ValidationResult);
+            }
+            var user = new ApplicationUser
+            {
+                UserName = usuario.email,
+                Email = usuario.email,
+                statusUsser = ApplicationUser.StatusUsuario.OffLine
+            };
+            var result = await _userManager.CreateAsync(user, usuario.senha);
+            if (result.Succeeded)
+            {
+                return CustomResponse(await GerarJWT(usuario.email));
+            }
+            foreach (var erro in result.Errors)
+            {
+                AdicionarErroProcessamento(erro.Description);
+            }
+            return CustomResponse();
         }
 
         /// <summary>
@@ -86,6 +122,66 @@ namespace RastreamentoPedidos.Controllers
             }
             return CustomResponse("Usuário ou Senha incorretos.");
         }
+
+        [HttpPost("mudar-senha")]
+        [Authorize]
+        [ProducesResponseType(typeof(UsuarioRespostaLogin), 200)]
+        public async Task<IActionResult> MudarSenha(UsuarioSenha usuario)
+        {
+            if (!ModelState.IsValid)
+            {
+                return CustomResponse(ModelState);
+            }
+
+            if (!usuario.ValidationResult.IsValid)
+            {
+                return CustomResponse(usuario.ValidationResult);
+            }
+
+            var user = await _userManager.FindByEmailAsync(usuario.Email);
+            if (user == null)
+            {
+                return CustomResponse("Usuário não localizado");
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, usuario.SenhaAntiga, usuario.SenhaNova);
+
+            if (result.Succeeded)
+            {
+                return CustomResponse(await GerarJWT(usuario.Email));
+            }
+
+            foreach (var erro in result.Errors)
+            {
+                AdicionarErroProcessamento(erro.Description);
+            }
+
+            return CustomResponse();
+        }
+
+        [HttpGet("todos")]
+        [Authorize]
+        public async Task<IEnumerable<Usuario>> ObterTodos()
+        {
+            IList<Usuario> lista = new List<Usuario>();
+
+            var usuarios = await _userManager.Users
+                            .OrderByDescending(u => u.statusUsser)
+                            .ThenBy(u => u.nomeUsuario)
+                            .AsNoTracking()
+                            .ToListAsync();
+            foreach (var usuario in usuarios)
+            {
+               lista.Add(new Usuario
+               {
+                   idUsuario = usuario.idUsuario,
+                   nomeUsuario = usuario.nomeUsuario,
+                   email = usuario.Email ?? string.Empty,              
+               });
+            }
+            return lista;
+        }
+
 
         private async Task<UsuarioRespostaLogin> GerarJWT(string email)
         {

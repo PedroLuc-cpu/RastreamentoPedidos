@@ -7,10 +7,12 @@ namespace RastreamentoPedido.Core.Model.Usuario
     {
         [Key]
         public int idUsuario { get; set; }
-        public string login { get; set; } = string.Empty;
+        public string nomeUsuario { get; set; } = string.Empty;
+        public string email { get; set; } = string.Empty;
         public bool ativo { get; set; }
-        public string nome { get; set; } = string.Empty;
+        public string senhaConfirmacao { get; set; } = string.Empty;
         public string senha { get; set; } = string.Empty;
+        public string funcao { get; set; } = string.Empty;
         public string bio { get; set; } = string.Empty;
         
     }
