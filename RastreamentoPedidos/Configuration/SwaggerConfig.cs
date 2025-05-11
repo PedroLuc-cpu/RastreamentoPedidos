@@ -20,12 +20,13 @@ namespace RastreamentoPedidos.API.Configuration
                     ambiente = hostEnvironment.EnvironmentName;
                 }
                 c.SwaggerDoc("auth-v1", GetOpenApiInfo(versao, ambiente));
+                //c.SwaggerDoc("cliente-v1", GetOpenApiInfo(versao, ambiente));
                 //outro exemplo de como pegar o xml do projeto
 
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                // c.IncludeXmlComments(xmlPath);
+                //c.IncludeXmlComments(xmlPath);
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -50,10 +51,10 @@ namespace RastreamentoPedidos.API.Configuration
                         new string[]{}
                     }
                 });
-                //c.AddSignalRSwaggerGen(action =>
-                //{
-                //    action.DisplayInDocument("notification-hub-v1");
-                //});
+                c.AddSignalRSwaggerGen(action =>
+                {
+                    action.DisplayInDocument("notification-hub-v1");
+                });
             });
 
             return services;
@@ -87,6 +88,7 @@ namespace RastreamentoPedidos.API.Configuration
 
             app.UseSwaggerUI(c =>
             {
+                //c.SwaggerEndpoint("/swagger/cliente-v1/swagger.json", "Cliente v1");
                 c.SwaggerEndpoint("/swagger/auth-v1/swagger.json", "Auth v1");
                 if (hostEnvironment.EnvironmentName != "Production")
                 {

@@ -5,7 +5,8 @@ using RastreamentoPedido.WebApi.Core.Controllers;
 
 namespace RastreamentoPedidos.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/cliente")]
+    //[ApiExplorerSettings(GroupName = "cliente-v1")]
     [ApiController]
     public class ClientesController : MainController
     {

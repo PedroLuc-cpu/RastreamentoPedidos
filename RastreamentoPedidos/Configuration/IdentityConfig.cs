@@ -4,6 +4,7 @@ using RastreamentoPedidos.Data;
 using RastreamentoPedido.Core.Configuration;
 using RastreamentoPedido.WebApi.Core.Identidade;
 using RastreamentoPedidos.Model;
+using RastreamentoPedido.Core.DomainObjects;
 
 namespace RastreamentoPedidos.API.Configuration
 {
@@ -40,7 +41,7 @@ namespace RastreamentoPedidos.API.Configuration
 
             services.AddJwtConfiguration();
 
-            //CreateRoles(services.BuildServiceProvider()).Wait();
+            CreateRoles(services.BuildServiceProvider()).Wait();
 
             return services;
 
@@ -56,7 +57,7 @@ namespace RastreamentoPedidos.API.Configuration
         private static async Task CreateRoles(IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            string[] rolesNames = { "Administrador","Gerente", "Tecnico", "Atendente", "AuxiliarADM" };
+            string[] rolesNames = { Roles.Administrador, Roles.Usuario, Roles.Transportadora, Roles.Entregador, Roles.Gerente };
             IdentityResult result;
             foreach (var namesRole in rolesNames)
             {

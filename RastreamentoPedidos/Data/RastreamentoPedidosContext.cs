@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using RastreamentoPedido.Core.Data;
 using RastreamentoPedido.Core.Model;
 using RastreamentoPedido.Core.Model.Clientes;
-using RastreamentoPedido.Core.Model.Usuario;
 using RastreamentoPedidos.Model;
 using RastreamentoPedidos.Model.Encomenda;
 
@@ -24,7 +23,6 @@ namespace RastreamentoPedidos.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         }
-        public DbSet<Usuario> usuarios { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Encomendas>? encomendas { get; set; }
         public DbSet<StatusEntrega>? statusEntregas { get; set; }

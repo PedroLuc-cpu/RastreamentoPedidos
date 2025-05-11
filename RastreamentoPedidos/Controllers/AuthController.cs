@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RastreamentoPedido.Core.DomainObjects;
 using RastreamentoPedido.Core.Model.Usuario;
-using RastreamentoPedido.Core.Repositories.Interface.IUsuarioRepository;
+using RastreamentoPedido.Core.ViewModels;
 using RastreamentoPedido.WebApi.Core.Controllers;
 using RastreamentoPedido.WebApi.Core.Identidade;
 using RastreamentoPedidos.Model;
@@ -27,13 +27,11 @@ namespace RastreamentoPedidos.Controllers
         private readonly ILogger<AuthController> _logger;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IUsuarioRepository _usuarioRepository;
 
-        public AuthController(ILogger<AuthController> logger, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IUsuarioRepository usuarioRepository)
+        public AuthController(ILogger<AuthController> logger, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
         {
             _signInManager = signInManager;
             _userManager = userManager;
-            _usuarioRepository = usuarioRepository;
             _logger = logger;
         }
 
@@ -56,14 +54,19 @@ namespace RastreamentoPedidos.Controllers
             }
             var user = new ApplicationUser
             {
-                UserName = usuario.email,
-                Email = usuario.email,
-                statusUsser = ApplicationUser.StatusUsuario.OffLine
+                UserName = usuario.NomeUsuario,
+                NomeCompleto = usuario.NomeCompleto,
+                Email = usuario.Email,
             };
-            var result = await _userManager.CreateAsync(user, usuario.senha);
+            var result = await _userManager.CreateAsync(user, usuario.Senha);
             if (result.Succeeded)
             {
-                return CustomResponse(await GerarJWT(usuario.email));
+                await MudarNivel(new MudarNivelViewModel
+                {
+                    Id = Guid.Parse(user.Id),
+                    Nivel = usuario.Funcao
+                });
+                return CustomResponse(await GerarJWT(usuario.Email));
             }
             foreach (var erro in result.Errors)
             {
@@ -91,7 +94,7 @@ namespace RastreamentoPedidos.Controllers
             {
                 return CustomResponse(usuario.ValidationResult);
             }
-            var user = await _userManager.FindByNameAsync(usuario.Email);
+            var user = await _userManager.FindByEmailAsync(usuario.Email);
             if (user == null)
             {
                 return CustomResponse("Usuário não localizado");
@@ -100,13 +103,6 @@ namespace RastreamentoPedidos.Controllers
             if (user.EmailConfirmed)
             {
                 return CustomResponse("E-mail não verificado.");
-            }
-
-            var usuarioLogado = await _usuarioRepository.CarregarPorId(user.idUsuario);
-
-            if (!usuarioLogado.ativo)
-            {
-                return CustomResponse("O usuário se encontra inativo");
             }
 
             var result = await _signInManager.PasswordSignInAsync(usuario.Email, usuario.Senha, false, true);
@@ -161,26 +157,149 @@ namespace RastreamentoPedidos.Controllers
 
         [HttpGet("todos")]
         [Authorize]
-        public async Task<IEnumerable<Usuario>> ObterTodos()
+        public async Task<IEnumerable<UsuarioComRoles>> ObterTodos()
         {
-            IList<Usuario> lista = new List<Usuario>();
+            IList<UsuarioComRoles> lista = new List<UsuarioComRoles>();
 
             var usuarios = await _userManager.Users
-                            .OrderByDescending(u => u.statusUsser)
-                            .ThenBy(u => u.nomeUsuario)
+                            .OrderByDescending(u => u.StatusUser)
+                            .ThenBy(u => u.UserName)
                             .AsNoTracking()
                             .ToListAsync();
             foreach (var usuario in usuarios)
             {
-               lista.Add(new Usuario
-               {
-                   idUsuario = usuario.idUsuario,
-                   nomeUsuario = usuario.nomeUsuario,
-                   email = usuario.Email ?? string.Empty,              
-               });
+                lista.Add(new UsuarioComRoles
+                {
+                    Id = Guid.Parse(usuario.Id),
+                    UserName = usuario.UserName ?? string.Empty,
+                    DescricaoStatus = usuario.DescricaoStatus,
+                    StatusUser = usuario.StatusUser,
+                    Email = usuario.Email ?? string.Empty,
+                });
+
+                var roles = await _userManager.GetRolesAsync(usuario);
+
+                if (roles != null && roles.Count > 0)
+                {
+                    if (roles.Contains(Roles.Administrador))
+                    {
+                        lista.Last().Role = Roles.Administrador;
+                    }
+                    else if (roles.Contains(Roles.Gerente))
+                    {
+                        lista.Last().Role = Roles.Gerente;
+                    }
+                    else if (roles.Contains(Roles.Transportadora))
+                    {
+                        lista.Last().Role = Roles.Transportadora;
+                    }
+                    else if (roles.Contains(Roles.Entregador))
+                    {
+                        lista.Last().Role = Roles.Entregador;
+                    }
+                    else
+                    {
+                        lista.Last().Role = Roles.Usuario;
+
+                    }
+
+                }
+
             }
             return lista;
         }
+
+            /// <summary>
+            /// Rota para listar todas as roles permitidas.
+            /// Roles: Administrador
+            /// </summary>
+            /// <returns>Retorna uma lista contendo todas as roles registradas</returns>
+            [HttpGet("listar-todas-roles")]
+            [Authorize(Roles = Roles.Administrador)]
+            [ProducesResponseType(typeof(IList<string>), 200)]
+            public IActionResult ListarTodasRoles()
+            {
+                var roles = new List<string>
+            {
+                Roles.Administrador,
+                Roles.Usuario,
+                Roles.Gerente,
+                Roles.Transportadora,
+                Roles.Entregador
+            };
+                roles.Sort();
+                return Ok(roles);
+            }
+
+            /// <summary>
+            /// Rota para listar todas as roles permitidas.
+            /// </summary>
+            /// <returns>Retorna uma lista contendo as roles permitidas no cadastro de novos usuarios</returns>
+            [HttpGet("listar-roles-cadastro")]
+            [AllowAnonymous]
+            [ProducesResponseType(typeof(IList<string>), 200)]
+            public IActionResult ListarRolesCadastro()
+            {
+                var roles = new List<string>
+            {
+                Roles.Usuario,
+                Roles.Transportadora,
+                Roles.Entregador
+            };
+                return Ok(roles);
+            }
+
+            /// <summary>
+            /// Rota para mudar o nível do usuário dentro do sistema
+            /// Roles: Administrador
+            /// </summary>
+            /// <param name="viewModel">Objeto com os parametros para alteração</param>
+            [HttpPost("mudar-nivel")]
+            [Authorize(Roles = Roles.Administrador)]
+            public async Task<IActionResult> MudarNivel(MudarNivelViewModel viewModel)
+            {
+                if (!ModelState.IsValid)
+                {
+                    return CustomResponse(ModelState);
+                }
+                if (!viewModel.ValidationResult.IsValid)
+                {
+                    return CustomResponse(viewModel.ValidationResult);
+                }
+                var user = await _userManager.FindByIdAsync(viewModel.Id.ToString());
+
+                if (user == null)
+                {
+                    return CustomResponse("Id do usuário inválido");
+                }
+
+                var rolesAntigas = await _userManager.GetRolesAsync(user);
+                await _userManager.RemoveFromRolesAsync(user, rolesAntigas);
+                var rolesNovas = new List<string>();
+                if (viewModel.Nivel == Roles.Administrador)
+                {
+                    rolesNovas.Add(Roles.Administrador);
+                }
+                else if (viewModel.Nivel == Roles.Gerente)
+                {
+                    rolesNovas.Add(Roles.Gerente);
+                }
+                else if (viewModel.Nivel == Roles.Transportadora)
+                {
+                    rolesNovas.Add(Roles.Transportadora);
+                }
+                else
+                {
+                    rolesNovas.Add(Roles.Entregador);
+                }
+                var result = await _userManager.AddToRolesAsync(user, rolesNovas);
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+                return CustomResponse(result.Errors);
+
+            } 
 
 
         private async Task<UsuarioRespostaLogin> GerarJWT(string email)
@@ -202,7 +321,6 @@ namespace RastreamentoPedidos.Controllers
             claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow).ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64));
-            claims.Add(new Claim("idUsuario", user.idUsuario.ToString()));
 
             foreach (var role in userRoles)
             {

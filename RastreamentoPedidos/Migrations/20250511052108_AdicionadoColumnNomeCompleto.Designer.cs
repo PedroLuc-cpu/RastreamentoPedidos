@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RastreamentoPedidos.Data;
@@ -11,9 +12,11 @@ using RastreamentoPedidos.Data;
 namespace RastreamentoPedidos.API.Migrations
 {
     [DbContext(typeof(RastreamentoPedidosContext))]
-    partial class RastreamentoPedidosContextModelSnapshot : ModelSnapshot
+    [Migration("20250511052108_AdicionadoColumnNomeCompleto")]
+    partial class AdicionadoColumnNomeCompleto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -414,7 +417,7 @@ namespace RastreamentoPedidos.API.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("NomeCompleto")
+                    b.Property<string>("NomeComplesto")
                         .IsRequired()
                         .HasColumnType("text");
 

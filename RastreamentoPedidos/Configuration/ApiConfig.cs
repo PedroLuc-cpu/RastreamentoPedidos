@@ -1,15 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using RastreamentoPedido.Core.Repositories.Clientes;
-using RastreamentoPedidos.RastreamentoEncomendaHub;
 using RastreamentoPedidos.Repositories.ClienteRepository;
 using RastreamentoPedidos.API.Configuration.ModelBinders;
 using RastreamentoPedido.Core.Converters;
 using Microsoft.AspNetCore.HttpOverrides;
 using RastreamentoPedido.Core.Data;
 using RastreamentoPedidos.Data;
-using RastreamentoPedido.Core.Repositories.Interface.IUsuarioRepository;
-using RastreamentoPedidos.Repositories;
+using RastreamentoPedidos.API.Hubs;
 
 namespace RastreamentoPedidos.API.Configuration
 {
@@ -39,8 +37,8 @@ namespace RastreamentoPedidos.API.Configuration
 
             services.AddSignalR();
 
-            //UserHandler.ConnectedUsers.Clear();
-            //UserHandler.UserSections.Clear();
+            UserHandler.ConnectedUsers.Clear();
+            UserHandler.UserSections.Clear();
 
             services.AddCors(options =>
             {
@@ -68,6 +66,7 @@ namespace RastreamentoPedidos.API.Configuration
         public static WebApplication UseApiConfiguration(this WebApplication app)
         {
             app.MapHub<RastreamentoHub>("/rastreamentoHub");
+            app.MapHub<NotificationHub>("/notificationsHub");
 
             app.UseCors("Total");
 
@@ -75,7 +74,7 @@ namespace RastreamentoPedidos.API.Configuration
             {
                 var request = context.Request;
 
-                if (request.Path.StartsWithSegments("/rastreamentoHub", StringComparison.OrdinalIgnoreCase) && request.Query.TryGetValue("access_token", out var accessToken))
+                if (request.Path.StartsWithSegments("/notificationsHub", StringComparison.OrdinalIgnoreCase) && request.Query.TryGetValue("access_token", out var accessToken))
                 {
                     request.Headers.Append("Authorization", $"Bearer {accessToken}");
                 }
@@ -94,9 +93,7 @@ namespace RastreamentoPedidos.API.Configuration
             services.AddHealthChecks();
             services.AddScoped<IDapperContext, DapperContext>();
 
-            // Usuário
-            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            //Clientes
+            ///Clientes
             services.AddScoped<IClienteRepository, ClienteRepository>();
             // Endereço
             services.AddScoped<ICidadeRepository, ClienteRepositoryDapper>();

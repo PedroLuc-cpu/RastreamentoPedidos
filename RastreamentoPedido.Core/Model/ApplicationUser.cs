@@ -5,11 +5,11 @@ namespace RastreamentoPedidos.Model
     public class ApplicationUser : IdentityUser
     {
         public enum StatusUsuario { OffLine = 0, OnLine = 1, Desativado = 2 };
-        public int idUsuario { get; set; }
-        public string nomeUsuario { get; set; } = string.Empty;
+
         private StatusUsuario statusUsuario;
         public string DescricaoStatus { get; private set; } = "";
-        public StatusUsuario statusUsser
+        public string NomeCompleto { get; set; } = string.Empty;
+        public StatusUsuario StatusUser
         {
             get { return statusUsuario; }
             set

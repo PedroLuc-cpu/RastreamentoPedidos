@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
-namespace RastreamentoPedidos.RastreamentoEncomendaHub
+namespace RastreamentoPedidos.API.Hubs
 {
     public class RastreamentoHub : Hub
     {
