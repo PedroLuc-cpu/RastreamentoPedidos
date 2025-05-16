@@ -1,12 +1,16 @@
 ﻿
 namespace RastreamentoPedido.Core.Model.Lista
 {
-    internal class ListaPaginada<T>
+    /// <summary>
+    /// Representa uma lista paginada.
+    /// </summary>
+    class ListaPaginada<T>
     {
         public int PaginaAtual { get; set; }
         public int TotalPaginas { get; set; }
 
         public List<T> Itens { get; set; }
+
 
         public ListaPaginada(List<T> itens, int count, int pageIndex, int pageSize)
         {
@@ -26,3 +30,4 @@ namespace RastreamentoPedido.Core.Model.Lista
 
     }
 }
+

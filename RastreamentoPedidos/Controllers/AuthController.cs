@@ -57,6 +57,7 @@ namespace RastreamentoPedidos.Controllers
                 UserName = usuario.NomeUsuario,
                 NomeCompleto = usuario.NomeCompleto,
                 Email = usuario.Email,
+                EmailConfirmed = true
             };
             var result = await _userManager.CreateAsync(user, usuario.Senha);
             if (result.Succeeded)
@@ -100,12 +101,12 @@ namespace RastreamentoPedidos.Controllers
                 return CustomResponse("Usuário não localizado");
             }
 
-            if (user.EmailConfirmed)
+            if (!user.EmailConfirmed)
             {
                 return CustomResponse("E-mail não verificado.");
             }
 
-            var result = await _signInManager.PasswordSignInAsync(usuario.Email, usuario.Senha, false, true);
+            var result = await _signInManager.PasswordSignInAsync(user, usuario.Senha, false, true);
 
             if (result.Succeeded)
             {
