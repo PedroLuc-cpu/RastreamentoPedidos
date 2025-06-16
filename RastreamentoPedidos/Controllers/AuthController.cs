@@ -101,10 +101,10 @@ namespace RastreamentoPedidos.Controllers
                 return CustomResponse("Usuário não localizado");
             }
 
-            if (!user.EmailConfirmed)
-            {
-                return CustomResponse("E-mail não verificado.");
-            }
+            //if (!user.EmailConfirmed)
+            //{
+            //    return CustomResponse("E-mail não verificado.");
+            //}
 
             var result = await _signInManager.PasswordSignInAsync(user, usuario.Senha, false, true);
 

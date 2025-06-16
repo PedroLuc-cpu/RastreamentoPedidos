@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RastreamentoPedido.Core.Model.Clientes;
 using RastreamentoPedido.Core.Repositories.Clientes;
+using RastreamentoPedido.Core.Requests;
 using RastreamentoPedido.WebApi.Core.Controllers;
 
 namespace RastreamentoPedidos.Controllers
@@ -38,7 +39,7 @@ namespace RastreamentoPedidos.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AdicionarCliente(Cliente cliente)
+        public async Task<IActionResult> AdicionarCliente(ClienteRequest clienteRequest)
         {
             Cliente addCliente = new Cliente();
 
@@ -46,15 +47,38 @@ namespace RastreamentoPedidos.Controllers
             {
                 return CustomResponse("o cliente é obrigatório.");
             }
-            if (cliente != null)
+            if (clienteRequest != null)
             {
-                addCliente.idCliente = cliente.idCliente;
-                addCliente.nome = cliente.nome;
-                addCliente.email = cliente.email;
-                addCliente.documento = cliente.documento;
-                addCliente.encomendas = cliente.encomendas;
-                addCliente.telefones = cliente.telefones;
-                addCliente.enderecos = cliente.enderecos;
+                addCliente.nome = clienteRequest.Nome;
+                addCliente.email = clienteRequest.Email;
+                if (addCliente.telefones != null)
+                {
+                    addCliente.telefones = new List<Telefone>
+                    {
+                        new Telefone
+                        {
+                            numero = clienteRequest.Telefone[0].numero,
+                            padrao = clienteRequest.Telefone[0].padrao,
+                            prefixo = clienteRequest.Telefone[0].prefixo
+
+                        }
+                    };
+                }
+                if (addCliente.enderecos != null)
+                {
+                    addCliente.enderecos = new List<Endereco>
+                    {
+                        new Endereco
+                        {
+                            Bairro = clienteRequest.Endereco[0].Bairro,
+                            CEP = clienteRequest.Endereco[0].CEP,
+                            Cidade = clienteRequest.Endereco[0].Cidade,
+                            Numero = clienteRequest.Endereco[0].Numero,
+                            Complemento = clienteRequest.Endereco[0].Complemento
+                          
+                        }
+                    };
+                }
             }
             var clienteAdicionado = await _clienteRepository.Adicionar(addCliente);
 

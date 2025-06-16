@@ -20,7 +20,7 @@ namespace RastreamentoPedidos.API.Configuration
                                 .EnableDetailedErrors();
             });
 
-            services.AddScoped<RastreamentoPedidosContext>();
+            //services.AddScoped<RastreamentoPedidosContext>();
 
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddRoles<IdentityRole>()

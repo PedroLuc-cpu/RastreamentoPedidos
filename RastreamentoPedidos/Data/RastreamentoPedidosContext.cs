@@ -24,13 +24,13 @@ namespace RastreamentoPedidos.Data
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         }
         public DbSet<Cliente> Clientes { get; set; }
-        public DbSet<Encomendas>? encomendas { get; set; }
-        public DbSet<StatusEntrega>? statusEntregas { get; set; }
-        public DbSet<Endereco>? enderecos { get; set; }
-        public DbSet<Cidade> cidades { get; set; }
-        public DbSet<Telefone>? telefones { get; set; }
-        public DbSet<TpLogradouro>? tpLogradouros { get; set; }
-        public DbSet<UF>? uFs { get; set; }
+        public DbSet<Encomendas>? Encomendas { get; set; }
+        public DbSet<StatusEntrega>? StatusEntregas { get; set; }
+        public DbSet<Endereco>? Enderecos { get; set; }
+        public DbSet<Cidade> Cidades { get; set; }
+        public DbSet<Telefone>? Telefones { get; set; }
+        public DbSet<TpLogradouro>? TpLogradouros { get; set; }
+        public DbSet<UF>? UFs { get; set; }
 
         public async Task<bool> Commit()
         {
