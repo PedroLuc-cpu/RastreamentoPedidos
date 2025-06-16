@@ -9,14 +9,14 @@ namespace RastreamentoPedidos.Data.Map.Clientes
         public void Configure(EntityTypeBuilder<Telefone> builder)
         {
             builder.ToTable("telefone");
-            builder.HasKey(t => t.idTelefoneCliente);
-            builder.Property(c => c.idTelefoneCliente).UseSerialColumn().HasColumnName("idTelefoneCliente");
-            builder.Property(t => t.prefixo).HasColumnName("prefixo").HasColumnType("varchar");
-            builder.Property(t => t.numero).HasColumnName("numero").HasColumnType("varchar");
-            builder.Property(t => t.padrao).HasColumnName("padrao").HasDefaultValue("false");
+            builder.HasKey(t => t.IdTelefoneCliente);
+            builder.Property(c => c.IdTelefoneCliente).UseSerialColumn().HasColumnName("idTelefoneCliente");
+            builder.Property(t => t.Prefixo).HasColumnName("prefixo").HasColumnType("varchar");
+            builder.Property(t => t.Numero).HasColumnName("numero").HasColumnType("varchar");
+            builder.Property(t => t.Padrao).HasColumnName("padrao").HasDefaultValue("false");
             builder.HasOne<Cliente>()
-                .WithMany(c => c.telefones)
-                .HasForeignKey(t => t.idCliente)
+                .WithMany(c => c.Telefones)
+                .HasForeignKey(t => t.IdCliente)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

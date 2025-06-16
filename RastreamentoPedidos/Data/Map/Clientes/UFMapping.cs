@@ -9,9 +9,9 @@ namespace RastreamentoPedidos.Data.Map.Clientes
         public void Configure(EntityTypeBuilder<UF> builder)
         {
             builder.ToTable("uf");
-            builder.HasKey(uf => uf.idUF);
-            builder.Property(uf => uf.idUF).UseSerialColumn().HasColumnName("idUf");
-            builder.Property(uf => uf.sigla).HasColumnName("sigla").HasColumnType("varchar");
+            builder.HasKey(uf => uf.IdUF);
+            builder.Property(uf => uf.IdUF).UseSerialColumn().HasColumnName("idUf");
+            builder.Property(uf => uf.Sigla).HasColumnName("sigla").HasColumnType("varchar");
         }
     }
 }

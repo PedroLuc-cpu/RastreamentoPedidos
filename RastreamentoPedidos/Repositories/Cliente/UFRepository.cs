@@ -23,8 +23,8 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
                 var retorno = await connection.QuerySingleOrDefaultAsync(paramSQl.Sql, paramSQl.Parametros);
                 if (retorno != null)
                 {
-                   uf.idUF = retorno.idUF;
-                   uf.sigla = retorno.sigla;
+                   uf.IdUF = retorno.idUF;
+                   uf.Sigla = retorno.sigla;
                 }
                 return uf;
             }
@@ -44,8 +44,8 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
                     {
                         ufs.Add(new UF
                         {
-                            idUF = item.idUF,
-                            sigla = item.sigla
+                            IdUF = item.idUF,
+                            Sigla = item.sigla
                         });
                     }
                 }

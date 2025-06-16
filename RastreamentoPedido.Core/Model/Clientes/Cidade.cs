@@ -4,9 +4,9 @@ namespace RastreamentoPedido.Core.Model.Clientes
 {
     public class Cidade : IAggregateRoot
     {
-        public long idCidade { get; set; }
-        public string nome { get; set; } = string.Empty;
-        public int idUF { get; set; }
+        public int IdCidade { get; set; }
+        public string Nome { get; set; } = string.Empty;
+        public int IdUF { get; set; }
         public UF UF { get; set; } = new UF();
     }
 }

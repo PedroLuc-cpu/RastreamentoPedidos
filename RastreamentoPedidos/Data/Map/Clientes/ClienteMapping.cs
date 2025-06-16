@@ -8,35 +8,39 @@ namespace RastreamentoPedidos.Data.Map.Clientes
        {
               public void Configure(EntityTypeBuilder<Cliente> builder)
               {
-                     builder.HasKey(c => c.idCliente);
-                     builder.Property(c => c.idCliente).UseSerialColumn().HasColumnName("idCliente");
+                     builder.HasKey(c => c.IdCliente);
+                     builder.Property(c => c.IdCliente).UseSerialColumn().HasColumnName("idCliente");
 
-                     builder.Property(c => c.nome)
+                     builder.Property(c => c.Nome)
                             .IsRequired()
                             .HasMaxLength(100);
 
-                     builder.Property(c => c.email)
+                     builder.Property(c => c.Email)
                             .IsRequired()
                             .HasMaxLength(100);
 
-                     builder.Property(c => c.documento)
+                     builder.Property(c => c.Documento)
                             .IsRequired()
                             .HasMaxLength(14);
 
-                     builder.HasMany(c => c.enderecos)
+                     builder.HasMany(c => c.Enderecos)
                             .WithOne()
                             .OnDelete(DeleteBehavior.Cascade);
 
-                     builder.HasMany(c => c.telefones)
+                     builder.HasMany(c => c.Telefones)
                             .WithOne()
                             .OnDelete(DeleteBehavior.Cascade);
 
-                     builder.HasMany(c => c.encomendas)
-                            .WithOne(e => e.cliente)
-                            .HasForeignKey(e => e.idCliente)
+                     builder.HasMany(c => c.Encomendas)
+                            .WithOne(e => e.Cliente)
+                            .HasForeignKey(e => e.IdCliente)
+                            .OnDelete(DeleteBehavior.Cascade);
+                    builder.HasOne(c => c.EstadoCivil)
+                            .WithOne()
+                            .HasForeignKey<EstadoCivil>(ec => ec.IdCliente)
                             .OnDelete(DeleteBehavior.Cascade);
 
-                     builder.ToTable("Clientes");
+            builder.ToTable("Clientes");
               }
        }
 }

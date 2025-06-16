@@ -14,15 +14,15 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
             _context = context;
             _ufRepository = ufRepository;
         }
-        public async Task<Cidade> CarregarPorId(int id)
+        public async Task<Cidade> CarregarPorId(long id)
         {
             Cidade cidade = new Cidade();
-            var retorno = await _context.cidades.FirstOrDefaultAsync(x => x.idCidade == id);
+            var retorno = await _context.Cidades.FirstOrDefaultAsync(x => x.IdCidade == id);
             if (retorno != null)
             {
-                cidade.idCidade = retorno.idCidade;
-                cidade.nome = retorno.nome;
-                cidade.UF = await _ufRepository.CarregarPorId(retorno.idUF);
+                cidade.IdCidade = retorno.IdCidade;
+                cidade.Nome = retorno.Nome;
+                cidade.UF = await _ufRepository.CarregarPorId(retorno.IdUF);
             }
             return cidade;
         }

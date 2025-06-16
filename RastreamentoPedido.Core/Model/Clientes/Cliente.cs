@@ -5,16 +5,21 @@ namespace RastreamentoPedido.Core.Model.Clientes
 {
     public class Cliente : IAggregateRoot
     {
-        public int idCliente { get; set; }
-        public long? id_encomenda { get; set; }
-        public string nome { get; set; } = string.Empty;
-        public string email { get; set; } = string.Empty;
+        public int IdCliente { get; set; }
+        public int? IdEncomenda { get; set; }
+        public int EstadoCivilId { get; set; }
+        public string Nome { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public EstadoCivil EstadoCivil { get; set; } = new EstadoCivil();
+        public bool Ativo { get; set; } = true;
+        public bool Sexo { get; set; } = true; // true = Masculino, false = Feminino
+        public DateTime DataNascimento { get; set; } = DateTime.MinValue;
         /// <summary>
         /// CPF e CNPJ do cliente
         /// </summary>
-        public string documento {  get; set; } = string.Empty;
-        public IList<Endereco>? enderecos { get; set; } = new List<Endereco>();
-        public IList<Telefone>? telefones { get; set; } = new List<Telefone>();
-        public IList<Encomendas>? encomendas {  get; set; } = new List<Encomendas>();
+        public string Documento {  get; set; } = string.Empty;
+        public IList<Endereco>? Enderecos { get; set; } = new List<Endereco>();
+        public IList<Telefone>? Telefones { get; set; } = new List<Telefone>();
+        public IList<Encomendas>? Encomendas {  get; set; } = new List<Encomendas>();
     }
 }

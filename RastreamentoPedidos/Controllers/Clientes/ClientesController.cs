@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RastreamentoPedido.Core.Communication;
 using RastreamentoPedido.Core.Model.Clientes;
 using RastreamentoPedido.Core.Repositories.Clientes;
-using RastreamentoPedido.Core.Requests;
+using RastreamentoPedido.Core.Requests.Cliente;
 using RastreamentoPedido.WebApi.Core.Controllers;
 
 namespace RastreamentoPedidos.Controllers
@@ -31,7 +32,7 @@ namespace RastreamentoPedidos.Controllers
         public async Task<IActionResult> carregarCidadaPorId(int id)
         {
             var cidades = await _cidadeRepository.CarregarPorId(id);
-            if (cidades.idCidade == 0)
+            if (cidades.IdCidade == 0)
             {
                 return CustomResponse("id da cidade deve ser obrigatório para realizar a buscar");
             }
@@ -39,7 +40,9 @@ namespace RastreamentoPedidos.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AdicionarCliente(ClienteRequest clienteRequest)
+        [ProducesResponseType(typeof(Cliente), 200)]
+        [ProducesResponseType(typeof(ResponseResult), 400)]
+        public async Task<IActionResult> AdicionarCliente([FromBody]ClienteRequest clienteRequest)
         {
             Cliente addCliente = new Cliente();
 
@@ -48,37 +51,22 @@ namespace RastreamentoPedidos.Controllers
                 return CustomResponse("o cliente é obrigatório.");
             }
             if (clienteRequest != null)
-            {
-                addCliente.nome = clienteRequest.Nome;
-                addCliente.email = clienteRequest.Email;
-                if (addCliente.telefones != null)
+            {   
+                addCliente.Nome = clienteRequest.Nome;
+                addCliente.Email = clienteRequest.Email;
+                addCliente.Documento = clienteRequest.Documento;
+                addCliente.Ativo = clienteRequest.Ativo;
+                addCliente.Sexo = clienteRequest.Sexo;
+                addCliente.DataNascimento = clienteRequest.DataNascimento;
+                if (clienteRequest.EstadoCivil != null)
                 {
-                    addCliente.telefones = new List<Telefone>
+                    addCliente.EstadoCivil = new EstadoCivil
                     {
-                        new Telefone
-                        {
-                            numero = clienteRequest.Telefone[0].numero,
-                            padrao = clienteRequest.Telefone[0].padrao,
-                            prefixo = clienteRequest.Telefone[0].prefixo
+                        Id = clienteRequest.EstadoCivil.Id,
+                        EstadoCivilDescricao = clienteRequest.EstadoCivil.EstadoCivil
+                    };
+                }
 
-                        }
-                    };
-                }
-                if (addCliente.enderecos != null)
-                {
-                    addCliente.enderecos = new List<Endereco>
-                    {
-                        new Endereco
-                        {
-                            Bairro = clienteRequest.Endereco[0].Bairro,
-                            CEP = clienteRequest.Endereco[0].CEP,
-                            Cidade = clienteRequest.Endereco[0].Cidade,
-                            Numero = clienteRequest.Endereco[0].Numero,
-                            Complemento = clienteRequest.Endereco[0].Complemento
-                          
-                        }
-                    };
-                }
             }
             var clienteAdicionado = await _clienteRepository.Adicionar(addCliente);
 

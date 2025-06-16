@@ -10,28 +10,28 @@ namespace RastreamentoPedidos.Data.Map
         public void Configure(EntityTypeBuilder<Encomendas> builder)
         {
 
-            builder.ToTable("encomendas").HasKey(x => x.id_encomenda);
-            builder.Property(x => x.id_encomenda).UseSerialColumn().HasColumnName("idEncomenda");
-            builder.Property(x => x.descricao)
+            builder.ToTable("encomendas").HasKey(x => x.IdEncomenda);
+            builder.Property(x => x.IdEncomenda).UseSerialColumn().HasColumnName("idEncomenda");
+            builder.Property(x => x.Descricao)
                 .HasColumnName("descricao")
                 .HasColumnType("varchar");
 
-            builder.Property(x => x.data_encomenda)
+            builder.Property(x => x.DataEncomenda)
                 .HasColumnName("data_pedido")
                 .HasColumnType("timestamp");
 
-            builder.HasMany(x => x.statusEntregas)
+            builder.HasMany(x => x.StatusEntregas)
                 .WithOne()
                 .HasForeignKey("id_encomenda")
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany(x => x.localizacao)
+            builder.HasMany(x => x.Localizacao)
                 .WithOne()
                 .HasForeignKey("EncomendaId")
                 .OnDelete(DeleteBehavior.Cascade);
             builder.HasOne<Cliente>()
-                .WithMany(c => c.encomendas)
-                .HasForeignKey(x => x.idCliente)
+                .WithMany(c => c.Encomendas)
+                .HasForeignKey(x => x.IdCliente)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

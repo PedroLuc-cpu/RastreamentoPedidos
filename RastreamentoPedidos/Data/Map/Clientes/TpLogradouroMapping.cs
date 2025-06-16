@@ -9,10 +9,10 @@ namespace RastreamentoPedidos.Data.Map.Clientes
         public void Configure(EntityTypeBuilder<TpLogradouro> builder)
         {
             builder.ToTable("tp_logradouro");
-            builder.HasKey(tp => tp.idTpLogradouro);
-            builder.Property(c => c.idTpLogradouro).UseSerialColumn().HasColumnName("idTpLogradouro");
-            builder.Property(tp => tp.nome).HasColumnName("nome").HasColumnType("varchar");
-            builder.Property(tp => tp.sigla).HasColumnName("sigla").HasColumnType("varchar");
+            builder.HasKey(tp => tp.IdTpLogradouro);
+            builder.Property(c => c.IdTpLogradouro).UseSerialColumn().HasColumnName("idTpLogradouro");
+            builder.Property(tp => tp.Nome).HasColumnName("nome").HasColumnType("varchar");
+            builder.Property(tp => tp.Sigla).HasColumnName("sigla").HasColumnType("varchar");
 
         }
     }

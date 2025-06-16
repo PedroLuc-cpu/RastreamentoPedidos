@@ -9,9 +9,9 @@ namespace RastreamentoPedidos.Data.Map.Clientes
     {
         public void Configure(EntityTypeBuilder<Endereco> builder)
         {
-            builder.ToTable("endereco").HasKey(x => x.idEnderecoCliente);
+            builder.ToTable("endereco").HasKey(x => x.IdEnderecoCliente);
 
-            builder.Property(x => x.idEnderecoCliente).UseSerialColumn().HasColumnName("idEnderecoCliente");
+            builder.Property(x => x.IdEnderecoCliente).UseSerialColumn().HasColumnName("idEnderecoCliente");
 
             builder.Property(x => x.Bairro)
                 .HasColumnName("bairro")
@@ -32,12 +32,12 @@ namespace RastreamentoPedidos.Data.Map.Clientes
 
             builder.HasOne(x => x.TpLogradouro)
                 .WithMany()
-                .HasForeignKey(x => x.idTpLogradouro)
+                .HasForeignKey(x => x.IdTpLogradouro)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne<Cliente>()
-                .WithMany(c => c.enderecos)
-                .HasForeignKey(x => x.idCliente)
+                .WithMany(c => c.Enderecos)
+                .HasForeignKey(x => x.IdCliente)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne<Encomendas>()

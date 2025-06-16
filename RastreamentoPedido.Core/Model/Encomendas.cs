@@ -6,12 +6,12 @@ namespace RastreamentoPedidos.Model.Encomenda
 {
     public class Encomendas : IAggregateRoot
     {
-        public int? id_encomenda { get; set; }
-        public int idCliente { get; set; }
-        public Cliente cliente { get; set; } = new Cliente();
-        public DateTime data_encomenda { get; set; }
-        public string descricao { get; set; } = string.Empty;
-        public IList<StatusEntrega> statusEntregas { get; set; } = new List<StatusEntrega>();
-        public IList<Endereco> localizacao {  get; set; } = new List<Endereco>();
+        public int? IdEncomenda { get; set; }
+        public int IdCliente { get; set; }
+        public Cliente Cliente { get; set; } = new Cliente();
+        public DateTime DataEncomenda { get; set; }
+        public string Descricao { get; set; } = string.Empty;
+        public IList<StatusEntrega> StatusEntregas { get; set; } = new List<StatusEntrega>();
+        public IList<Endereco> Localizacao {  get; set; } = new List<Endereco>();
     }
 }

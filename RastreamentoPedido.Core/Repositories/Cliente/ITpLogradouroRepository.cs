@@ -4,6 +4,6 @@ namespace RastreamentoPedido.Core.Repositories.Clientes
 {
     public interface ITpLogradouroRepository : IRepository<TpLogradouro>
     {
-        Task<TpLogradouro> CarregarPorId(long id);
+        Task<TpLogradouro> CarregarPorId(int id);
     }
 }

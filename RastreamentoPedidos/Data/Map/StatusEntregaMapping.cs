@@ -8,9 +8,9 @@ namespace RastreamentoPedidos.Data.Map
     {
         public void Configure(EntityTypeBuilder<StatusEntrega> builder)
         {
-            builder.ToTable("status_entrega").HasKey(x => x.codigo);
-            builder.Property(x => x.codigo).UseSerialColumn();
-            builder.Property(x => x.status)
+            builder.ToTable("status_entrega").HasKey(x => x.Codigo);
+            builder.Property(x => x.Codigo).UseSerialColumn();
+            builder.Property(x => x.Status)
                 .HasColumnName("status")
                 .HasColumnType("varchar")
                 .HasMaxLength(225)
@@ -21,14 +21,14 @@ namespace RastreamentoPedidos.Data.Map
                 .HasColumnType("timestamp")
                 .IsRequired();
 
-            builder.Property(x => x.codigo)
+            builder.Property(x => x.Codigo)
                 .HasColumnName("id_encomenda")
                 .IsRequired();
 
             // Configuração do relacionamento com Encomenda (Muitos para Um)
-            builder.HasOne(x => x.encomenda)
-                .WithMany(e => e.statusEntregas)
-                .HasForeignKey(x => x.codigo)
+            builder.HasOne(x => x.Encomenda)
+                .WithMany(e => e.StatusEntregas)
+                .HasForeignKey(x => x.Codigo)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

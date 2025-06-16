@@ -13,15 +13,15 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
         {
             _context = context;
         }
-        public async Task<TpLogradouro> CarregarPorId(long id)
+        public async Task<TpLogradouro> CarregarPorId(int id)
         {
             TpLogradouro tpLogradouro = new TpLogradouro();
-            var retorno = await _context.tpLogradouros.FirstOrDefaultAsync(x => x.idTpLogradouro == id);
+            var retorno = await _context.TpLogradouros.FirstOrDefaultAsync(x => x.IdTpLogradouro == id);
             if (retorno != null)
             {
-                tpLogradouro.idTpLogradouro = retorno.idTpLogradouro;
-                tpLogradouro.sigla = retorno.sigla;
-                tpLogradouro.nome = retorno.nome;
+                tpLogradouro.IdTpLogradouro = retorno.IdTpLogradouro;
+                tpLogradouro.Sigla = retorno.Sigla;
+                tpLogradouro.Nome = retorno.Nome;
             }
             return tpLogradouro;
         }

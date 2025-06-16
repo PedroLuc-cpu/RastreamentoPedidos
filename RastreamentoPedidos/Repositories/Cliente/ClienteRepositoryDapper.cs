@@ -17,7 +17,7 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
             _dapper = dapper;
             _ufRepository = ufRepository;
         }
-        public async Task<Cidade> CarregarPorId(int id)
+        public async Task<Cidade> CarregarPorId(long id)
         {
             Cidade cidade = new Cidade();
             using (var connection = _dapper.ConnectionCreate())
@@ -26,9 +26,9 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
                 var retorno = await connection.QuerySingleOrDefaultAsync(paramSQl.Sql, paramSQl.Parametros);
                 if (retorno != null)
                 {
-                    cidade.idCidade = retorno.idCidade;
-                    cidade.nome = retorno.nome;
-                    cidade.idUF = retorno.idUF;
+                    cidade.IdCidade = retorno.idCidade;
+                    cidade.Nome = retorno.nome;
+                    cidade.IdUF = retorno.idUF;
                     cidade.UF = await _ufRepository.CarregarPorId(retorno.idUF);
                 }
                 return cidade;

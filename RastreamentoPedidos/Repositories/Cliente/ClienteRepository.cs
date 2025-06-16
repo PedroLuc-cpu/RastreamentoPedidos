@@ -24,18 +24,18 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
         {
             var clientes = new Cliente
             {
-                email = cliente.email,
-                nome = cliente.nome,
-                documento = cliente.documento,
-                enderecos = cliente.enderecos,
-                telefones = cliente.telefones
+                Email = cliente.Email,
+                Nome = cliente.Nome,
+                Documento = cliente.Documento,
+                Enderecos = cliente.Enderecos,
+                Telefones = cliente.Telefones
             };
 
             if (clientes == null) throw new ArgumentNullException(nameof(cliente));
 
             var ClienteExistente = await _context.Clientes
                 .AsNoTracking()
-                .FirstOrDefaultAsync(c => c.email == cliente.email);
+                .FirstOrDefaultAsync(c => c.Email == cliente.Email);
 
             if (ClienteExistente != null)
             {
@@ -50,7 +50,7 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
         public async Task<Cliente> CarregarPorDocumento(string documento)
         {
             Cliente cliente = new Cliente();
-            var resultado = await _context.Clientes.Where(x => x.documento == documento).FirstOrDefaultAsync();
+            var resultado = await _context.Clientes.Where(x => x.Documento == documento).FirstOrDefaultAsync();
             if (resultado != null)
             {
                 cliente = await PreencherObjeto(resultado);
@@ -61,7 +61,7 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
         public async Task<Cliente> CarregarPorEmail(string email)
         {
             Cliente cliente = new Cliente();
-            var resultado = await _context.Clientes.Where(x => x.email == email).FirstOrDefaultAsync();
+            var resultado = await _context.Clientes.Where(x => x.Email == email).FirstOrDefaultAsync();
             if (resultado != null)
             {
                 cliente = await PreencherObjeto(resultado);
@@ -69,10 +69,10 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
             return cliente;
         }
 
-        public async Task<Cliente> CarregarPorId(long id)
+        public async Task<Cliente> CarregarPorId(int id)
         {
             Cliente cliente = new Cliente();
-            var resultado = await _context.Clientes.Where(x => x.idCliente == id).FirstOrDefaultAsync();
+            var resultado = await _context.Clientes.Where(x => x.IdCliente == id).FirstOrDefaultAsync();
             if (resultado != null)
             {
                 cliente = await PreencherObjeto(resultado);
@@ -96,13 +96,13 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
         {
             Cliente cliente = new Cliente
             {
-                idCliente = item.idCliente,
-                documento = item.documento,
-                email = item.email,
-                nome = item.nome,
+                IdCliente = item.idCliente,
+                Documento = item.documento,
+                Email = item.email,
+                Nome = item.nome,
             };
-            cliente.enderecos = await _enderecoRepository.CarregarPorIdCliente(cliente.idCliente);
-            cliente.telefones = await _telefoneRepository.CarregarPorIdCliente(cliente.idCliente);
+            cliente.Enderecos = await _enderecoRepository.CarregarPorIdCliente(cliente.IdCliente);
+            cliente.Telefones = await _telefoneRepository.CarregarPorIdCliente(cliente.IdCliente);
             return cliente;
         }
     }

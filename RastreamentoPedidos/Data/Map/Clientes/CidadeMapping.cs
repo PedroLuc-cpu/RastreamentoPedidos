@@ -9,13 +9,13 @@ namespace RastreamentoPedidos.Data.Map.Clientes
         public void Configure(EntityTypeBuilder<Cidade> builder)
         {
             builder.ToTable("cidade");
-            builder.HasKey(c => c.idCidade);
-            builder.Property(c => c.idCidade).UseSerialColumn().HasColumnName("idCidade");
-            builder.Property(c => c.nome).HasColumnName("nome").HasColumnType("varchar");
-            builder.Property(c => c.idUF).HasColumnName("idUF").IsRequired();
+            builder.HasKey(c => c.IdCidade);
+            builder.Property(c => c.IdCidade).UseSerialColumn().HasColumnName("idCidade");
+            builder.Property(c => c.Nome).HasColumnName("nome").HasColumnType("varchar");
+            builder.Property(c => c.IdUF).HasColumnName("idUF").IsRequired();
             builder.HasOne(c => c.UF)
                 .WithMany()
-                .HasForeignKey(c => c.idUF)
+                .HasForeignKey(c => c.IdUF)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

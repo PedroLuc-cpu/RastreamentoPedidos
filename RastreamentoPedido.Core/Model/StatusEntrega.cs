@@ -20,11 +20,11 @@ namespace RastreamentoPedido.Core.Model
     }
     public class StatusEntrega : IAggregateRoot
     {
-        public int codigo { get; set; } = 0;
-        public string status { get; set; } = StatusEncomendaEnumToStr(StatusEntregaEnum.AguardandoPagamento);
-        public string decricao { get; set; } = string.Empty;
+        public int Codigo { get; set; }
+        public string Status { get; set; } = StatusEncomendaEnumToStr(StatusEntregaEnum.AguardandoPagamento);
+        public string Decricao { get; set; } = string.Empty;
         public DateTime Timestamp { get; set; } = DateTime.Now;
-        public Encomendas encomenda { get; set; } = new Encomendas();
+        public Encomendas Encomenda { get; set; } = new Encomendas();
         public static string StatusEncomendaEnumToStr(StatusEntregaEnum value)
         {
             switch (value)

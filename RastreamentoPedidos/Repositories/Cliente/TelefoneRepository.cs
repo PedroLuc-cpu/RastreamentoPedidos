@@ -16,16 +16,16 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
         {
             IList<Telefone> telefones = new List<Telefone>();
             telefones.Clear();
-            var registros = await _context.telefones.Where(e => e.idCliente == idCliente).ToListAsync();
+            var registros = await _context.Telefones.Where(e => e.IdCliente == idCliente).ToListAsync();
             foreach (var item in registros)
             {
                 telefones.Add(new Telefone
                 {
-                    idTelefoneCliente = item.idTelefoneCliente,
-                    prefixo = item.prefixo,
-                    numero = item.numero,
-                    padrao = item.padrao,
-                    idCliente = item.idCliente,
+                    IdTelefoneCliente = item.IdTelefoneCliente,
+                    Prefixo = item.Prefixo,
+                    Numero = item.Numero,
+                    Padrao = item.Padrao,
+                    IdCliente = item.IdCliente,
                 });
             }
             return telefones;

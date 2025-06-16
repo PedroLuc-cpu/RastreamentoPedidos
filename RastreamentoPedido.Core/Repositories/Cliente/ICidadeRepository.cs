@@ -4,6 +4,6 @@ namespace RastreamentoPedido.Core.Repositories.Clientes
 {
     public interface ICidadeRepository : IRepository<Cidade>
     {
-        Task<Cidade> CarregarPorId(int id);
+        Task<Cidade> CarregarPorId(long id);
     }
 }

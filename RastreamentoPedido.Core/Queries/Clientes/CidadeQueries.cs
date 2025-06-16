@@ -4,7 +4,7 @@ namespace RastreamentoPedidos.Data.Queries.Clientes
 {
     public class CidadeQueries
     {
-        public static QueryParamsSQL obterCidadePorId(int id)
+        public static QueryParamsSQL obterCidadePorId(long id)
         {
             return new QueryParamsSQL
             {

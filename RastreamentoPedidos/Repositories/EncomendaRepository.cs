@@ -1,5 +1,4 @@
 ﻿using RastreamentoPedido.Core.Model;
-using RastreamentoPedido.Core.Model.DTO;
 using RastreamentoPedido.Core.Repositories;
 using RastreamentoPedidos.Model.Encomenda;
 
@@ -7,7 +6,7 @@ namespace RastreamentoPedidos.Repositories
 {
     public class EncomendaRepository : IEncomendaRepository
     {
-        public Task<Encomendas> AdicionarNovaEncomenda(EncomendaDTO encomenda)
+        public Task<Encomendas> AdicionarNovaEncomenda(Encomendas encomenda)
         {
             throw new NotImplementedException();
         }
