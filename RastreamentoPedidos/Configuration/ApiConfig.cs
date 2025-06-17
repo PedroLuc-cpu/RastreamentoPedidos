@@ -10,6 +10,8 @@ using RastreamentoPedidos.Data;
 using RastreamentoPedidos.API.Hubs;
 using RastreamentoPedido.Core.Repositories.IEstadoCivilRepository;
 using RastreamentoPedidos.API.Repositories;
+using RastreamentoPedido.Core.Service;
+using RastreamentoPedidos.API.Services;
 
 namespace RastreamentoPedidos.API.Configuration
 {
@@ -104,6 +106,8 @@ namespace RastreamentoPedidos.API.Configuration
             services.AddScoped<ITelefoneRepository, TelefoneRepository>();
             services.AddScoped<ITpLogradouroRepository, TpLogradouroRepository>();
             services.AddScoped<IUFRepository, UFRepository>();
+
+            services.AddHttpClient<ICidadeService, CidadeServices>();
         }
 
         public static class UserHandler

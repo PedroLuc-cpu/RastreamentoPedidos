@@ -3,6 +3,8 @@ using RastreamentoPedido.Core.Communication;
 using RastreamentoPedido.Core.Model.Clientes;
 using RastreamentoPedido.Core.Repositories.Clientes;
 using RastreamentoPedido.Core.Requests.Cliente;
+using RastreamentoPedido.Core.Service;
+using RastreamentoPedido.Core.ViewModels.Cidade;
 using RastreamentoPedido.WebApi.Core.Controllers;
 
 namespace RastreamentoPedidos.Controllers
@@ -14,10 +16,12 @@ namespace RastreamentoPedidos.Controllers
     {
         private readonly IClienteRepository _clienteRepository;
         private readonly ICidadeRepository _cidadeRepository;
-        public ClientesController(IClienteRepository clienteRepository, ICidadeRepository cidadeRepository)
+        private readonly ICidadeService _cidadeService;
+        public ClientesController(IClienteRepository clienteRepository, ICidadeRepository cidadeRepository, ICidadeService cidadeService)
         {
             _clienteRepository = clienteRepository;
             _cidadeRepository = cidadeRepository;
+            _cidadeService = cidadeService;
         }
 
         [HttpGet]
@@ -29,6 +33,8 @@ namespace RastreamentoPedidos.Controllers
         }
 
         [HttpGet("cidade/id/{id:int}")]
+        [ProducesResponseType(typeof(Cidade), 200)]
+        [ProducesResponseType(typeof(ResponseResult), 400)]
         public async Task<IActionResult> carregarCidadaPorId(int id)
         {
             var cidades = await _cidadeRepository.CarregarPorId(id);
@@ -36,6 +42,19 @@ namespace RastreamentoPedidos.Controllers
             {
                 return CustomResponse("id da cidade deve ser obrigatório para realizar a buscar");
             }
+            return Ok(cidades);
+        }
+
+        [HttpGet("cidade/{sigla}")]
+        [ProducesResponseType(typeof(CidadeViewModel), 200)]
+        [ProducesResponseType(typeof(ResponseResult), 400)]
+        public async Task<IActionResult> carregarCidadePorUf(string sigla)
+        {
+            if (sigla  == null)
+            {
+                return CustomResponse("A sigla da cidade é obrigatória");
+            }
+            var cidades = await _cidadeService.BuscarCidadePorEstado(sigla.ToUpper());
             return Ok(cidades);
         }
 
