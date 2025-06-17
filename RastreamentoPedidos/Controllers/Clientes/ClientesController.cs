@@ -62,7 +62,6 @@ namespace RastreamentoPedidos.Controllers
                 {
                     addCliente.EstadoCivil = new EstadoCivil
                     {
-                        Id = clienteRequest.EstadoCivil.Id,
                         EstadoCivilDescricao = clienteRequest.EstadoCivil.EstadoCivil
                     };
                 }

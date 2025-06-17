@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.HttpOverrides;
 using RastreamentoPedido.Core.Data;
 using RastreamentoPedidos.Data;
 using RastreamentoPedidos.API.Hubs;
+using RastreamentoPedido.Core.Repositories.IEstadoCivilRepository;
+using RastreamentoPedidos.API.Repositories;
 
 namespace RastreamentoPedidos.API.Configuration
 {
@@ -95,6 +97,7 @@ namespace RastreamentoPedidos.API.Configuration
 
             ///Clientes
             services.AddScoped<IClienteRepository, ClienteRepository>();
+            services.AddScoped<IEstadoCivilRepository, EstadoCivilRepository>();
             // Endereço
             services.AddScoped<ICidadeRepository, ClienteRepositoryDapper>();
             services.AddScoped<IEnderecoRepository, EnderecoRepository>();

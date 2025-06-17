@@ -24,6 +24,7 @@ namespace RastreamentoPedidos.Data
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         }
         public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<EstadoCivil> EstadoCivil { get; set; }
         public DbSet<Encomendas>? Encomendas { get; set; }
         public DbSet<StatusEntrega>? StatusEntregas { get; set; }
         public DbSet<Endereco>? Enderecos { get; set; }

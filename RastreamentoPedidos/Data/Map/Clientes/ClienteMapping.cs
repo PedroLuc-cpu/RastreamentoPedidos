@@ -37,7 +37,7 @@ namespace RastreamentoPedidos.Data.Map.Clientes
                             .OnDelete(DeleteBehavior.Cascade);
                     builder.HasOne(c => c.EstadoCivil)
                             .WithOne()
-                            .HasForeignKey<EstadoCivil>(ec => ec.IdCliente)
+                            .HasForeignKey<EstadoCivil>(ec => ec.Id)
                             .OnDelete(DeleteBehavior.Cascade);
 
             builder.ToTable("Clientes");

@@ -14,12 +14,6 @@ namespace RastreamentoPedidos.API.Data.Map.Clientes
                 .UseSerialColumn()
                 .HasColumnName("idestadocivil");
             builder.Property(ec => ec.EstadoCivilDescricao);
-            builder.Property(ec => ec.IdCliente)
-                .HasColumnName("idcliente");
-            builder.HasOne<Cliente>()
-                .WithOne()
-                .HasForeignKey<EstadoCivil>(ec => ec.IdCliente)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
