@@ -36,4 +36,7 @@
 		<ProjectReference Include="..\RastreamentoPedido.Core\RastreamentoPedido.Core.csproj" />
 		<ProjectReference Include="..\RastreamentoPedido.WebApi.Core\RastreamentoPedido.WebApi.Core.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Controllers\Clientes\" />
+	</ItemGroup>
 </Project>

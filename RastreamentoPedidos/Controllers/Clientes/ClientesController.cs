@@ -3,8 +3,6 @@ using RastreamentoPedido.Core.Communication;
 using RastreamentoPedido.Core.Model.Clientes;
 using RastreamentoPedido.Core.Repositories.Clientes;
 using RastreamentoPedido.Core.Requests.Cliente;
-using RastreamentoPedido.Core.Service;
-using RastreamentoPedido.Core.ViewModels.Cidade;
 using RastreamentoPedido.WebApi.Core.Controllers;
 
 namespace RastreamentoPedidos.Controllers
@@ -15,13 +13,9 @@ namespace RastreamentoPedidos.Controllers
     public class ClientesController : MainController
     {
         private readonly IClienteRepository _clienteRepository;
-        private readonly ICidadeRepository _cidadeRepository;
-        private readonly ICidadeService _cidadeService;
-        public ClientesController(IClienteRepository clienteRepository, ICidadeRepository cidadeRepository, ICidadeService cidadeService)
+        public ClientesController(IClienteRepository clienteRepository)
         {
             _clienteRepository = clienteRepository;
-            _cidadeRepository = cidadeRepository;
-            _cidadeService = cidadeService;
         }
 
         [HttpGet]
@@ -31,33 +25,6 @@ namespace RastreamentoPedidos.Controllers
             return clientes.Any()
                 ? Ok(clientes) : CustomResponse("Clientes não encontrado");
         }
-
-        [HttpGet("cidade/id/{id:int}")]
-        [ProducesResponseType(typeof(Cidade), 200)]
-        [ProducesResponseType(typeof(ResponseResult), 400)]
-        public async Task<IActionResult> carregarCidadaPorId(int id)
-        {
-            var cidades = await _cidadeRepository.CarregarPorId(id);
-            if (cidades.IdCidade == 0)
-            {
-                return CustomResponse("id da cidade deve ser obrigatório para realizar a buscar");
-            }
-            return Ok(cidades);
-        }
-
-        [HttpGet("cidade/{sigla}")]
-        [ProducesResponseType(typeof(CidadeViewModel), 200)]
-        [ProducesResponseType(typeof(ResponseResult), 400)]
-        public async Task<IActionResult> carregarCidadePorUf(string sigla)
-        {
-            if (sigla  == null)
-            {
-                return CustomResponse("A sigla da cidade é obrigatória");
-            }
-            var cidades = await _cidadeService.BuscarCidadePorEstado(sigla.ToUpper());
-            return Ok(cidades);
-        }
-
         [HttpPost]
         [ProducesResponseType(typeof(Cliente), 200)]
         [ProducesResponseType(typeof(ResponseResult), 400)]

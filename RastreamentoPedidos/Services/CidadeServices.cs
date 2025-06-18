@@ -1,5 +1,6 @@
 ﻿using RastreamentoPedido.Core.Service;
 using RastreamentoPedido.Core.ViewModels.Cidade;
+using RastreamentoPedido.Core.ViewModels.Cidade.ViaCep;
 using System.Text.Json;
 
 namespace RastreamentoPedidos.API.Services
@@ -82,6 +83,73 @@ namespace RastreamentoPedidos.API.Services
                 }
             }
                 return cidades;                    
+        }
+
+        public async Task<ViaCepViewModel> BuscarEnderecoViaCep(string cep)
+        {
+            ViaCepViewModel endereco = new ViaCepViewModel();
+            var url = $"https://viacep.com.br/ws/{cep}/json/";
+            var resposta = await _httpClient.GetAsync(url);
+
+            if (resposta.IsSuccessStatusCode)
+            {
+                var JSON = await resposta.Content.ReadAsStringAsync();
+                var enderecoDeserializado = JsonSerializer.Deserialize<ViaCepViewModel>(JSON, new JsonSerializerOptions 
+                { 
+                    PropertyNameCaseInsensitive = true 
+                });
+                
+                endereco = new ViaCepViewModel
+                {
+                    Cep = enderecoDeserializado?.Cep ?? string.Empty, 
+                    Logradouro = enderecoDeserializado?.Logradouro ?? string.Empty,
+                    Complemento = enderecoDeserializado?.Complemento ?? string.Empty,
+                    Unidade = endereco?.Unidade ?? string.Empty,
+                    Bairro = enderecoDeserializado?.Bairro ?? string.Empty,
+                    Localidade = enderecoDeserializado?.Localidade ?? string.Empty,
+                    Uf = enderecoDeserializado?.Uf ?? string.Empty,
+                    Ibge = enderecoDeserializado?.Ibge ?? string.Empty,
+                    Gia = enderecoDeserializado?.Gia ?? string.Empty,
+                    Ddd = enderecoDeserializado?.Ddd ?? string.Empty,
+                    Siafi = enderecoDeserializado?.Siafi ?? string.Empty
+                };
+            }
+            return endereco;
+        }
+
+        public async Task<IList<UFViewModel>> BuscarTodosEstados()
+        {
+            IList<UFViewModel> estados = new List<UFViewModel>();
+
+            var url = "https://servicodados.ibge.gov.br/api/v1/localidades/estados";
+
+            var resposta = await _httpClient.GetAsync(url);
+
+            if (resposta.IsSuccessStatusCode)
+            {
+                var JSON = await resposta.Content.ReadAsStringAsync();
+                var estadosDeserializados = JsonSerializer.Deserialize<List<UFViewModel>>(JSON, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                foreach (var item in estadosDeserializados)
+                {
+                    estados.Add(new UFViewModel
+                    {
+                        Id = item.Id,
+                        Sigla = item.Sigla,
+                        Nome = item.Nome,
+                        Regiao = new RegiaoViewModel
+                        {
+                            Id = item.Regiao.Id,
+                            Nome = item.Regiao.Nome,
+                            Sigla = item.Regiao.Sigla
+                        }
+                    });
+                }
+            }
+            return estados;
         }
     }
 }
