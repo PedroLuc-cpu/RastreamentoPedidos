@@ -66,7 +66,7 @@ namespace RastreamentoPedidos.API.Configuration
             info.Title = $"Rastreamente De Pedidos API";
             if (!string.IsNullOrEmpty(ambiente))
             {
-                info.Title = $"Rastreamente De Pedidos HelpDesk API - {ambiente}";
+                info.Title = $"Rastreamente De Pedidos API - {ambiente}";
             }
 
             info.Description = "Api de backend referente ao serviço de Rastreamente De Pedidos";
