@@ -2,14 +2,16 @@
 
 namespace RastreamentoPedido.Core.ViewModels.Cidade
 {
-    public class MicrorRegiaoViewModel
+    public class MesorRegiaoViewModel
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
+        
         [JsonPropertyName("nome")]
         public string Nome { get; set; } = string.Empty;
-        [JsonPropertyName("mesorregiao")]
-        public MesorRegiaoViewModel MesorRegiao { get; set; } = new MesorRegiaoViewModel();
+        
+        [JsonPropertyName("UF")]
+        public UFViewModel UF { get; set; } = new UFViewModel();       
 
     }
 }
