@@ -41,7 +41,7 @@ namespace RastreamentoPedidos.API.Configuration
 
             services.AddJwtConfiguration();
 
-            CreateRoles(services.BuildServiceProvider()).Wait();
+            //CreateRoles(services.BuildServiceProvider()).Wait();
 
             return services;
 
@@ -54,7 +54,8 @@ namespace RastreamentoPedidos.API.Configuration
             return app;
         }
 
-        private static async Task CreateRoles(IServiceProvider serviceProvider)
+        // voltar para privando quando for para produção
+        public static async Task CreateRoles(IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             string[] rolesNames = { Roles.Administrador, Roles.Usuario, Roles.Transportadora, Roles.Entregador, Roles.Gerente };

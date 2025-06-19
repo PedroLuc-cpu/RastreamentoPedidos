@@ -47,6 +47,12 @@ if (builder.Environment.EnvironmentName != "Testing")
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await IdentityConfig.CreateRoles(services);
+}
+
 app.UseSwaggerConfiguration(builder.Environment);
 app.UseApiConfiguration();
 
