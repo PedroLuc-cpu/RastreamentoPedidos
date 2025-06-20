@@ -18,11 +18,8 @@ namespace RastreamentoPedido.Core.Model.Encomenda
         Devolvido = 10,
         Extraviado = 11
     }
-    public class StatusEntrega : IAggregateRoot
+    public class StatusEntrega
     {
-        [Key]
-        public int Codigo { get; set; }
-        public string Status { get; set; } = StatusEncomendaEnumToStr(StatusEntregaEnum.AguardandoPagamento);
         public static string StatusEncomendaEnumToStr(StatusEntregaEnum value)
         {
             switch (value)

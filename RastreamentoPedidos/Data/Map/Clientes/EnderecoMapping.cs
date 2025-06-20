@@ -9,9 +9,9 @@ namespace RastreamentoPedidos.Data.Map.Clientes
     {
         public void Configure(EntityTypeBuilder<Endereco> builder)
         {
-            builder.ToTable("endereco").HasKey(x => x.IdEnderecoCliente);
+            builder.ToTable("endereco").HasKey(x => x.Id);
 
-            builder.Property(x => x.IdEnderecoCliente).UseSerialColumn().HasColumnName("idEnderecoCliente");
+            builder.Property(x => x.Id).UseSerialColumn().HasColumnName("idEnderecoCliente");
 
             builder.Property(x => x.Bairro)
                 .HasColumnName("bairro")

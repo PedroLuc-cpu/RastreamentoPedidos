@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RastreamentoPedido.Core.Model.Encomenda;
 
-namespace RastreamentoPedidos.API.Data.Map.Entrega
+namespace RastreamentoPedidos.API.Data.Map.Encomenda
 {
     public class RotaMapping : IEntityTypeConfiguration<Rota>
     {
@@ -27,8 +27,7 @@ namespace RastreamentoPedidos.API.Data.Map.Entrega
             builder.HasMany(x => x.PontosParada)
                 .WithOne()
                 .HasForeignKey(x => x.IdRota)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_Rota_PontoParada");
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

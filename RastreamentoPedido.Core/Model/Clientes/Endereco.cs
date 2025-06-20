@@ -4,7 +4,7 @@ namespace RastreamentoPedido.Core.Model.Clientes
 {
     public class Endereco : IAggregateRoot
     {
-        public int IdEnderecoCliente { get; set; }
+        public int Id { get; set; }
         public TpLogradouro TpLogradouro { get; set; } = new TpLogradouro();
         public int IdTpLogradouro { get; set; }
         public string Complemento { get; set; } = string.Empty;

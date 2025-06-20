@@ -54,8 +54,6 @@ namespace RastreamentoPedidos.API.Data.Map.Entrega
             builder.HasOne<Encomendas>()
                 .WithMany(e => e.EncomendaAuditorias)
                 .HasForeignKey(e => e.IdEncomenda)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_EncomendaAuditoria_Encomenda");
-        }
+                .OnDelete(DeleteBehavior.Cascade);        }
     }
 }

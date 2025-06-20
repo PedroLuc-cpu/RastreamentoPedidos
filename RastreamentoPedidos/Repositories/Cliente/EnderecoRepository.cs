@@ -20,14 +20,14 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
         {
             IList<Endereco> enderecos = new List<Endereco>();
             enderecos.Clear();
-            var result = await _context.Enderecos.Where(e => e.IdEnderecoCliente == idCliente).ToListAsync();
+            var result = await _context.Enderecos.Where(e => e.Id == idCliente).ToListAsync();
             foreach (var item in result)
             {
                 Endereco endereco = new Endereco();
                 endereco.Bairro = item.Bairro;
                 endereco.Complemento = item.Complemento;
                 endereco.IdCliente = item.IdCliente;
-                endereco.IdEnderecoCliente = item.IdEnderecoCliente;
+                endereco.Id = item.Id;
                 endereco.CEP = item.CEP;
                 endereco.Numero = item.Numero;
                 endereco.Rua = item.Rua;

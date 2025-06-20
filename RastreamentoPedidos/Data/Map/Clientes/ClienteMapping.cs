@@ -40,7 +40,7 @@ namespace RastreamentoPedidos.Data.Map.Clientes
                             .HasForeignKey<EstadoCivil>(ec => ec.Id)
                             .OnDelete(DeleteBehavior.Cascade);
 
-            builder.ToTable("Clientes");
+                    builder.ToTable("Clientes");
               }
        }
 }

@@ -27,8 +27,7 @@ namespace RastreamentoPedidos.API.Data.Map.Entrega
             builder.HasOne(x => x.Rota)
                 .WithMany(r => r.PontosParada)
                 .HasForeignKey(x => x.IdRota)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_PontoParada_Rota");
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

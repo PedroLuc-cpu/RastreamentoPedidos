@@ -74,24 +74,23 @@ namespace RastreamentoPedidos.API.Configuration
         public static async Task CreateStatusOrder(IServiceProvider serviceProvider)
         {
             var context = serviceProvider.GetRequiredService<RastreamentoPedidosContext>();
-            if (!context.StatusEntregas.Any())
+            if (!context.StatusEncomendas.Any())
             {
-                var statusList = new List<StatusEntrega>
+                var statusList = new List<StatusEncomenda>
                 {
-                    new StatusEntrega { Codigo = 0, Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.AguardandoPagamento) },
-                    new StatusEntrega { Codigo = 1, Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.PagamentoConfirmado) },
-                    new StatusEntrega { Codigo = 2, Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.ProcessandoPedido) },
-                    new StatusEntrega { Codigo = 3, Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.EnviadoParaTransportadora) },
-                    new StatusEntrega { Codigo = 4, Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.EmTransito) },
-                    new StatusEntrega { Codigo = 5, Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.SaiuParaEntrega) },
-                    new StatusEntrega { Codigo = 6, Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.Entregue) },
-                    new StatusEntrega { Codigo = 7, Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.TentativaDeEntrega) },
-                    new StatusEntrega { Codigo = 8, Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.AguardandoRetirada) },
-                    new StatusEntrega { Codigo = 9, Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.Cancelado) },
-                    new StatusEntrega { Codigo = 10, Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.Devolvido) },
-                    new StatusEntrega { Codigo = 11, Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.Extraviado) }
+                    new StatusEncomenda { Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.AguardandoPagamento) },
+                    new StatusEncomenda { Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.PagamentoConfirmado) },
+                    new StatusEncomenda { Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.ProcessandoPedido) },
+                    new StatusEncomenda { Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.EnviadoParaTransportadora) },
+                    new     StatusEncomenda { Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.EmTransito) },
+                    new StatusEncomenda { Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.SaiuParaEntrega) },
+                    new StatusEncomenda { Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.TentativaDeEntrega) },
+                    new StatusEncomenda { Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.AguardandoRetirada) },
+                    new StatusEncomenda { Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.Cancelado) },
+                    new StatusEncomenda { Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.Devolvido) },
+                    new StatusEncomenda { Status = StatusEntrega.StatusEncomendaEnumToStr(StatusEntregaEnum.Extraviado) }
                 };
-                context.StatusEntregas.AddRange(statusList);
+                context.StatusEncomendas.AddRange(statusList);
                 await context.SaveChangesAsync();
             }
         }

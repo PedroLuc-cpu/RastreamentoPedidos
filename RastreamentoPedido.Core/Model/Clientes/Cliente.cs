@@ -13,7 +13,7 @@ namespace RastreamentoPedido.Core.Model.Clientes
         public EstadoCivil EstadoCivil { get; set; } = new EstadoCivil();
         public bool Ativo { get; set; } = true;
         public bool Sexo { get; set; } = true; // true = Masculino, false = Feminino
-        public DateTime DataNascimento { get; set; } = DateTime.MinValue;
+        public DateTime DataNascimento { get; set; }
         /// <summary>
         /// CPF e CNPJ do cliente
         /// </summary>
