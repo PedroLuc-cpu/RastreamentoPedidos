@@ -11,22 +11,25 @@ namespace RastreamentoPedidos.API.Data.Map.Encomenda
         public void Configure(EntityTypeBuilder<Rota> builder)
         {
             builder.ToTable("rotas");
+
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id)
                 .UseSerialColumn()
-                .HasColumnName("idRota");
-            builder.Property(x => x.Descricao)
-                .HasColumnName("descricao")
-                .HasColumnType("varchar")
-                .IsRequired();
+                .HasColumnName("id_rota");
 
             builder.Property(x => x.Nome)
                 .HasColumnName("nome")
                 .HasColumnType("varchar(100)")
                 .IsRequired();
+
+            builder.Property(x => x.Descricao)
+                .HasColumnName("descricao")
+                .HasColumnType("varchar(255)")
+                .IsRequired();
+
             builder.HasMany(x => x.PontosParada)
-                .WithOne()
-                .HasForeignKey(x => x.IdRota)
+                .WithOne(x => x.Rota)
+                .HasForeignKey(x => x.RotaId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

@@ -7,17 +7,16 @@ namespace RastreamentoPedido.Core.Model.Encomenda
     {
         public int Id { get; set; }
         public string CodigoRastreamento { get; set; } = string.Empty;
-        public int IdCliente { get; set; }
-        public Cliente Cliente { get; set; } = new Cliente();
+        public int ClienteId { get; set; }
+        public Cliente Cliente { get; set; } = new();
         public DateTime DataEncomenda { get; set; }
         public string Descricao { get; set; } = string.Empty;
-        public int IdStatusEncomenda { get; set; }
-        public StatusEncomenda StatusEncomenda { get; set; } = new StatusEncomenda();
+        public int StatusEncomendaId { get; set; }
+        public StatusEncomenda StatusEncomenda { get; set; } = new();
         public DateTime DataCriacao { get; set; }
         public DateTime DataPrevisao { get; set; }
-        public int IdRota { get; set; }
-        public Rota Rota { get; set; } = new Rota();
-        public int IdEncomendaAuditoria { get; set; }
-        public ICollection<EncomendaAuditoria> EncomendaAuditorias { get; set; } = new List<EncomendaAuditoria>();
+        public int RotaId { get; set; }
+        public Rota Rota { get; set; } = new();
+        public ICollection<EncomendaAuditoria> Auditorias { get; set; } = new List<EncomendaAuditoria>();
     }
 }

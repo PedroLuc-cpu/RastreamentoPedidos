@@ -9,51 +9,64 @@ namespace RastreamentoPedidos.API.Data.Map.Entrega
         public void Configure(EntityTypeBuilder<EncomendaAuditoria> builder)
         {
             builder.ToTable("encomenda_auditoria");
+
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id)
                 .UseSerialColumn()
-                .HasColumnName("idEncomendaAuditoria");
-            builder.Property(x => x.IdEncomenda)
-                .HasColumnName("idEncomenda")
+                .HasColumnName("id_encomenda_auditoria");
+
+            builder.Property(x => x.EncomendaId)
+                .HasColumnName("id_encomenda")
                 .IsRequired();
+
             builder.Property(x => x.DataHoraEvento)
-                .HasColumnName("dataHoraEvento")
+                .HasColumnName("data_hora_evento")
                 .HasColumnType("timestamp")
                 .IsRequired();
+
             builder.Property(x => x.LocalOrigem)
-                .HasColumnName("localOrigem")
+                .HasColumnName("local_origem")
                 .HasColumnType("varchar(255)")
                 .IsRequired();
+
             builder.Property(x => x.LocalDestino)
-                .HasColumnName("localDestino")
+                .HasColumnName("local_destino")
                 .HasColumnType("varchar(255)")
                 .IsRequired();
-            builder.Property(x => x.StatusEntregas)
-                .HasColumnName("statusEntregas")
+
+            builder.Property(x => x.StatusEntrega)
+                .HasColumnName("status_entregas")
                 .HasColumnType("varchar(50)")
                 .IsRequired();
+
             builder.Property(x => x.StatusAtual)
-                .HasColumnName("statusAtual")
+                .HasColumnName("status_atual")
                 .HasColumnType("varchar(50)")
                 .IsRequired();
+
             builder.Property(x => x.DescricaoEvento)
-                .HasColumnName("descricaoEvento")
+                .HasColumnName("descricao_evento")
                 .HasColumnType("text")
                 .IsRequired();
+
             builder.Property(x => x.Responsavel)
                 .HasColumnName("responsavel")
                 .HasColumnType("varchar(100)")
                 .IsRequired();
+
             builder.Property(x => x.Observacoes)
                 .HasColumnName("observacoes")
                 .HasColumnType("text");
+
             builder.Property(x => x.DataRegistro)
-                .HasColumnName("dataRegistro")
+                .HasColumnName("data_registro")
                 .HasColumnType("timestamp")
                 .IsRequired();
+
             builder.HasOne<Encomendas>()
-                .WithMany(e => e.EncomendaAuditorias)
-                .HasForeignKey(e => e.IdEncomenda)
-                .OnDelete(DeleteBehavior.Cascade);        }
+                .WithMany(e => e.Auditorias)
+                .HasForeignKey(e => e.EncomendaId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

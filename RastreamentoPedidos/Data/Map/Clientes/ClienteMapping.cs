@@ -33,7 +33,7 @@ namespace RastreamentoPedidos.Data.Map.Clientes
 
                      builder.HasMany(c => c.Encomendas)
                             .WithOne(e => e.Cliente)
-                            .HasForeignKey(e => e.IdCliente)
+                            .HasForeignKey(e => e.ClienteId)
                             .OnDelete(DeleteBehavior.Cascade);
                     builder.HasOne(c => c.EstadoCivil)
                             .WithOne()

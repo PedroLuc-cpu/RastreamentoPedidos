@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RastreamentoPedido.Core.Model.Encomenda;
 
-namespace RastreamentoPedidos.API.Data.Map.Entrega
+namespace RastreamentoPedidos.API.Data.Map.Encomenda
 {
     public class EncomendaMapping : IEntityTypeConfiguration<Encomendas>
     {
@@ -11,10 +11,9 @@ namespace RastreamentoPedidos.API.Data.Map.Entrega
             builder.ToTable("encomendas");
 
             builder.HasKey(x => x.Id);
-
             builder.Property(x => x.Id)
                 .UseSerialColumn()
-                .HasColumnName("idEncomenda");
+                .HasColumnName("id_encomenda");
 
             builder.Property(x => x.CodigoRastreamento)
                 .HasColumnName("codigo_rastreamento")
@@ -23,11 +22,11 @@ namespace RastreamentoPedidos.API.Data.Map.Entrega
 
             builder.Property(x => x.Descricao)
                 .HasColumnName("descricao")
-                .HasColumnType("varchar")
+                .HasColumnType("varchar(255)")
                 .IsRequired();
 
             builder.Property(x => x.DataEncomenda)
-                .HasColumnName("data_pedido")
+                .HasColumnName("data_encomenda")
                 .HasColumnType("timestamp")
                 .IsRequired();
 
@@ -41,39 +40,36 @@ namespace RastreamentoPedidos.API.Data.Map.Entrega
                 .HasColumnType("timestamp")
                 .IsRequired();
 
-            builder.Property(x => x.IdCliente)
+            builder.Property(x => x.ClienteId)
                 .HasColumnName("id_cliente")
                 .IsRequired();
+
             builder.HasOne(x => x.Cliente)
                 .WithMany()
-                .HasForeignKey(x => x.IdCliente)
+                .HasForeignKey(x => x.ClienteId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Property(x => x.IdStatusEncomenda)
+            builder.Property(x => x.StatusEncomendaId)
                 .HasColumnName("id_status_encomenda")
-                .HasColumnType("varchar(50)")
                 .IsRequired();
 
-            //builder.HasOne(x => x.StatusEncomenda)
-            //    .WithMany(x => x.Encomendas)
-            //    .HasForeignKey(x => x.IdStatusEncomenda)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(x => x.StatusEncomenda)
+                .WithMany(x => x.Encomendas)
+                .HasForeignKey(x => x.StatusEncomendaId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Property(x => x.IdRota)
+            builder.Property(x => x.RotaId)
                 .HasColumnName("id_rota")
                 .IsRequired();
 
             builder.HasOne(x => x.Rota)
                 .WithMany()
-                .HasForeignKey(x => x.IdRota)
+                .HasForeignKey(x => x.RotaId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Property(x => x.IdEncomendaAuditoria)
-                .HasColumnName("id_encomendaauditorias")
-                .IsRequired();
-            builder.HasMany(x => x.EncomendaAuditorias)
+            builder.HasMany(x => x.Auditorias)
                 .WithOne()
-                .HasForeignKey(x => x.IdEncomenda)
+                .HasForeignKey(x => x.EncomendaId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasIndex(x => x.CodigoRastreamento)

@@ -4,8 +4,8 @@ namespace RastreamentoPedido.Core.Model.Encomenda
 {
     public class StatusEncomenda : IAggregateRoot
     {
-        public int Codigo { get; set; }
-        public ICollection<Encomendas> Encomendas { get; set; } = new List<Encomendas>();
+        public int Id { get; set; }
         public string Status { get; set; } = string.Empty;
+        public ICollection<Encomendas> Encomendas { get; set; } = new List<Encomendas>();
     }
 }
