@@ -25,6 +25,9 @@ namespace RastreamentoPedidos.Data
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<EstadoCivil> EstadoCivil { get; set; }
         public DbSet<Encomendas>? Encomendas { get; set; }
+        public DbSet<EncomendaAuditoria>? EncomendaAuditorias { get; set; }
+        public DbSet<Rota>? Rotas { get; set; }
+        public DbSet<PontoParada>? PontosParada { get; set; }
         public DbSet<StatusEntrega>? StatusEntregas { get; set; }
         public DbSet<Endereco>? Enderecos { get; set; }
         public DbSet<Cidade> Cidades { get; set; }
