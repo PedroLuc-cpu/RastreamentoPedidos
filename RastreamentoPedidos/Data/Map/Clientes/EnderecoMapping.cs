@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RastreamentoPedido.Core.Model.Clientes;
-using RastreamentoPedidos.Model.Encomenda;
+using RastreamentoPedido.Core.Model.Encomenda;
 
 namespace RastreamentoPedidos.Data.Map.Clientes
 {

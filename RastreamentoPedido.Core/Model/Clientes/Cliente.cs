@@ -1,5 +1,5 @@
 ﻿using RastreamentoPedido.Core.DomainObjects;
-using RastreamentoPedidos.Model.Encomenda;
+using RastreamentoPedido.Core.Model.Encomenda;
 
 namespace RastreamentoPedido.Core.Model.Clientes
 {

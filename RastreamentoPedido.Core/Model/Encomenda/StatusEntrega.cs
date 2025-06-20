@@ -1,7 +1,7 @@
 ﻿using RastreamentoPedido.Core.DomainObjects;
-using RastreamentoPedidos.Model.Encomenda;
+using System.ComponentModel.DataAnnotations;
 
-namespace RastreamentoPedido.Core.Model
+namespace RastreamentoPedido.Core.Model.Encomenda
 {
     public enum StatusEntregaEnum
     {
@@ -20,11 +20,9 @@ namespace RastreamentoPedido.Core.Model
     }
     public class StatusEntrega : IAggregateRoot
     {
+        [Key]
         public int Codigo { get; set; }
         public string Status { get; set; } = StatusEncomendaEnumToStr(StatusEntregaEnum.AguardandoPagamento);
-        public string Decricao { get; set; } = string.Empty;
-        public DateTime Timestamp { get; set; } = DateTime.Now;
-        public Encomendas Encomenda { get; set; } = new Encomendas();
         public static string StatusEncomendaEnumToStr(StatusEntregaEnum value)
         {
             switch (value)

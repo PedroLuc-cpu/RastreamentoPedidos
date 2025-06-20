@@ -1,6 +1,5 @@
-﻿using RastreamentoPedido.Core.Model;
+﻿using RastreamentoPedido.Core.Model.Encomenda;
 using RastreamentoPedido.Core.Repositories;
-using RastreamentoPedidos.Model.Encomenda;
 
 namespace RastreamentoPedidos.Repositories
 {

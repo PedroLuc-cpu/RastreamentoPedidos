@@ -1,37 +1,6 @@
+using RastreamentoPedido.Core.Helpers;
 using RastreamentoPedidos.API.Configuration;
-//using System.Runtime.InteropServices;
 
-//namespace StartapRastreamentoPedidos
-//{
-//    public class Program
-//    {
-//        public static void Main(string[] args)
-//        {
-//            CreateHostBuilder(args).Build().Run();
-//        }
-
-//        public static IHostBuilder CreateHostBuilder(string[] args) =>
-//                  Host.CreateDefaultBuilder(args)
-//                      .ConfigureLogging((context, logging) =>
-//                      {
-//                          logging.ClearProviders();
-//                          logging.AddConsole();
-//                          logging.AddDebug();
-//                          if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-//                          {
-//                              logging.AddEventLog();
-//                          }
-//                      })
-//                      .ConfigureWebHostDefaults(webBuilder =>
-//                      {
-//                          webBuilder.UseStartup<RastreamentoPedidos>()
-//                          .UseKestrel(options =>
-//                          {
-//                              options.Limits.MaxRequestBodySize = 1073741824;
-//                          });
-//                      });
-//    }
-//}
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.SetDefaultConfiguration(builder.Environment);
 builder.Services.AddIdentityConfiguration(builder.Configuration);
@@ -53,8 +22,16 @@ using (var scope = app.Services.CreateScope())
     await IdentityConfig.CreateRoles(services);
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await IdentityConfig.CreateStatusOrder(services);
+}
+
 app.UseSwaggerConfiguration(builder.Environment);
 app.UseApiConfiguration();
+
+Console.WriteLine(GerarCodigoRastreio.GerarCodigoDeRastreio("Correios", "BR"));
 
 app.Run();
 
