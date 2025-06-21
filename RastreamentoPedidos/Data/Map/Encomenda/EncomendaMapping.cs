@@ -42,6 +42,7 @@ namespace RastreamentoPedidos.API.Data.Map.Encomenda
 
             builder.Property(x => x.ClienteId)
                 .HasColumnName("id_cliente")
+                .HasColumnType("INTEGER")
                 .IsRequired();
 
             builder.HasOne(x => x.Cliente)
@@ -51,15 +52,18 @@ namespace RastreamentoPedidos.API.Data.Map.Encomenda
 
             builder.Property(x => x.StatusEncomendaId)
                 .HasColumnName("id_status_encomenda")
+                .HasColumnType("INTEGER")
                 .IsRequired();
 
             builder.HasOne(x => x.StatusEncomenda)
                 .WithMany(x => x.Encomendas)
                 .HasForeignKey(x => x.StatusEncomendaId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasConstraintName("FK_encomendas_status_entregas_id")
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(x => x.RotaId)
                 .HasColumnName("id_rota")
+                .HasColumnType("INTEGER")
                 .IsRequired();
 
             builder.HasOne(x => x.Rota)

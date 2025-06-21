@@ -5,7 +5,7 @@
 namespace RastreamentoPedidos.API.Migrations
 {
     /// <inheritdoc />
-    public partial class AtualizacaoTabelasEColunas : Migration
+    public partial class AdicionandoColumunasTabelaEncomenda : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,27 +15,27 @@ namespace RastreamentoPedidos.API.Migrations
                 table: "encomenda_auditoria");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_encomendas_status_entregas_idStatusEncomenda",
+                name: "FK_encomendas_status_entregas_StatusEncomendaCodigo",
                 table: "encomendas");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_pontos_parada_rotas_IdRota",
                 table: "pontos_parada");
 
-            migrationBuilder.DropUniqueConstraint(
-                name: "AK_status_entregas_TempId",
-                table: "status_entregas");
-
             migrationBuilder.DropIndex(
-                name: "IX_encomendas_idStatusEncomenda",
+                name: "IX_encomendas_StatusEncomendaCodigo",
                 table: "encomendas");
 
             migrationBuilder.DropColumn(
-                name: "TempId",
-                table: "status_entregas");
+                name: "IdStatusEncomenda",
+                table: "encomendas");
 
             migrationBuilder.DropColumn(
-                name: "idStatusEncomenda",
+                name: "StatusEncomendaCodigo",
+                table: "encomendas");
+
+            migrationBuilder.DropColumn(
+                name: "id_encomendaauditorias",
                 table: "encomendas");
 
             migrationBuilder.RenameColumn(
@@ -67,11 +67,6 @@ namespace RastreamentoPedidos.API.Migrations
                 name: "idEncomenda",
                 table: "encomendas",
                 newName: "id_encomenda");
-
-            migrationBuilder.RenameColumn(
-                name: "id_encomendaauditorias",
-                table: "encomendas",
-                newName: "id_status_encomenda");
 
             migrationBuilder.RenameColumn(
                 name: "statusAtual",
@@ -124,12 +119,36 @@ namespace RastreamentoPedidos.API.Migrations
                 newName: "IX_encomenda_auditoria_id_encomenda");
 
             migrationBuilder.AlterColumn<string>(
+                name: "status",
+                table: "status_entregas",
+                type: "varchar",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "varchar(100)");
+
+            migrationBuilder.AlterColumn<string>(
                 name: "descricao",
                 table: "rotas",
                 type: "varchar(255)",
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "varchar");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "id_rota",
+                table: "encomendas",
+                type: "INTEGER",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "integer");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "id_cliente",
+                table: "encomendas",
+                type: "INTEGER",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "integer");
 
             migrationBuilder.AlterColumn<string>(
                 name: "descricao",
@@ -144,6 +163,13 @@ namespace RastreamentoPedidos.API.Migrations
                 table: "encomendas",
                 type: "integer",
                 nullable: true);
+
+            migrationBuilder.AddColumn<int>(
+                name: "id_status_encomenda",
+                table: "encomendas",
+                type: "INTEGER",
+                nullable: false,
+                defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
                 name: "EncomendaId1",
@@ -191,12 +217,12 @@ namespace RastreamentoPedidos.API.Migrations
                 principalColumn: "id_rota");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_encomendas_status_entregas_id_status_encomenda",
+                name: "FK_encomendas_status_entregas_id",
                 table: "encomendas",
                 column: "id_status_encomenda",
                 principalTable: "status_entregas",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_pontos_parada_rotas_id_rota",
@@ -223,7 +249,7 @@ namespace RastreamentoPedidos.API.Migrations
                 table: "encomendas");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_encomendas_status_entregas_id_status_encomenda",
+                name: "FK_encomendas_status_entregas_id",
                 table: "encomendas");
 
             migrationBuilder.DropForeignKey(
@@ -244,6 +270,10 @@ namespace RastreamentoPedidos.API.Migrations
 
             migrationBuilder.DropColumn(
                 name: "RotaId1",
+                table: "encomendas");
+
+            migrationBuilder.DropColumn(
+                name: "id_status_encomenda",
                 table: "encomendas");
 
             migrationBuilder.DropColumn(
@@ -279,11 +309,6 @@ namespace RastreamentoPedidos.API.Migrations
                 name: "id_encomenda",
                 table: "encomendas",
                 newName: "idEncomenda");
-
-            migrationBuilder.RenameColumn(
-                name: "id_status_encomenda",
-                table: "encomendas",
-                newName: "id_encomendaauditorias");
 
             migrationBuilder.RenameColumn(
                 name: "status_atual",
@@ -335,12 +360,13 @@ namespace RastreamentoPedidos.API.Migrations
                 table: "encomenda_auditoria",
                 newName: "IX_encomenda_auditoria_idEncomenda");
 
-            migrationBuilder.AddColumn<string>(
-                name: "TempId",
+            migrationBuilder.AlterColumn<string>(
+                name: "status",
                 table: "status_entregas",
-                type: "text",
+                type: "varchar(100)",
                 nullable: false,
-                defaultValue: "");
+                oldClrType: typeof(string),
+                oldType: "varchar");
 
             migrationBuilder.AlterColumn<string>(
                 name: "descricao",
@@ -350,6 +376,22 @@ namespace RastreamentoPedidos.API.Migrations
                 oldClrType: typeof(string),
                 oldType: "varchar(255)");
 
+            migrationBuilder.AlterColumn<int>(
+                name: "id_rota",
+                table: "encomendas",
+                type: "integer",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "INTEGER");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "id_cliente",
+                table: "encomendas",
+                type: "integer",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "INTEGER");
+
             migrationBuilder.AlterColumn<string>(
                 name: "descricao",
                 table: "encomendas",
@@ -358,22 +400,31 @@ namespace RastreamentoPedidos.API.Migrations
                 oldClrType: typeof(string),
                 oldType: "varchar(255)");
 
-            migrationBuilder.AddColumn<string>(
-                name: "idStatusEncomenda",
+            migrationBuilder.AddColumn<int>(
+                name: "IdStatusEncomenda",
                 table: "encomendas",
-                type: "varchar(50)",
+                type: "integer",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: 0);
 
-            migrationBuilder.AddUniqueConstraint(
-                name: "AK_status_entregas_TempId",
-                table: "status_entregas",
-                column: "TempId");
+            migrationBuilder.AddColumn<int>(
+                name: "StatusEncomendaCodigo",
+                table: "encomendas",
+                type: "integer",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<int>(
+                name: "id_encomendaauditorias",
+                table: "encomendas",
+                type: "integer",
+                nullable: false,
+                defaultValue: 0);
 
             migrationBuilder.CreateIndex(
-                name: "IX_encomendas_idStatusEncomenda",
+                name: "IX_encomendas_StatusEncomendaCodigo",
                 table: "encomendas",
-                column: "idStatusEncomenda");
+                column: "StatusEncomendaCodigo");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_encomenda_auditoria_encomendas_idEncomenda",
@@ -384,12 +435,12 @@ namespace RastreamentoPedidos.API.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_encomendas_status_entregas_idStatusEncomenda",
+                name: "FK_encomendas_status_entregas_StatusEncomendaCodigo",
                 table: "encomendas",
-                column: "idStatusEncomenda",
+                column: "StatusEncomendaCodigo",
                 principalTable: "status_entregas",
-                principalColumn: "TempId",
-                onDelete: ReferentialAction.Restrict);
+                principalColumn: "id",
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_pontos_parada_rotas_IdRota",

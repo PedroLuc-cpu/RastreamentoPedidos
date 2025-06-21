@@ -458,7 +458,7 @@ namespace RastreamentoPedidos.API.Migrations
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ClienteId")
-                        .HasColumnType("integer")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("id_cliente");
 
                     b.Property<string>("CodigoRastreamento")
@@ -484,14 +484,14 @@ namespace RastreamentoPedidos.API.Migrations
                         .HasColumnName("descricao");
 
                     b.Property<int>("RotaId")
-                        .HasColumnType("integer")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("id_rota");
 
                     b.Property<int?>("RotaId1")
                         .HasColumnType("integer");
 
                     b.Property<int>("StatusEncomendaId")
-                        .HasColumnType("integer")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("id_status_encomenda");
 
                     b.HasKey("Id");
@@ -811,8 +811,9 @@ namespace RastreamentoPedidos.API.Migrations
                     b.HasOne("RastreamentoPedido.Core.Model.Encomenda.StatusEncomenda", "StatusEncomenda")
                         .WithMany("Encomendas")
                         .HasForeignKey("StatusEncomendaId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_encomendas_status_entregas_id");
 
                     b.Navigation("Cliente");
 

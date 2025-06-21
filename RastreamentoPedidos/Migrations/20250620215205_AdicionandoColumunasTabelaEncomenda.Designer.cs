@@ -12,7 +12,7 @@ using RastreamentoPedidos.Data;
 namespace RastreamentoPedidos.API.Migrations
 {
     [DbContext(typeof(RastreamentoPedidosContext))]
-    [Migration("20250620203137_AdicionandoColumunasTabelaEncomenda")]
+    [Migration("20250620215205_AdicionandoColumunasTabelaEncomenda")]
     partial class AdicionandoColumunasTabelaEncomenda
     {
         /// <inheritdoc />
@@ -388,36 +388,39 @@ namespace RastreamentoPedidos.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("idEncomendaAuditoria");
+                        .HasColumnName("id_encomenda_auditoria");
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DataHoraEvento")
                         .HasColumnType("timestamp")
-                        .HasColumnName("dataHoraEvento");
+                        .HasColumnName("data_hora_evento");
 
                     b.Property<DateTime>("DataRegistro")
                         .HasColumnType("timestamp")
-                        .HasColumnName("dataRegistro");
+                        .HasColumnName("data_registro");
 
                     b.Property<string>("DescricaoEvento")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("descricaoEvento");
+                        .HasColumnName("descricao_evento");
 
-                    b.Property<int>("IdEncomenda")
+                    b.Property<int>("EncomendaId")
                         .HasColumnType("integer")
-                        .HasColumnName("idEncomenda");
+                        .HasColumnName("id_encomenda");
+
+                    b.Property<int>("EncomendaId1")
+                        .HasColumnType("integer");
 
                     b.Property<string>("LocalDestino")
                         .IsRequired()
                         .HasColumnType("varchar(255)")
-                        .HasColumnName("localDestino");
+                        .HasColumnName("local_destino");
 
                     b.Property<string>("LocalOrigem")
                         .IsRequired()
                         .HasColumnType("varchar(255)")
-                        .HasColumnName("localOrigem");
+                        .HasColumnName("local_origem");
 
                     b.Property<string>("Observacoes")
                         .IsRequired()
@@ -432,16 +435,18 @@ namespace RastreamentoPedidos.API.Migrations
                     b.Property<string>("StatusAtual")
                         .IsRequired()
                         .HasColumnType("varchar(50)")
-                        .HasColumnName("statusAtual");
+                        .HasColumnName("status_atual");
 
-                    b.Property<string>("StatusEntregas")
+                    b.Property<string>("StatusEntrega")
                         .IsRequired()
                         .HasColumnType("varchar(50)")
-                        .HasColumnName("statusEntregas");
+                        .HasColumnName("status_entregas");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdEncomenda");
+                    b.HasIndex("EncomendaId");
+
+                    b.HasIndex("EncomendaId1");
 
                     b.ToTable("encomenda_auditoria", (string)null);
                 });
@@ -451,9 +456,13 @@ namespace RastreamentoPedidos.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("idEncomenda");
+                        .HasColumnName("id_encomenda");
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("id_cliente");
 
                     b.Property<string>("CodigoRastreamento")
                         .IsRequired()
@@ -466,7 +475,7 @@ namespace RastreamentoPedidos.API.Migrations
 
                     b.Property<DateTime>("DataEncomenda")
                         .HasColumnType("timestamp")
-                        .HasColumnName("data_pedido");
+                        .HasColumnName("data_encomenda");
 
                     b.Property<DateTime>("DataPrevisao")
                         .HasColumnType("timestamp")
@@ -474,36 +483,32 @@ namespace RastreamentoPedidos.API.Migrations
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("varchar")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("descricao");
 
-                    b.Property<int>("IdCliente")
-                        .HasColumnType("integer")
-                        .HasColumnName("id_cliente");
-
-                    b.Property<int>("IdEncomendaAuditoria")
-                        .HasColumnType("integer")
-                        .HasColumnName("id_encomendaauditorias");
-
-                    b.Property<int>("IdRota")
-                        .HasColumnType("integer")
+                    b.Property<int>("RotaId")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("id_rota");
 
-                    b.Property<string>("IdStatusEncomenda")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("idStatusEncomenda");
+                    b.Property<int?>("RotaId1")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StatusEncomendaId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("id_status_encomenda");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
 
                     b.HasIndex("CodigoRastreamento")
                         .IsUnique();
 
-                    b.HasIndex("IdCliente");
+                    b.HasIndex("RotaId");
 
-                    b.HasIndex("IdRota");
+                    b.HasIndex("RotaId1");
 
-                    b.HasIndex("IdStatusEncomenda");
+                    b.HasIndex("StatusEncomendaId");
 
                     b.ToTable("encomendas", (string)null);
                 });
@@ -513,12 +518,9 @@ namespace RastreamentoPedidos.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("idPontoParada");
+                        .HasColumnName("id_ponto_parada");
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("IdRota")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Localizacao")
                         .IsRequired()
@@ -534,9 +536,13 @@ namespace RastreamentoPedidos.API.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("ordem");
 
+                    b.Property<int>("RotaId")
+                        .HasColumnType("integer")
+                        .HasColumnName("id_rota");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("IdRota");
+                    b.HasIndex("RotaId");
 
                     b.ToTable("pontos_parada", (string)null);
                 });
@@ -546,13 +552,13 @@ namespace RastreamentoPedidos.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("idRota");
+                        .HasColumnName("id_rota");
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("varchar")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("descricao");
 
                     b.Property<string>("Nome")
@@ -773,31 +779,44 @@ namespace RastreamentoPedidos.API.Migrations
             modelBuilder.Entity("RastreamentoPedido.Core.Model.Encomenda.EncomendaAuditoria", b =>
                 {
                     b.HasOne("RastreamentoPedido.Core.Model.Encomenda.Encomendas", null)
-                        .WithMany("EncomendaAuditorias")
-                        .HasForeignKey("IdEncomenda")
+                        .WithMany("Auditorias")
+                        .HasForeignKey("EncomendaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("RastreamentoPedido.Core.Model.Encomenda.Encomendas", "Encomenda")
+                        .WithMany()
+                        .HasForeignKey("EncomendaId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Encomenda");
                 });
 
             modelBuilder.Entity("RastreamentoPedido.Core.Model.Encomenda.Encomendas", b =>
                 {
                     b.HasOne("RastreamentoPedido.Core.Model.Clientes.Cliente", "Cliente")
                         .WithMany("Encomendas")
-                        .HasForeignKey("IdCliente")
+                        .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RastreamentoPedido.Core.Model.Encomenda.Rota", "Rota")
                         .WithMany()
-                        .HasForeignKey("IdRota")
+                        .HasForeignKey("RotaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("RastreamentoPedido.Core.Model.Encomenda.Rota", null)
+                        .WithMany("Encomendas")
+                        .HasForeignKey("RotaId1");
+
                     b.HasOne("RastreamentoPedido.Core.Model.Encomenda.StatusEncomenda", "StatusEncomenda")
                         .WithMany("Encomendas")
-                        .HasForeignKey("IdStatusEncomenda")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("StatusEncomendaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_encomendas_status_entregas_id");
 
                     b.Navigation("Cliente");
 
@@ -810,7 +829,7 @@ namespace RastreamentoPedidos.API.Migrations
                 {
                     b.HasOne("RastreamentoPedido.Core.Model.Encomenda.Rota", "Rota")
                         .WithMany("PontosParada")
-                        .HasForeignKey("IdRota")
+                        .HasForeignKey("RotaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -831,11 +850,13 @@ namespace RastreamentoPedidos.API.Migrations
 
             modelBuilder.Entity("RastreamentoPedido.Core.Model.Encomenda.Encomendas", b =>
                 {
-                    b.Navigation("EncomendaAuditorias");
+                    b.Navigation("Auditorias");
                 });
 
             modelBuilder.Entity("RastreamentoPedido.Core.Model.Encomenda.Rota", b =>
                 {
+                    b.Navigation("Encomendas");
+
                     b.Navigation("PontosParada");
                 });
 
