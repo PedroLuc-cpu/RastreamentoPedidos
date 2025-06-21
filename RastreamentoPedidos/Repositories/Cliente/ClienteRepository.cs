@@ -1,81 +1,97 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
+using RastreamentoPedido.Core.Data;
 using RastreamentoPedido.Core.Model.Clientes;
+using RastreamentoPedido.Core.Queries.Clientes;
 using RastreamentoPedido.Core.Repositories.Clientes;
-using RastreamentoPedidos.Data;
 
 
 namespace RastreamentoPedidos.Repositories.ClienteRepository
 {
     public class ClienteRepository : IClienteRepository
     {
-        private readonly RastreamentoPedidosContext _context;
+        private readonly IDapperContext _dapperContext;
         private readonly IEnderecoRepository _enderecoRepository;
         private readonly ITelefoneRepository _telefoneRepository;
 
 
-        public ClienteRepository(RastreamentoPedidosContext context, IEnderecoRepository enderecoRepository, ITelefoneRepository telefoneRepository)
+        public ClienteRepository(IDapperContext dapperContext, IEnderecoRepository enderecoRepository, ITelefoneRepository telefoneRepository)
         {
-            _context = context;
+            
+            _dapperContext = dapperContext;
             _enderecoRepository = enderecoRepository;
             _telefoneRepository = telefoneRepository;
         }
 
         public async Task<Cliente> Adicionar(Cliente cliente)
         {
-            var clientes = new Cliente
+            Cliente clienteCadastrado = new Cliente();
+
+            using (var connection = _dapperContext.ConnectionCreate())
             {
-                Email = cliente.Email,
-                Nome = cliente.Nome,
-                Documento = cliente.Documento,
-                Enderecos = cliente.Enderecos,
-                Telefones = cliente.Telefones
-            };
+                var paramSQL = ClienteQueries.AdicionarCliente(cliente);
+                var id = await connection.ExecuteScalarAsync<int>(paramSQL.Sql, paramSQL.Parametros);
+                if (id != 0)
+                {
+                    clienteCadastrado.IdCliente = id;
+                    clienteCadastrado.Documento = cliente.Documento;
+                    clienteCadastrado.Email = cliente.Email;
+                    clienteCadastrado.Nome = cliente.Nome;
+                    clienteCadastrado.Ativo = cliente.Ativo;
+                    clienteCadastrado.Sexo = cliente.Sexo;
+                    clienteCadastrado.DataNascimento = cliente.DataNascimento;
+                    clienteCadastrado.EstadoCivil = cliente.EstadoCivil;
+                    //clienteCadastrado.Enderecos = await _enderecoRepository.CarregarPorIdCliente(clienteCadastrado.IdCliente);
+                    //clienteCadastrado.Telefones = await _telefoneRepository.CarregarPorIdCliente(clienteCadastrado.IdCliente);
 
-            if (clientes == null) throw new ArgumentNullException(nameof(cliente));
-
-            var ClienteExistente = await _context.Clientes
-                .AsNoTracking()
-                .FirstOrDefaultAsync(c => c.Email == cliente.Email);
-
-            if (ClienteExistente != null)
-            {
-                throw new InvalidOperationException("Já existe um cliente com este e-mail.");
+                }
             }
+            return clienteCadastrado;
 
-            await _context.Clientes.AddAsync(clientes);
-            await _context.SaveChangesAsync();
-            return cliente;
         }
 
         public async Task<Cliente> CarregarPorDocumento(string documento)
         {
             Cliente cliente = new Cliente();
-            var resultado = await _context.Clientes.Where(x => x.Documento == documento).FirstOrDefaultAsync();
-            if (resultado != null)
+            using (var connection = _dapperContext.ConnectionCreate())
             {
-                cliente = await PreencherObjeto(resultado);
+                var paramSQL = ClienteQueries.CarregarClientePorDocumento(documento);
+                var resultado = await connection.QueryFirstOrDefaultAsync(paramSQL.Sql, paramSQL.Parametros);
+                if (resultado != null)
+                {
+                    cliente = await PreencherObjeto(resultado);
+                }
             }
             return cliente;
+
         }
 
         public async Task<Cliente> CarregarPorEmail(string email)
         {
             Cliente cliente = new Cliente();
-            var resultado = await _context.Clientes.Where(x => x.Email == email).FirstOrDefaultAsync();
-            if (resultado != null)
+            using (var connection = _dapperContext.ConnectionCreate())
             {
-                cliente = await PreencherObjeto(resultado);
+                var paramSQL = ClienteQueries.CarregarClientePorEmail(email);
+                var resultado = await connection.QueryFirstOrDefaultAsync(paramSQL.Sql, paramSQL.Parametros);
+                if (resultado != null)
+                {
+                    cliente = await PreencherObjeto(resultado);
+                }
             }
-            return cliente;
+           return cliente;
         }
 
         public async Task<Cliente> CarregarPorId(int id)
         {
             Cliente cliente = new Cliente();
-            var resultado = await _context.Clientes.Where(x => x.IdCliente == id).FirstOrDefaultAsync();
-            if (resultado != null)
+            using (var connection = _dapperContext.ConnectionCreate())
             {
-                cliente = await PreencherObjeto(resultado);
+                var paramSQL = ClienteQueries.CarregarClientePorId(id);
+                var resultado = await connection.QueryFirstOrDefaultAsync(paramSQL.Sql, paramSQL.Parametros);
+                if (resultado != null)
+                {
+                    cliente = await PreencherObjeto(resultado);
+                }
             }
             return cliente;
         }
@@ -84,10 +100,17 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
         {
             IList<Cliente> clientes = new List<Cliente>();
             clientes.Clear();
-            var resultado = _context.Clientes.ToListAsync();
-            foreach (var item in resultado.Result)
+            using (var connection = _dapperContext.ConnectionCreate())
             {
-                clientes.Add(await PreencherObjeto(item));
+                var paramSQL = ClienteQueries.CarregarTodosClientes();
+                var resultado = await connection.QueryAsync(paramSQL.Sql, paramSQL.Parametros);
+                if (resultado != null)
+                {
+                    foreach (var item in resultado)
+                    {
+                        clientes.Add(await PreencherObjeto(item));
+                    }
+                }
             }
             return clientes;
         }
@@ -97,9 +120,12 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
             Cliente cliente = new Cliente
             {
                 IdCliente = item.idCliente,
-                Documento = item.documento,
-                Email = item.email,
-                Nome = item.nome,
+                Documento = item.Documento,
+                Email = item.Email,
+                Nome = item.Nome,
+                Ativo = item.Ativo,
+                Sexo = item.Sexo,
+                DataNascimento = item.DataNascimento,
             };
             cliente.Enderecos = await _enderecoRepository.CarregarPorIdCliente(cliente.IdCliente);
             cliente.Telefones = await _telefoneRepository.CarregarPorIdCliente(cliente.IdCliente);

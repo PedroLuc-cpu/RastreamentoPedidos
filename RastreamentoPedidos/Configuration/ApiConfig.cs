@@ -103,7 +103,7 @@ namespace RastreamentoPedidos.API.Configuration
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IEstadoCivilRepository, EstadoCivilRepository>();
             // Endereço
-            services.AddScoped<ICidadeRepository, ClienteRepositoryDapper>();
+            services.AddScoped<ICidadeRepository, CidadeRepository>();
             services.AddScoped<IEnderecoRepository, EnderecoRepository>();
             services.AddScoped<ITelefoneRepository, TelefoneRepository>();
             services.AddScoped<ITpLogradouroRepository, TpLogradouroRepository>();

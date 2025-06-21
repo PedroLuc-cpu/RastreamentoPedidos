@@ -7,6 +7,9 @@ using RastreamentoPedidos.API.Hubs;
 
 namespace RastreamentoPedidos.Controllers
 {
+    [Route("api/encomendas")]
+    //[ApiExplorerSettings(GroupName = "cliente-v1")]
+    [ApiController]
     public class EncomendaController : MainController
     {
         private readonly IHubContext<RastreamentoHub> _hubContext;
@@ -24,7 +27,7 @@ namespace RastreamentoPedidos.Controllers
             return Ok(new { mensagem = "Status atualizado com sucesso!" });
         }
 
-        [HttpGet("Status/{id}")]
+        [HttpGet("status/{id}")]
         public async Task<ActionResult> ObterStatusPorId(int id)
         {
             var statusEncomenda = await _statusEncomendaRepository.ObterStatusPorId(id);
@@ -34,7 +37,7 @@ namespace RastreamentoPedidos.Controllers
             }
             return Ok(statusEncomenda);
         }
-        [HttpGet("TodosStatus")]
+        [HttpGet("todos-status")]
         public async Task<ActionResult> ObterTodosStatus()
         {
             var statusEncomendas = await _statusEncomendaRepository.ObterTodosStatus();
