@@ -12,6 +12,8 @@ using RastreamentoPedido.Core.Repositories.IEstadoCivilRepository;
 using RastreamentoPedidos.API.Repositories;
 using RastreamentoPedido.Core.Service;
 using RastreamentoPedidos.API.Services;
+using RastreamentoPedido.Core.Repositories.Encomenda;
+using RastreamentoPedidos.API.Repositories.Encomendas;
 
 namespace RastreamentoPedidos.API.Configuration
 {
@@ -106,6 +108,9 @@ namespace RastreamentoPedidos.API.Configuration
             services.AddScoped<ITelefoneRepository, TelefoneRepository>();
             services.AddScoped<ITpLogradouroRepository, TpLogradouroRepository>();
             services.AddScoped<IUFRepository, UFRepository>();
+
+            // Encomendas
+            services.AddScoped<IStatusEncomendaRepository, StatusEncomendaRepository>();
 
             services.AddHttpClient<ICidadeService, CidadeServices>();
         }

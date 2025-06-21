@@ -1,6 +1,6 @@
 ﻿using RastreamentoPedido.Core.Model.Encomenda;
 
-namespace RastreamentoPedido.Core.Repositories
+namespace RastreamentoPedido.Core.Repositories.Encomenda
 {
     public interface IEncomendaRepository : IRepository<Encomendas>
     {
