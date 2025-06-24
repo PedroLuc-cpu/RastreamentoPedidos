@@ -39,6 +39,11 @@ namespace RastreamentoPedidos.Controllers
         {
             Cliente addCliente = new Cliente();
 
+            if (!clienteRequest.ValidationResult.IsValid)
+            {
+                return CustomResponse(clienteRequest.ValidationResult);
+            }
+
             var clienteExistente = await _clienteRepository.CarregarPorEmail(clienteRequest.Email);
             var clienteExistenteDocumento = await _clienteRepository.CarregarPorDocumento(clienteRequest.Documento);
             var carregarEstadoCivil = await _estadoCivilRepository.CarregarEstadoCivilPorDescricao(clienteRequest.EstadoCivil.EstadoCivil);
@@ -75,6 +80,7 @@ namespace RastreamentoPedidos.Controllers
                 {
                     addCliente.EstadoCivil = new EstadoCivil
                     {
+                        Id = carregarEstadoCivil.Id,
                         EstadoCivilDescricao = carregarEstadoCivil.EstadoCivilDescricao
                     };
                 }

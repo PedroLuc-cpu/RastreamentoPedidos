@@ -4,6 +4,7 @@ using RastreamentoPedido.Core.Data;
 using RastreamentoPedido.Core.Model.Clientes;
 using RastreamentoPedido.Core.Queries.Clientes;
 using RastreamentoPedido.Core.Repositories.Clientes;
+using RastreamentoPedido.Core.Repositories.IEstadoCivilRepository;
 
 
 namespace RastreamentoPedidos.Repositories.ClienteRepository
@@ -13,41 +14,26 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
         private readonly IDapperContext _dapperContext;
         private readonly IEnderecoRepository _enderecoRepository;
         private readonly ITelefoneRepository _telefoneRepository;
+        private readonly IEstadoCivilRepository _estadoCivilRepository;
 
 
-        public ClienteRepository(IDapperContext dapperContext, IEnderecoRepository enderecoRepository, ITelefoneRepository telefoneRepository)
+        public ClienteRepository(IDapperContext dapperContext, IEnderecoRepository enderecoRepository, ITelefoneRepository telefoneRepository, IEstadoCivilRepository estadoCivilRepository)
         {
-            
             _dapperContext = dapperContext;
             _enderecoRepository = enderecoRepository;
             _telefoneRepository = telefoneRepository;
+            _estadoCivilRepository = estadoCivilRepository;
         }
 
         public async Task<Cliente> Adicionar(Cliente cliente)
         {
-            Cliente clienteCadastrado = new Cliente();
-
             using (var connection = _dapperContext.ConnectionCreate())
             {
                 var paramSQL = ClienteQueries.AdicionarCliente(cliente);
                 var id = await connection.ExecuteScalarAsync<int>(paramSQL.Sql, paramSQL.Parametros);
-                if (id != 0)
-                {
-                    clienteCadastrado.IdCliente = id;
-                    clienteCadastrado.Documento = cliente.Documento;
-                    clienteCadastrado.Email = cliente.Email;
-                    clienteCadastrado.Nome = cliente.Nome;
-                    clienteCadastrado.Ativo = cliente.Ativo;
-                    clienteCadastrado.Sexo = cliente.Sexo;
-                    clienteCadastrado.DataNascimento = cliente.DataNascimento;
-                    clienteCadastrado.EstadoCivil = cliente.EstadoCivil;
-                    //clienteCadastrado.Enderecos = await _enderecoRepository.CarregarPorIdCliente(clienteCadastrado.IdCliente);
-                    //clienteCadastrado.Telefones = await _telefoneRepository.CarregarPorIdCliente(clienteCadastrado.IdCliente);
-
-                }
+                cliente.IdCliente = id;
             }
-            return clienteCadastrado;
-
+            return cliente;
         }
 
         public async Task<Cliente> CarregarPorDocumento(string documento)
@@ -117,19 +103,33 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
 
         private async Task<Cliente> PreencherObjeto(dynamic item)
         {
-            Cliente cliente = new Cliente
+            Cliente cliente = new Cliente();
+            try
             {
-                IdCliente = item.idCliente,
-                Documento = item.Documento,
-                Email = item.Email,
-                Nome = item.Nome,
-                Ativo = item.Ativo,
-                Sexo = item.Sexo,
-                DataNascimento = item.DataNascimento,
-            };
-            cliente.Enderecos = await _enderecoRepository.CarregarPorIdCliente(cliente.IdCliente);
-            cliente.Telefones = await _telefoneRepository.CarregarPorIdCliente(cliente.IdCliente);
-            return cliente;
+                cliente.IdCliente = item.IdCliente;
+                cliente.Nome = item.Nome;
+                cliente.Email = item.Email;
+                cliente.Ativo = item.Ativo;
+                cliente.Documento = item.Documento;
+                cliente.DataNascimento = item.DataNascimento;
+                cliente.Sexo = item.Sexo;
+                cliente.EstadoCivilId = item.EstadoCivilId;
+                if (item.EstadoCivilId != null) {
+
+                    if (item.EstadoCivilId > 0)
+                    {
+                        cliente.EstadoCivil = await _estadoCivilRepository.CarregarEstadoCivilPorId(item.EstadoCivilId);
+                    }
+                }
+                cliente.Enderecos = await _enderecoRepository.CarregarPorIdCliente(item.IdCliente);
+                cliente.Telefones = await _telefoneRepository.CarregarPorIdCliente(item.IdCliente);
+
+                return cliente;                
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message + " IdCliente = " + cliente.IdCliente);
+            }
         }
     }
 }

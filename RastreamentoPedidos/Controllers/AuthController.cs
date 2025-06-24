@@ -65,7 +65,7 @@ namespace RastreamentoPedidos.Controllers
                 await MudarNivel(new MudarNivelViewModel
                 {
                     Id = Guid.Parse(user.Id),
-                    Nivel = usuario.Funcao
+                    Nivel = Roles.Usuario
                 });
                 return CustomResponse(await GerarJWT(usuario.Email));
             }

@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace RastreamentoPedido.Core.Utils
 {
@@ -37,6 +38,11 @@ namespace RastreamentoPedido.Core.Utils
                 return RemoveEspacosDuplos(retorno);
             }
             return retorno;
+        }
+
+        public static string RemoveCaracteresEspeciais(this string value, string documento)
+        {
+            return string.IsNullOrEmpty(value) ? string.Empty : new Regex("[;\\\\/:*?\"<>|=&--'.¨$#%-+,!@()_]").Replace(value, "").Replace(" ", "").Replace("(", "").Replace(")", "");
         }
     }
 }
