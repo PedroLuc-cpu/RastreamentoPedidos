@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Clients.Web": {
+      "commandName": "Project",
+      "launchUrl": "http://localhost:7000",
+      "applicationUrl": ""
+    }
+  }
+}

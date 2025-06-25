@@ -1,5 +1,9 @@
 using Blazored.LocalStorage;
 using Clients.Web.Components;
+using Clients.Web.Contracts.Services.Authentication;
+using Clients.Web.Providers;
+using Clients.Web.Services.Authentication;
+using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,7 +25,21 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddRazorPages();
+builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
+
+/****** Services - Inicio ******/
+/* Authentication */
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+/****** Services - Fim ******/
+
+
+
+
+
+
+
+
 
 var app = builder.Build();
 
