@@ -1,14 +1,23 @@
-﻿namespace RastreamentoPedido.Core.Communication
+﻿using System.Text.Json.Serialization;
+
+namespace RastreamentoPedido.Core.Communication
 {
     public class ResponseResult
     {
-        public ResponseResult() 
+        [JsonConstructor]
+        public ResponseResult()
         {
-            Errors = new ResponseErrorMessages();
+            Status = 400;
+        }
+        public ResponseResult(int status = 400, IDictionary<string, string[]>? errors = null, string title = "")
+        {
+            Title = title;
+            Status = status;
+            Errors = errors;
         }
 
         public string? Title { get; set; }
         public int Status { get; set; }
-        public ResponseErrorMessages Errors { get; set; }
+        public IDictionary<string, string[]>? Errors { get; set; }
     }
 }
