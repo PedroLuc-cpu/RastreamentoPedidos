@@ -8,9 +8,9 @@ using RastreamentoPedido.WebApi.Core.Controllers;
 
 namespace RastreamentoPedidos.Controllers
 {
-    [Route("api/cliente")]
+    [Produces("application/json")]
+    [Route("cliente")]
     //[ApiExplorerSettings(GroupName = "cliente-v1")]
-    [ApiController]
     public class ClientesController : MainController
     {
         private readonly IClienteRepository _clienteRepository;

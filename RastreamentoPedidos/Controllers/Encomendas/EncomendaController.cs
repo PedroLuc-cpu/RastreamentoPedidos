@@ -7,9 +7,9 @@ using RastreamentoPedidos.API.Hubs;
 
 namespace RastreamentoPedidos.Controllers
 {
-    [Route("api/encomendas")]
+    [Produces("application/json")]
+    [Route("encomendas")]
     //[ApiExplorerSettings(GroupName = "cliente-v1")]
-    [ApiController]
     public class EncomendaController : MainController
     {
         private readonly IHubContext<RastreamentoHub> _hubContext;

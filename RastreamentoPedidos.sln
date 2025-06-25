@@ -5,6 +5,7 @@ VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RastreamentoPedidos.API", "RastreamentoPedidos\RastreamentoPedidos.API.csproj", "{63EBCCCF-B572-4B10-BDEE-67167320E207}"
 	ProjectSection(ProjectDependencies) = postProject
+		{5334A386-4B12-4446-9049-F382037D5736} = {5334A386-4B12-4446-9049-F382037D5736}
 		{CCC02985-7FF2-45BE-85A4-CCC1C3C00E3B} = {CCC02985-7FF2-45BE-85A4-CCC1C3C00E3B}
 	EndProjectSection
 EndProject
@@ -15,6 +16,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RastreamentoPedido.Core", "RastreamentoPedido.Core\RastreamentoPedido.Core.csproj", "{CCC02985-7FF2-45BE-85A4-CCC1C3C00E3B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RastreamentoPedido.WebApi.Core", "RastreamentoPedido.WebApi.Core\RastreamentoPedido.WebApi.Core.csproj", "{EA1F0BA2-4F4B-46C9-88D7-505C2C4DF210}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clients.Web", "Clients.Web\Clients.Web.csproj", "{5334A386-4B12-4446-9049-F382037D5736}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +39,10 @@ Global
 		{EA1F0BA2-4F4B-46C9-88D7-505C2C4DF210}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA1F0BA2-4F4B-46C9-88D7-505C2C4DF210}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA1F0BA2-4F4B-46C9-88D7-505C2C4DF210}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5334A386-4B12-4446-9049-F382037D5736}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5334A386-4B12-4446-9049-F382037D5736}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5334A386-4B12-4446-9049-F382037D5736}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5334A386-4B12-4446-9049-F382037D5736}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -42,5 +51,9 @@ Global
 		{63EBCCCF-B572-4B10-BDEE-67167320E207} = {5F85F63D-0189-450C-84F6-C3863CD7DCF9}
 		{CCC02985-7FF2-45BE-85A4-CCC1C3C00E3B} = {D18F0B03-38C4-4682-ABCB-56EA21992BA8}
 		{EA1F0BA2-4F4B-46C9-88D7-505C2C4DF210} = {D18F0B03-38C4-4682-ABCB-56EA21992BA8}
+		{5334A386-4B12-4446-9049-F382037D5736} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CC2A3D98-6DDC-44ED-8899-139B1D9B6BE9}
 	EndGlobalSection
 EndGlobal

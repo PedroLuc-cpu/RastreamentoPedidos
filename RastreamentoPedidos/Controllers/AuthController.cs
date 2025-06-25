@@ -19,8 +19,7 @@ namespace RastreamentoPedidos.Controllers
 {
 
     [Produces("application/json")]
-    [Route("api/identidade")]
-    // usar "auth-v1" para versionar a api
+    [Route("identidade")]
     [ApiExplorerSettings(GroupName = "auth-v1")]
     public class AuthController : MainController
     {

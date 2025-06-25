@@ -22,13 +22,14 @@ namespace RastreamentoPedidos.API.Configuration
         public static IServiceCollection AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             RegisterServices(services);
-
+            services.AddHttpContextAccessor();
             services.AddControllers(options =>
             {
                 options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
                 options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder()
                     .RequireAuthenticatedUser()
                     .Build()));
+                //options.UseRoutePrefix("api/v1");
             }).AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new DateOnlyConverter());
@@ -52,8 +53,8 @@ namespace RastreamentoPedidos.API.Configuration
                 {
                     builder.AllowAnyOrigin()
                         .AllowAnyMethod()
+                        .AllowAnyOrigin()
                         .AllowAnyHeader();
-                    //.AllowCredentials();
                 });
             });
 

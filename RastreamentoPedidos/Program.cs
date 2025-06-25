@@ -31,8 +31,6 @@ using (var scope = app.Services.CreateScope())
 app.UseSwaggerConfiguration(builder.Environment);
 app.UseApiConfiguration();
 
-Console.WriteLine(GerarCodigoRastreio.GerarCodigoDeRastreio("Correios", "BR"));
-
 app.Run();
 
 public partial class Program { }
