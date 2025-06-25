@@ -106,7 +106,7 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
             Cliente cliente = new Cliente();
             try
             {
-                cliente.IdCliente = item.IdCliente;
+                cliente.IdCliente = item.idCliente;
                 cliente.Nome = item.Nome;
                 cliente.Email = item.Email;
                 cliente.Ativo = item.Ativo;
@@ -121,9 +121,10 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
                         cliente.EstadoCivil = await _estadoCivilRepository.CarregarEstadoCivilPorId(item.EstadoCivilId);
                     }
                 }
-                cliente.Enderecos = await _enderecoRepository.CarregarPorIdCliente(item.IdCliente);
-                cliente.Telefones = await _telefoneRepository.CarregarPorIdCliente(item.IdCliente);
-
+                //cliente.Enderecos = await _enderecoRepository.CarregarPorIdCliente(item.IdCliente);
+                //cliente.Telefones = await _telefoneRepository.CarregarPorIdCliente(item.IdCliente);
+                cliente.Enderecos = [];
+                cliente.Telefones = [];
                 return cliente;                
             }
             catch (Exception ex)
