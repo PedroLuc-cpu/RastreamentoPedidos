@@ -9,11 +9,11 @@ using RastreamentoPedido.Core.Data;
 using RastreamentoPedidos.Data;
 using RastreamentoPedidos.API.Hubs;
 using RastreamentoPedido.Core.Repositories.IEstadoCivilRepository;
-using RastreamentoPedidos.API.Repositories;
 using RastreamentoPedido.Core.Service;
 using RastreamentoPedidos.API.Services;
 using RastreamentoPedido.Core.Repositories.Encomenda;
 using RastreamentoPedidos.API.Repositories.Encomendas;
+using RastreamentoPedidos.API.Repositories.Cliente;
 
 namespace RastreamentoPedidos.API.Configuration
 {
@@ -99,6 +99,7 @@ namespace RastreamentoPedidos.API.Configuration
         {
             services.AddHealthChecks();
             services.AddScoped<IDapperContext, DapperContext>();
+            services.AddScoped<DapperContext>();
 
             ///Clientes
             services.AddScoped<IClienteRepository, ClienteRepository>();

@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace RastreamentoPedidos.API.Controllers
 {
-    [Route("cidade")]
+    [Route("api/cidade")]
     [Produces("application/json")]
     public class CidadeController : MainController
     {

@@ -8,7 +8,7 @@ using RastreamentoPedido.WebApi.Core.Controllers;
 namespace RastreamentoPedidos.API.Controllers.EstadoCivilController
 {
     [Produces("application/json")]
-    [Route("estado-civil")]
+    [Route("api/estado-civil")]
     public class EstadoCivilController : MainController
     {
         private readonly IEstadoCivilRepository _estadoCivilRepository;

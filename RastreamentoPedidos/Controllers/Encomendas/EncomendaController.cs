@@ -8,7 +8,7 @@ using RastreamentoPedidos.API.Hubs;
 namespace RastreamentoPedidos.Controllers
 {
     [Produces("application/json")]
-    [Route("encomendas")]
+    [Route("api/encomendas")]
     //[ApiExplorerSettings(GroupName = "cliente-v1")]
     public class EncomendaController : MainController
     {

@@ -4,7 +4,7 @@ using RastreamentoPedido.Core.Model.Clientes;
 using RastreamentoPedido.Core.Queries;
 using RastreamentoPedido.Core.Repositories.IEstadoCivilRepository;
 
-namespace RastreamentoPedidos.API.Repositories
+namespace RastreamentoPedidos.API.Repositories.Cliente
 {
     public class EstadoCivilRepository : IEstadoCivilRepository
     {
@@ -42,8 +42,6 @@ namespace RastreamentoPedidos.API.Repositories
                 var linhasAfetadas = await connection.ExecuteAsync(sql, parametros);
                 return estadoCivil;
             }
-
-
         }
 
         public async Task<EstadoCivil> CarregarEstadoCivilPorDescricao(string descricao)

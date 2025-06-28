@@ -4,12 +4,14 @@ using RastreamentoPedido.Core.Model.Clientes;
 using RastreamentoPedido.Core.Repositories.Clientes;
 using RastreamentoPedido.Core.Repositories.IEstadoCivilRepository;
 using RastreamentoPedido.Core.Requests.Cliente;
+using RastreamentoPedido.Core.Utils;
+using RastreamentoPedido.Core.Utils.ValidacaoStrings;
 using RastreamentoPedido.WebApi.Core.Controllers;
 
 namespace RastreamentoPedidos.Controllers
 {
     [Produces("application/json")]
-    [Route("cliente")]
+    [Route("api/cliente")]
     //[ApiExplorerSettings(GroupName = "cliente-v1")]
     public class ClientesController : MainController
     {
@@ -22,16 +24,99 @@ namespace RastreamentoPedidos.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(Cliente), 200)]
+        [ProducesResponseType(typeof(ResponseResult), 400)]
         public async Task<IActionResult> ObterClientes()
         {
             var clientes = await _clienteRepository.CarregarTodos();
             if (clientes.Count == 0)
             {
-                return CustomResponse(new { mensagem = "Nenhum cliente encontrado." });
+                return CustomResponse("Nenhum cliente encontrado.");
             }
             return Ok(clientes);
 
         }
+
+        [HttpGet("id/{idCliente:int}")]
+        [ProducesResponseType(typeof(Cliente), 200)]
+        [ProducesResponseType(typeof(ResponseResult), 400)]
+        public async Task<IActionResult> ObterClientePorId(int idCliente)
+        {
+            if (idCliente <= 0)
+            {
+                return CustomResponse("O ID do cliente deve ser deve ser informado");
+            }
+            var cliente = await _clienteRepository.CarregarPorId(idCliente);
+            if (cliente.IdCliente < 0)
+            {
+                return CustomResponse("Nenhum cliente foi encontrado");
+            }
+            return Ok(cliente);
+        }
+
+        [HttpGet("email/{email}")]
+        [ProducesResponseType(typeof(Cliente), 200)]
+        [ProducesResponseType(typeof(ResponseResult), 400)]
+        public async Task<IActionResult> ObterClientePorEmail(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return CustomResponse("O e-mail não foi informado.");
+            }
+
+            if (!ValidaEmail.isEmail(email))
+            {
+                return CustomResponse("O e-mail informado é inválido.");
+            }
+            
+            var cliente = await _clienteRepository.CarregarPorEmail(email);
+
+            if (cliente.IdCliente <= 0)
+            {
+                return CustomResponse("Nenhum cliente encontrado com o e-mail informado.");
+            }
+            return Ok(cliente);
+        }
+
+        [HttpGet("doc/{doc}")]
+        [ProducesResponseType(typeof(Cliente), 200)]
+        [ProducesResponseType(typeof(ResponseResult), 400)]
+        public async Task<IActionResult> CarregarPorDocValido(string doc)
+        {
+            if (doc == null)
+            {
+                return CustomResponse("O documento não informado");
+            }
+
+            var apenasNumeros = doc.Replace("%2F", "").ApenasNumeros();
+
+            if (apenasNumeros.Length == 11)
+            {
+                if (!ValidaCPF.IsCpf(apenasNumeros))
+                {
+                    return CustomResponse("O CPF informado é inválido.");
+                }
+            }
+            else if (apenasNumeros.Length == 14)
+            {
+                if (!ValidaCNPJ.IsCnpj(apenasNumeros))
+                {
+                    return CustomResponse("O CNPJ informado é inválido.");
+                }
+            }
+            else
+            {
+                return CustomResponse("O documento informado não é válido.");
+            }
+
+            var cliente = await _clienteRepository.CarregarPorDocumento(apenasNumeros);
+            if (cliente.IdCliente < 0)
+            {
+                return CustomResponse("Nenhum cliente encontrado com o documento informado.");
+            }
+            return Ok(cliente);
+        }
+
         [HttpPost]
         [ProducesResponseType(typeof(Cliente), 200)]
         [ProducesResponseType(typeof(ResponseResult), 400)]
