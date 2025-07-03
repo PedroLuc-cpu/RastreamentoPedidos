@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using RastreamentoPedido.Core.Data;
 using RastreamentoPedido.Core.Data.Queries.Clientes;
-using RastreamentoPedido.Core.Model.Clientes;
+using RastreamentoPedido.Core.Model.Endereco;
 using RastreamentoPedido.Core.Repositories.Clientes;
 
 namespace RastreamentoPedidos.Repositories.ClienteRepository

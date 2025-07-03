@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RastreamentoPedido.Core.Model.Clientes;
+using RastreamentoPedido.Core.Model.Endereco;
 using RastreamentoPedido.Core.Repositories.Clientes;
 using RastreamentoPedidos.Data;
 
@@ -16,22 +16,22 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
             _tpLogradouroRepository = tpLogradouroRepository;
             _cidadeRepository = cidadeRepository;
         }
-        public async Task<IList<Endereco>> CarregarPorIdCliente(int idCliente)
+        public async Task<IList<Enderecos>> CarregarPorIdCliente(int idCliente)
         {
-            IList<Endereco> enderecos = new List<Endereco>();
+            IList<Enderecos> enderecos = new List<Enderecos>();
             enderecos.Clear();
             var result = await _context.Enderecos.Where(e => e.Id == idCliente).ToListAsync();
             foreach (var item in result)
             {
-                Endereco endereco = new Endereco();
+                Enderecos endereco = new Enderecos();
                 endereco.Bairro = item.Bairro;
                 endereco.Complemento = item.Complemento;
-                endereco.IdCliente = item.IdCliente;
+                endereco.IdPessoa = item.IdPessoa;
                 endereco.Id = item.Id;
                 endereco.CEP = item.CEP;
                 endereco.Numero = item.Numero;
                 endereco.Rua = item.Rua;
-                long? idCidade = item.IdCliente;
+                long? idCidade = item.IdPessoa;
                 if (idCidade != null)
                 {
                     endereco.Cidade = await _cidadeRepository.CarregarPorId(idCidade.Value);

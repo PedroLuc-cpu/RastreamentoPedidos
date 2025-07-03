@@ -2,12 +2,13 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RastreamentoPedido.Core.Model.Clientes;
 using RastreamentoPedido.Core.Model.Encomenda;
+using RastreamentoPedido.Core.Model.Endereco;
 
-namespace RastreamentoPedidos.Data.Map.Clientes
+namespace RastreamentoPedidos.API.Data.Map.Endereco
 {
-    public class EnderecoMapping : IEntityTypeConfiguration<Endereco>
+    public class EnderecoMapping : IEntityTypeConfiguration<Enderecos>
     {
-        public void Configure(EntityTypeBuilder<Endereco> builder)
+        public void Configure(EntityTypeBuilder<Enderecos> builder)
         {
             builder.ToTable("endereco").HasKey(x => x.Id);
 
@@ -30,20 +31,29 @@ namespace RastreamentoPedidos.Data.Map.Clientes
             builder.Property(x => x.CEP)
                 .HasColumnType("varchar");
 
+            builder.Property(x => x.IdTpLogradouro).HasColumnName("idTpLogradouro").IsRequired();
             builder.HasOne(x => x.TpLogradouro)
                 .WithMany()
                 .HasForeignKey(x => x.IdTpLogradouro)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne<Cliente>()
-                .WithMany(c => c.Enderecos)
-                .HasForeignKey(x => x.IdCliente)
-                .OnDelete(DeleteBehavior.Cascade);
-
+            builder.Property(x => x.IdEncomenda).HasColumnName("idEncomenda");
             builder.HasOne<Encomendas>()
                  .WithMany()
-                 .HasForeignKey(x => x.EncomendaId)
+                 .HasForeignKey(x => x.IdEncomenda)
                  .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Property(x => x.IdPessoa).HasColumnName("idPessoa").IsRequired();
+            builder.HasOne<Cliente>()
+                .WithMany(c => c.Enderecos)
+                .HasForeignKey(x => x.IdPessoa)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Property(x => x.IdCidade).HasColumnName("idCidade").IsRequired();
+            builder.HasOne<Cliente>()
+                .WithMany(c => c.Enderecos)
+                .HasForeignKey(x => x.IdCidade)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RastreamentoPedido.Core.Model.Clientes;
+using RastreamentoPedido.Core.Model.Endereco;
 using RastreamentoPedido.Core.Repositories.Clientes;
 using RastreamentoPedidos.Data;
 

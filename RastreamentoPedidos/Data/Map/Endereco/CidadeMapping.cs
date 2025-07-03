@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RastreamentoPedido.Core.Model.Clientes;
+using RastreamentoPedido.Core.Model.Endereco;
 
-namespace RastreamentoPedidos.Data.Map.Clientes
+namespace RastreamentoPedidos.API.Data.Map.Endereco
 {
     public class CidadeMapping : IEntityTypeConfiguration<Cidade>
     {

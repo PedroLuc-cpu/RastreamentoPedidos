@@ -1,9 +1,9 @@
-﻿using RastreamentoPedido.Core.Model.Clientes;
+﻿using RastreamentoPedido.Core.Model.Endereco;
 
 namespace RastreamentoPedido.Core.Repositories.Clientes
 {
-    public interface IEnderecoRepository : IRepository<Endereco>
+    public interface IEnderecoRepository : IRepository<Enderecos>
     {
-        Task<IList<Endereco>> CarregarPorIdCliente(int idCliente);
+        Task<IList<Enderecos>> CarregarPorIdCliente(int idCliente);
     }
 }

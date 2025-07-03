@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RastreamentoPedido.Core.Communication;
-using RastreamentoPedido.Core.Model.Clientes;
+using RastreamentoPedido.Core.Model.Endereco;
 using RastreamentoPedido.Core.Repositories.Clientes;
 using RastreamentoPedido.Core.Service;
 using RastreamentoPedido.Core.ViewModels.Cidade;

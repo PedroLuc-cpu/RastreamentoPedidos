@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using RastreamentoPedido.Core.Data;
 using RastreamentoPedido.Core.Model.Clientes;
 using RastreamentoPedido.Core.Model.Encomenda;
+using RastreamentoPedido.Core.Model.Endereco;
 using RastreamentoPedidos.Model;
 
 namespace RastreamentoPedidos.Data
@@ -29,7 +30,7 @@ namespace RastreamentoPedidos.Data
         public DbSet<Rota>? Rotas { get; set; }
         public DbSet<PontoParada>? PontosParada { get; set; }
         public DbSet<StatusEncomenda>? StatusEncomendas { get; set; }
-        public DbSet<Endereco>? Enderecos { get; set; }
+        public DbSet<Enderecos>? Enderecos { get; set; }
         public DbSet<Cidade> Cidades { get; set; }
         public DbSet<Telefone>? Telefones { get; set; }
         public DbSet<TpLogradouro>? TpLogradouros { get; set; }

@@ -1,4 +1,4 @@
-﻿using RastreamentoPedido.Core.Model.Clientes;
+﻿using RastreamentoPedido.Core.Model.Endereco;
 
 namespace RastreamentoPedido.Core.Repositories.Clientes
 {
