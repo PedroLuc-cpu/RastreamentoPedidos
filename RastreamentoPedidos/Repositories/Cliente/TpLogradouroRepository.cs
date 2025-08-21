@@ -1,27 +1,31 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Dapper;
+using RastreamentoPedido.Core.Data;
 using RastreamentoPedido.Core.Model.Clientes;
 using RastreamentoPedido.Core.Repositories.Clientes;
-using RastreamentoPedidos.Data;
 
 
 namespace RastreamentoPedidos.Repositories.ClienteRepository
 {
     public class TpLogradouroRepository : ITpLogradouroRepository
     {
-        private readonly RastreamentoPedidosContext _context;
-        public TpLogradouroRepository(RastreamentoPedidosContext context)
+        private readonly IDapperContext _context;
+        public TpLogradouroRepository(IDapperContext context)
         {
             _context = context;
         }
         public async Task<TpLogradouro> CarregarPorId(int id)
         {
             TpLogradouro tpLogradouro = new TpLogradouro();
-            var retorno = await _context.TpLogradouros.FirstOrDefaultAsync(x => x.IdTpLogradouro == id);
+            var sql = """SELECT * FROM tpLogradouros WHERE "idTpLogradouro" = @IdTpLogradouro """;
+            var parametros = new { IdTpLogradouro = id };
+            using var conexao = _context.ConnectionCreate();
+
+            var retorno = await conexao.QueryFirstOrDefaultAsync(sql, parametros);
             if (retorno != null)
             {
-                tpLogradouro.IdTpLogradouro = retorno.IdTpLogradouro;
-                tpLogradouro.Sigla = retorno.Sigla;
-                tpLogradouro.Nome = retorno.Nome;
+                tpLogradouro.IdTpLogradouro = retorno.idLogradouro;
+                tpLogradouro.Sigla = retorno.sigla;
+                tpLogradouro.Nome = retorno.nome;
             }
             return tpLogradouro;
         }

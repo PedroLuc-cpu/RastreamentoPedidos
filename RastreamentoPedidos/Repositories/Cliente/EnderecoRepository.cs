@@ -1,45 +1,75 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
+using RastreamentoPedido.Core.Data;
 using RastreamentoPedido.Core.Model.Endereco;
 using RastreamentoPedido.Core.Repositories.Clientes;
+using RastreamentoPedido.Core.Repositories.Encomenda;
 using RastreamentoPedidos.Data;
 
 namespace RastreamentoPedidos.Repositories.ClienteRepository
 {
     public class EnderecoRepository : IEnderecoRepository
     {
-        private readonly RastreamentoPedidosContext _context;
+        private readonly IDapperContext _context;
         private readonly ITpLogradouroRepository _tpLogradouroRepository;
         private readonly ICidadeRepository _cidadeRepository;
-        public EnderecoRepository(RastreamentoPedidosContext context, ITpLogradouroRepository tpLogradouroRepository, ICidadeRepository cidadeRepository )
+        private readonly IEncomendaRepository _encomendaRepository;
+        public EnderecoRepository(IDapperContext context, ITpLogradouroRepository tpLogradouroRepository, ICidadeRepository cidadeRepository, IEncomendaRepository encomendaRepository )
         {
             _context = context;
             _tpLogradouroRepository = tpLogradouroRepository;
             _cidadeRepository = cidadeRepository;
+            _encomendaRepository = encomendaRepository;
         }
         public async Task<IList<Enderecos>> CarregarPorIdCliente(int idCliente)
         {
             IList<Enderecos> enderecos = new List<Enderecos>();
             enderecos.Clear();
-            var result = await _context.Enderecos.Where(e => e.Id == idCliente).ToListAsync();
+            var sql = """SELECT * FROM enderecos WHERE "idCliente" = @IdCliente """;
+            var parametros = new { IdCliente = idCliente };
+            using var conexao = _context.ConnectionCreate();
+            var result = await conexao.QueryAsync(sql, parametros);
+
             foreach (var item in result)
             {
-                Enderecos endereco = new Enderecos();
-                endereco.Bairro = item.Bairro;
-                endereco.Complemento = item.Complemento;
-                endereco.IdPessoa = item.IdPessoa;
-                endereco.Id = item.Id;
-                endereco.CEP = item.CEP;
-                endereco.Numero = item.Numero;
-                endereco.Rua = item.Rua;
-                long? idCidade = item.IdPessoa;
-                if (idCidade != null)
-                {
-                    endereco.Cidade = await _cidadeRepository.CarregarPorId(idCidade.Value);
-                }
-                endereco.TpLogradouro = await _tpLogradouroRepository.CarregarPorId(item.IdTpLogradouro);
-                enderecos.Add(endereco);
+                enderecos.Add(PreencherObj(item));
             }
             return enderecos;
         }
+
+        private async Task<Enderecos> PreencherObj(dynamic item)
+        {
+            Enderecos enderecos = new Enderecos();
+            try
+            {
+                enderecos.Id = item.idEndereco;
+                enderecos.IdPessoa = item.idCliente;
+                enderecos.Complemento = item.complemento;
+                enderecos.Bairro = item.bairro;
+                enderecos.Numero = item.numero;
+                enderecos.Rua = item.rua;
+                enderecos.CEP = item.cep;
+                if (item.idEncomenda > 0)
+                {
+                    enderecos.IdEncomenda = await _encomendaRepository.CarregarEncomendaPorId(item.idEncomenda);
+                }
+                if (item.idCidade > 0)
+                {
+                    enderecos.Cidade = await _cidadeRepository.CarregarPorId(item.idCidades);
+                }
+                
+                if (item.idLogradouro > 0)
+                {
+                    enderecos.TpLogradouro = await _tpLogradouroRepository.CarregarPorId(item.IdTpLogradouro);
+                }
+                
+                return enderecos;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("O ocorreu um erro ao carregar o endereço Id: " + enderecos.Id + ex.Message);
+            }
+        }
     }
+
 }
