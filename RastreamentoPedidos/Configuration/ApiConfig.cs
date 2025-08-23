@@ -1,19 +1,20 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using RastreamentoPedido.Core.Repositories.Clientes;
-using RastreamentoPedidos.Repositories.ClienteRepository;
-using RastreamentoPedidos.API.Configuration.ModelBinders;
-using RastreamentoPedido.Core.Converters;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using RastreamentoPedido.Core.Converters;
 using RastreamentoPedido.Core.Data;
-using RastreamentoPedidos.Data;
-using RastreamentoPedidos.API.Hubs;
+using RastreamentoPedido.Core.Repositories.Clientes;
+using RastreamentoPedido.Core.Repositories.Encomenda;
 using RastreamentoPedido.Core.Repositories.IEstadoCivilRepository;
 using RastreamentoPedido.Core.Service;
-using RastreamentoPedidos.API.Services;
-using RastreamentoPedido.Core.Repositories.Encomenda;
-using RastreamentoPedidos.API.Repositories.Encomendas;
+using RastreamentoPedidos.API.Configuration.ModelBinders;
+using RastreamentoPedidos.API.Hubs;
 using RastreamentoPedidos.API.Repositories.Cliente;
+using RastreamentoPedidos.API.Repositories.Encomendas;
+using RastreamentoPedidos.API.Services;
+using RastreamentoPedidos.Data;
+using RastreamentoPedidos.Repositories;
+using RastreamentoPedidos.Repositories.ClienteRepository;
 
 namespace RastreamentoPedidos.API.Configuration
 {
@@ -113,7 +114,7 @@ namespace RastreamentoPedidos.API.Configuration
 
             // Encomendas
             services.AddScoped<IStatusEncomendaRepository, StatusEncomendaRepository>();
-
+            services.AddScoped<IEncomendaRepository, EncomendaRepository>();
             services.AddHttpClient<ICidadeService, CidadeServices>();
         }
 

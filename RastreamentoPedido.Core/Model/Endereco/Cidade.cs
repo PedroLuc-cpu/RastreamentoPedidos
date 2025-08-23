@@ -1,9 +1,11 @@
 ﻿using RastreamentoPedido.Core.DomainObjects;
+using System.ComponentModel.DataAnnotations;
 
 namespace RastreamentoPedido.Core.Model.Endereco
 {
     public class Cidade : IAggregateRoot
     {
+        [Key]
         public int IdCidade { get; set; }
         public string Nome { get; set; } = string.Empty;
         public string Cep { get; set; } = string.Empty;

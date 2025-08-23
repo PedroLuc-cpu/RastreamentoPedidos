@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using RastreamentoPedidos.Data;
+using RastreamentoPedidos.API.Data;
 
 #nullable disable
 
 namespace RastreamentoPedidos.API.Migrations
 {
     [DbContext(typeof(RastreamentoPedidosContext))]
-    [Migration("20250620202744_AdicionandoTabelas")]
-    partial class AdicionandoTabelas
+    [Migration("20250823140019_CreateTableUser")]
+    partial class CreateTableUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -161,39 +161,13 @@ namespace RastreamentoPedidos.API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("RastreamentoPedido.Core.Model.Clientes.Cidade", b =>
-                {
-                    b.Property<int>("IdCidade")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("idCidade");
-
-                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("IdCidade"));
-
-                    b.Property<int>("IdUF")
-                        .HasColumnType("integer")
-                        .HasColumnName("idUF");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("varchar")
-                        .HasColumnName("nome");
-
-                    b.HasKey("IdCidade");
-
-                    b.HasIndex("IdUF");
-
-                    b.ToTable("cidade", (string)null);
-                });
-
             modelBuilder.Entity("RastreamentoPedido.Core.Model.Clientes.Cliente", b =>
                 {
                     b.Property<int>("IdCliente")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("idCliente");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("IdCliente"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdCliente"));
 
                     b.Property<bool>("Ativo")
                         .HasColumnType("boolean");
@@ -203,13 +177,11 @@ namespace RastreamentoPedidos.API.Migrations
 
                     b.Property<string>("Documento")
                         .IsRequired()
-                        .HasMaxLength(14)
-                        .HasColumnType("character varying(14)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<int>("EstadoCivilId")
                         .HasColumnType("integer");
@@ -219,82 +191,25 @@ namespace RastreamentoPedidos.API.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("Sexo")
                         .HasColumnType("boolean");
 
                     b.HasKey("IdCliente");
 
-                    b.ToTable("Clientes", (string)null);
-                });
+                    b.HasIndex("EstadoCivilId");
 
-            modelBuilder.Entity("RastreamentoPedido.Core.Model.Clientes.Endereco", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("idEnderecoCliente");
-
-                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Bairro")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar")
-                        .HasColumnName("bairro");
-
-                    b.Property<string>("CEP")
-                        .IsRequired()
-                        .HasColumnType("varchar");
-
-                    b.Property<int>("CidadeIdCidade")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Complemento")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("EncomendaId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("IdCliente")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("IdTpLogradouro")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Numero")
-                        .IsRequired()
-                        .HasColumnType("varchar")
-                        .HasColumnName("numero");
-
-                    b.Property<string>("Rua")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CidadeIdCidade");
-
-                    b.HasIndex("EncomendaId");
-
-                    b.HasIndex("IdCliente");
-
-                    b.HasIndex("IdTpLogradouro");
-
-                    b.ToTable("endereco", (string)null);
+                    b.ToTable("Cliente");
                 });
 
             modelBuilder.Entity("RastreamentoPedido.Core.Model.Clientes.EstadoCivil", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("integer")
-                        .HasColumnName("idestadocivil");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("EstadoCivilDescricao")
                         .IsRequired()
@@ -302,287 +217,374 @@ namespace RastreamentoPedidos.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("estadoCivil", (string)null);
+                    b.ToTable("EstadoCivil");
                 });
 
             modelBuilder.Entity("RastreamentoPedido.Core.Model.Clientes.Telefone", b =>
                 {
                     b.Property<int>("IdTelefoneCliente")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("idTelefoneCliente");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("IdTelefoneCliente"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdTelefoneCliente"));
+
+                    b.Property<int?>("ClienteIdCliente")
+                        .HasColumnType("integer");
 
                     b.Property<int>("IdCliente")
                         .HasColumnType("integer");
 
                     b.Property<string>("Numero")
                         .IsRequired()
-                        .HasColumnType("varchar")
-                        .HasColumnName("numero");
+                        .HasColumnType("text");
 
                     b.Property<bool>("Padrao")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false)
-                        .HasColumnName("padrao");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Prefixo")
                         .IsRequired()
-                        .HasColumnType("varchar")
-                        .HasColumnName("prefixo");
+                        .HasColumnType("text");
 
                     b.HasKey("IdTelefoneCliente");
 
-                    b.HasIndex("IdCliente");
+                    b.HasIndex("ClienteIdCliente");
 
-                    b.ToTable("telefone", (string)null);
+                    b.ToTable("Telefone");
                 });
 
             modelBuilder.Entity("RastreamentoPedido.Core.Model.Clientes.TpLogradouro", b =>
                 {
                     b.Property<int>("IdTpLogradouro")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("idTpLogradouro");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("IdTpLogradouro"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdTpLogradouro"));
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("varchar")
-                        .HasColumnName("nome");
+                        .HasColumnType("text");
 
                     b.Property<string>("Sigla")
                         .IsRequired()
-                        .HasColumnType("varchar")
-                        .HasColumnName("sigla");
+                        .HasColumnType("text");
 
                     b.HasKey("IdTpLogradouro");
 
-                    b.ToTable("tp_logradouro", (string)null);
-                });
-
-            modelBuilder.Entity("RastreamentoPedido.Core.Model.Clientes.UF", b =>
-                {
-                    b.Property<int>("IdUF")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("idUf");
-
-                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("IdUF"));
-
-                    b.Property<string>("Sigla")
-                        .IsRequired()
-                        .HasColumnType("varchar")
-                        .HasColumnName("sigla");
-
-                    b.HasKey("IdUF");
-
-                    b.ToTable("uf", (string)null);
+                    b.ToTable("TpLogradouro");
                 });
 
             modelBuilder.Entity("RastreamentoPedido.Core.Model.Encomenda.EncomendaAuditoria", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("idEncomendaAuditoria");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DataHoraEvento")
-                        .HasColumnType("timestamp")
-                        .HasColumnName("dataHoraEvento");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("DataRegistro")
-                        .HasColumnType("timestamp")
-                        .HasColumnName("dataRegistro");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DescricaoEvento")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("descricaoEvento");
+                        .HasColumnType("text");
 
-                    b.Property<int>("IdEncomenda")
-                        .HasColumnType("integer")
-                        .HasColumnName("idEncomenda");
+                    b.Property<int>("EncomendaId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("LocalDestino")
                         .IsRequired()
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("localDestino");
+                        .HasColumnType("text");
 
                     b.Property<string>("LocalOrigem")
                         .IsRequired()
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("localOrigem");
+                        .HasColumnType("text");
 
                     b.Property<string>("Observacoes")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("observacoes");
+                        .HasColumnType("text");
 
                     b.Property<string>("Responsavel")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("responsavel");
+                        .HasColumnType("text");
 
                     b.Property<string>("StatusAtual")
                         .IsRequired()
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("statusAtual");
+                        .HasColumnType("text");
 
-                    b.Property<string>("StatusEntregas")
+                    b.Property<string>("StatusEntrega")
                         .IsRequired()
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("statusEntregas");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdEncomenda");
+                    b.HasIndex("EncomendaId");
 
-                    b.ToTable("encomenda_auditoria", (string)null);
+                    b.ToTable("EncomendaAuditoria");
                 });
 
             modelBuilder.Entity("RastreamentoPedido.Core.Model.Encomenda.Encomendas", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("idEncomenda");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("CodigoRastreamento")
                         .IsRequired()
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("codigo_rastreamento");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("timestamp")
-                        .HasColumnName("data_criacao");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("DataEncomenda")
-                        .HasColumnType("timestamp")
-                        .HasColumnName("data_pedido");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("DataPrevisao")
-                        .HasColumnType("timestamp")
-                        .HasColumnName("data_previsao");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("varchar")
-                        .HasColumnName("descricao");
+                        .HasColumnType("text");
 
-                    b.Property<int>("IdCliente")
-                        .HasColumnType("integer")
-                        .HasColumnName("id_cliente");
-
-                    b.Property<int>("IdEncomendaAuditoria")
-                        .HasColumnType("integer")
-                        .HasColumnName("id_encomendaauditorias");
-
-                    b.Property<int>("IdRota")
-                        .HasColumnType("integer")
-                        .HasColumnName("id_rota");
-
-                    b.Property<int>("IdStatusEncomenda")
+                    b.Property<int>("RotaId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("StatusEncomendaCodigo")
+                    b.Property<int>("StatusEncomendaId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CodigoRastreamento")
-                        .IsUnique();
+                    b.HasIndex("ClienteId");
 
-                    b.HasIndex("IdCliente");
+                    b.HasIndex("RotaId");
 
-                    b.HasIndex("IdRota");
+                    b.HasIndex("StatusEncomendaId");
 
-                    b.HasIndex("StatusEncomendaCodigo");
-
-                    b.ToTable("encomendas", (string)null);
+                    b.ToTable("Encomendas");
                 });
 
             modelBuilder.Entity("RastreamentoPedido.Core.Model.Encomenda.PontoParada", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("idPontoParada");
-
-                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("IdRota")
                         .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Localizacao")
                         .IsRequired()
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("localizacao");
+                        .HasColumnType("text");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("nome");
+                        .HasColumnType("text");
 
                     b.Property<int>("Ordem")
-                        .HasColumnType("integer")
-                        .HasColumnName("ordem");
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RotaId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdRota");
+                    b.HasIndex("RotaId");
 
-                    b.ToTable("pontos_parada", (string)null);
+                    b.ToTable("PontoParada");
                 });
 
             modelBuilder.Entity("RastreamentoPedido.Core.Model.Encomenda.Rota", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("idRota");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("varchar")
-                        .HasColumnName("descricao");
+                        .HasColumnType("text");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("nome");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("rotas", (string)null);
+                    b.ToTable("Rota");
                 });
 
             modelBuilder.Entity("RastreamentoPedido.Core.Model.Encomenda.StatusEncomenda", b =>
                 {
-                    b.Property<int>("Codigo")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Codigo"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("status");
+                        .HasColumnType("text");
 
-                    b.HasKey("Codigo");
+                    b.HasKey("Id");
 
-                    b.ToTable("status_entregas", (string)null);
+                    b.ToTable("StatusEncomendas");
+                });
+
+            modelBuilder.Entity("RastreamentoPedido.Core.Model.Endereco.Cidade", b =>
+                {
+                    b.Property<int>("IdCidade")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdCidade"));
+
+                    b.Property<string>("Cep")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CodIbge")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("IdUF")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("UFIdUF")
+                        .HasColumnType("integer");
+
+                    b.HasKey("IdCidade");
+
+                    b.HasIndex("UFIdUF");
+
+                    b.ToTable("Cidade");
+                });
+
+            modelBuilder.Entity("RastreamentoPedido.Core.Model.Endereco.Enderecos", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Bairro")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CEP")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("CidadeIdCidade")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("ClienteIdCliente")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Complemento")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("IdCidade")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IdEncomenda")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IdPessoa")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IdTpLogradouro")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Numero")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Rua")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("TpLogradouroIdTpLogradouro")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CidadeIdCidade");
+
+                    b.HasIndex("ClienteIdCliente");
+
+                    b.HasIndex("TpLogradouroIdTpLogradouro");
+
+                    b.ToTable("Enderecos");
+                });
+
+            modelBuilder.Entity("RastreamentoPedido.Core.Model.Endereco.Pais", b =>
+                {
+                    b.Property<int>("IdPais")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdPais"));
+
+                    b.Property<string>("Cod_bcb")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Sigla")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("IdPais");
+
+                    b.ToTable("Pais");
+                });
+
+            modelBuilder.Entity("RastreamentoPedido.Core.Model.Endereco.UF", b =>
+                {
+                    b.Property<int>("IdUF")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdUF"));
+
+                    b.Property<int>("CodUf")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IdPais")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("PaisIdPais")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Sigla")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("IdUF");
+
+                    b.HasIndex("PaisIdPais");
+
+                    b.ToTable("UF");
                 });
 
             modelBuilder.Entity("RastreamentoPedidos.Model.ApplicationUser", b =>
@@ -711,92 +713,52 @@ namespace RastreamentoPedidos.API.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RastreamentoPedido.Core.Model.Clientes.Cidade", b =>
+            modelBuilder.Entity("RastreamentoPedido.Core.Model.Clientes.Cliente", b =>
                 {
-                    b.HasOne("RastreamentoPedido.Core.Model.Clientes.UF", "UF")
+                    b.HasOne("RastreamentoPedido.Core.Model.Clientes.EstadoCivil", "EstadoCivil")
                         .WithMany()
-                        .HasForeignKey("IdUF")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("UF");
-                });
-
-            modelBuilder.Entity("RastreamentoPedido.Core.Model.Clientes.Endereco", b =>
-                {
-                    b.HasOne("RastreamentoPedido.Core.Model.Clientes.Cidade", "Cidade")
-                        .WithMany()
-                        .HasForeignKey("CidadeIdCidade")
+                        .HasForeignKey("EstadoCivilId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RastreamentoPedido.Core.Model.Encomenda.Encomendas", null)
-                        .WithMany()
-                        .HasForeignKey("EncomendaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RastreamentoPedido.Core.Model.Clientes.Cliente", null)
-                        .WithMany("Enderecos")
-                        .HasForeignKey("IdCliente")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RastreamentoPedido.Core.Model.Clientes.TpLogradouro", "TpLogradouro")
-                        .WithMany()
-                        .HasForeignKey("IdTpLogradouro")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Cidade");
-
-                    b.Navigation("TpLogradouro");
-                });
-
-            modelBuilder.Entity("RastreamentoPedido.Core.Model.Clientes.EstadoCivil", b =>
-                {
-                    b.HasOne("RastreamentoPedido.Core.Model.Clientes.Cliente", null)
-                        .WithOne("EstadoCivil")
-                        .HasForeignKey("RastreamentoPedido.Core.Model.Clientes.EstadoCivil", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("EstadoCivil");
                 });
 
             modelBuilder.Entity("RastreamentoPedido.Core.Model.Clientes.Telefone", b =>
                 {
                     b.HasOne("RastreamentoPedido.Core.Model.Clientes.Cliente", null)
                         .WithMany("Telefones")
-                        .HasForeignKey("IdCliente")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClienteIdCliente");
                 });
 
             modelBuilder.Entity("RastreamentoPedido.Core.Model.Encomenda.EncomendaAuditoria", b =>
                 {
-                    b.HasOne("RastreamentoPedido.Core.Model.Encomenda.Encomendas", null)
-                        .WithMany("EncomendaAuditorias")
-                        .HasForeignKey("IdEncomenda")
+                    b.HasOne("RastreamentoPedido.Core.Model.Encomenda.Encomendas", "Encomenda")
+                        .WithMany("Auditorias")
+                        .HasForeignKey("EncomendaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Encomenda");
                 });
 
             modelBuilder.Entity("RastreamentoPedido.Core.Model.Encomenda.Encomendas", b =>
                 {
                     b.HasOne("RastreamentoPedido.Core.Model.Clientes.Cliente", "Cliente")
                         .WithMany("Encomendas")
-                        .HasForeignKey("IdCliente")
+                        .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RastreamentoPedido.Core.Model.Encomenda.Rota", "Rota")
-                        .WithMany()
-                        .HasForeignKey("IdRota")
+                        .WithMany("Encomendas")
+                        .HasForeignKey("RotaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RastreamentoPedido.Core.Model.Encomenda.StatusEncomenda", "StatusEncomenda")
                         .WithMany("Encomendas")
-                        .HasForeignKey("StatusEncomendaCodigo")
+                        .HasForeignKey("StatusEncomendaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -811,11 +773,56 @@ namespace RastreamentoPedidos.API.Migrations
                 {
                     b.HasOne("RastreamentoPedido.Core.Model.Encomenda.Rota", "Rota")
                         .WithMany("PontosParada")
-                        .HasForeignKey("IdRota")
+                        .HasForeignKey("RotaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Rota");
+                });
+
+            modelBuilder.Entity("RastreamentoPedido.Core.Model.Endereco.Cidade", b =>
+                {
+                    b.HasOne("RastreamentoPedido.Core.Model.Endereco.UF", "UF")
+                        .WithMany()
+                        .HasForeignKey("UFIdUF")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UF");
+                });
+
+            modelBuilder.Entity("RastreamentoPedido.Core.Model.Endereco.Enderecos", b =>
+                {
+                    b.HasOne("RastreamentoPedido.Core.Model.Endereco.Cidade", "Cidade")
+                        .WithMany()
+                        .HasForeignKey("CidadeIdCidade")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RastreamentoPedido.Core.Model.Clientes.Cliente", null)
+                        .WithMany("Enderecos")
+                        .HasForeignKey("ClienteIdCliente");
+
+                    b.HasOne("RastreamentoPedido.Core.Model.Clientes.TpLogradouro", "TpLogradouro")
+                        .WithMany()
+                        .HasForeignKey("TpLogradouroIdTpLogradouro")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cidade");
+
+                    b.Navigation("TpLogradouro");
+                });
+
+            modelBuilder.Entity("RastreamentoPedido.Core.Model.Endereco.UF", b =>
+                {
+                    b.HasOne("RastreamentoPedido.Core.Model.Endereco.Pais", "Pais")
+                        .WithMany()
+                        .HasForeignKey("PaisIdPais")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pais");
                 });
 
             modelBuilder.Entity("RastreamentoPedido.Core.Model.Clientes.Cliente", b =>
@@ -824,19 +831,18 @@ namespace RastreamentoPedidos.API.Migrations
 
                     b.Navigation("Enderecos");
 
-                    b.Navigation("EstadoCivil")
-                        .IsRequired();
-
                     b.Navigation("Telefones");
                 });
 
             modelBuilder.Entity("RastreamentoPedido.Core.Model.Encomenda.Encomendas", b =>
                 {
-                    b.Navigation("EncomendaAuditorias");
+                    b.Navigation("Auditorias");
                 });
 
             modelBuilder.Entity("RastreamentoPedido.Core.Model.Encomenda.Rota", b =>
                 {
+                    b.Navigation("Encomendas");
+
                     b.Navigation("PontosParada");
                 });
 

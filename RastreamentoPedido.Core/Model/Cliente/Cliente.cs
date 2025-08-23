@@ -1,11 +1,13 @@
 ﻿using RastreamentoPedido.Core.DomainObjects;
 using RastreamentoPedido.Core.Model.Encomenda;
 using RastreamentoPedido.Core.Model.Endereco;
+using System.ComponentModel.DataAnnotations;
 
 namespace RastreamentoPedido.Core.Model.Clientes
 {
     public class Cliente : IAggregateRoot
     {
+        [Key]
         public int IdCliente { get; set; }
         public int? IdEncomenda { get; set; }
         public int EstadoCivilId { get; set; }
@@ -19,8 +21,8 @@ namespace RastreamentoPedido.Core.Model.Clientes
         /// CPF e CNPJ do cliente
         /// </summary>
         public string Documento {  get; set; } = string.Empty;
-        public IList<Enderecos>? Enderecos { get; set; } = new List<Enderecos>();
-        public IList<Telefone>? Telefones { get; set; } = new List<Telefone>();
-        public IList<Encomendas>? Encomendas {  get; set; } = new List<Encomendas>();
+        public IList<Enderecos>? Enderecos { get; set; } = [];
+        public IList<Telefone>? Telefones { get; set; } = [];
+        public IList<Encomendas>? Encomendas {  get; set; } = [];
     }
 }

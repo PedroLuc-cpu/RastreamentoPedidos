@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
-using RastreamentoPedidos.Data;
+using RastreamentoPedidos.API.Data;
 using System.Data.Common;
 
 namespace RastreamentoPedido.Test.Configuration
