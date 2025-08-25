@@ -103,28 +103,38 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
 
         private async Task<Cliente> PreencherObjeto(dynamic item)
         {
-            Cliente cliente = new Cliente();
+            Cliente cliente = new();
             try
             {
                 cliente.IdCliente = item.idCliente;
-                cliente.Nome = item.Nome;
-                cliente.Email = item.Email;
-                cliente.Ativo = item.Ativo;
-                cliente.Documento = item.Documento;
-                cliente.DataNascimento = item.DataNascimento;
-                cliente.Sexo = item.Sexo;
-                cliente.EstadoCivilId = item.EstadoCivilId;
-                if (item.EstadoCivilId != null) {
+                cliente.Nome = item.nome;
+                cliente.Email = item.email;
+                cliente.Ativo = item.ativo;
+                cliente.Documento = item.documento;
+                cliente.DataNascimento = item.dataNascimento;
+                cliente.Sexo = item.sexo;
+                if (item.idEstadoCivil != null) {
 
-                    if (item.EstadoCivilId > 0)
+                    if (item.idEstadoCivil > 0)
                     {
-                        cliente.EstadoCivil = await _estadoCivilRepository.CarregarEstadoCivilPorId(item.EstadoCivilId);
+                        cliente.EstadoCivil = await _estadoCivilRepository.CarregarEstadoCivilPorId(item.idEstadoCivil);
                     }
                 }
-                //cliente.Enderecos = await _enderecoRepository.CarregarPorIdCliente(item.IdCliente);
-                //cliente.Telefones = await _telefoneRepository.CarregarPorIdCliente(item.IdCliente);
-                cliente.Enderecos = [];
-                cliente.Telefones = [];
+                if (item.idEndereco != null) 
+                { 
+                    if (item.idEndereco > 0)
+                    {
+                        cliente.Enderecos = await _enderecoRepository.CarregarPorIdCliente(item.idCliente);
+                    }
+                }
+                ;
+                if (item.idTelefone != null) 
+                { 
+                    if (item.idTelefone > 0)
+                    {
+                        cliente.Telefones = await _telefoneRepository.CarregarPorIdCliente(item.idCliente);
+                    }
+                }
                 return cliente;                
             }
             catch (Exception ex)

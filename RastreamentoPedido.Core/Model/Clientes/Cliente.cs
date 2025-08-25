@@ -2,9 +2,11 @@
 using RastreamentoPedido.Core.Model.Encomenda;
 using RastreamentoPedido.Core.Model.Endereco;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RastreamentoPedido.Core.Model.Clientes
 {
+    [NotMapped]
     public class Cliente : IAggregateRoot
     {
         [Key]

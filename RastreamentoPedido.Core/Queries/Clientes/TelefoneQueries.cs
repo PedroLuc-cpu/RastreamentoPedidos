@@ -8,12 +8,12 @@ namespace RastreamentoPedido.Core.Queries.Clientes
         {
             return new QueryParamsSQL
             {
-                Sql = "INSERT INTO telefone (prefixo, numero, \"IdCliente\", padrao) VALUES (@prefixo, @numero, @IdCliente, @padrao) RETURNING \"idTelefoneCliente\"",
+                Sql = """INSERT INTO telefone ("idCliente", prefixo, numero, padrao) VALUES (@IdCliente, @Prefixo, @Numero, @Padrao);""",
                 Parametros = new Dictionary<string, object>
                 {
-                    { "prefixo", telefone.Prefixo },
-                    { "numero", telefone.Numero },
                     { "IdCliente", telefone.IdCliente },
+                    { "Prefixo", telefone.Prefixo },
+                    { "Numero", telefone.Numero },
                     { "Padrao", telefone.Padrao }
                 }
             };
@@ -22,7 +22,7 @@ namespace RastreamentoPedido.Core.Queries.Clientes
         {
             return new QueryParamsSQL
             {
-                Sql = "SELECT * FROM telefone WHERE \"IdCliente\" = @IdCliente",
+                Sql = "SELECT * FROM telefone WHERE \"idCliente\" = @IdCliente",
                 Parametros = new Dictionary<string, object> { { "IdCliente", idCliente } }
             };
         }
@@ -30,7 +30,7 @@ namespace RastreamentoPedido.Core.Queries.Clientes
         {
             return new QueryParamsSQL
             {
-                Sql = "SELECT * FROM telefone WHERE \"idTelefoneCliente\" = @idTelefoneCliente",
+                Sql = "SELECT * FROM telefone WHERE \"idTelefone\" = @idTelefoneCliente",
                 Parametros = new Dictionary<string, object> { { "idTelefoneCliente", idTelefoneCliente } }
             };
         }
@@ -39,7 +39,7 @@ namespace RastreamentoPedido.Core.Queries.Clientes
         {
             return new QueryParamsSQL
             {
-                Sql = "SELECT * FROM telefone WHERE \"IdCliente\" = @IdCliente AND \"padrao\" = true",
+                Sql = "SELECT * FROM telefone WHERE \"idCliente\" = @IdCliente AND padrao = true",
                 Parametros = new Dictionary<string, object> { { "IdCliente", idCliente } }
             };
         }
@@ -48,7 +48,7 @@ namespace RastreamentoPedido.Core.Queries.Clientes
         {
             return new QueryParamsSQL
             {
-                Sql = "UPDATE telefone SET prefixo = @prefixo, numero = @numero, padrao = @padrao WHERE \"idTelefoneCliente\" = @IdTelefoneCliente",
+                Sql = "UPDATE telefone SET prefixo = @prefixo, numero = @numero, padrao = @padrao WHERE \"idTelefone\" = @IdTelefoneCliente",
                 Parametros = new Dictionary<string, object>
                 {
                     { "Prefixo", telefone.Prefixo },

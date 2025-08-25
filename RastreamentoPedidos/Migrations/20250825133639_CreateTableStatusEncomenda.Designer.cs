@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RastreamentoPedidos.API.Data;
@@ -11,9 +12,11 @@ using RastreamentoPedidos.API.Data;
 namespace RastreamentoPedidos.API.Migrations
 {
     [DbContext(typeof(RastreamentoPedidosContext))]
-    partial class RastreamentoPedidosContextModelSnapshot : ModelSnapshot
+    [Migration("20250825133639_CreateTableStatusEncomenda")]
+    partial class CreateTableStatusEncomenda
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -175,195 +178,6 @@ namespace RastreamentoPedidos.API.Migrations
                     b.ToTable("statusEncomenda");
                 });
 
-            modelBuilder.Entity("RastreamentoPedido.Core.Model.Produto.Produto", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("integer")
-                        .HasColumnName("id_produto");
-
-                    b.Property<bool>("Ativo")
-                        .HasColumnType("boolean")
-                        .HasColumnName("ativo");
-
-                    b.Property<string>("Codigo")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("codigo");
-
-                    b.Property<string>("CodigoBarras")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("codigoBarras");
-
-                    b.Property<DateTime>("DataCadastro")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("dataCadastro");
-
-                    b.Property<double>("EstoqueAtual")
-                        .HasColumnType("double precision")
-                        .HasColumnName("estoqueAtual");
-
-                    b.Property<double>("EstoqueMaximo")
-                        .HasColumnType("double precision")
-                        .HasColumnName("estoqueMaximo");
-
-                    b.Property<double>("EstoqueMinimo")
-                        .HasColumnType("double precision")
-                        .HasColumnName("estoqueMinimo");
-
-                    b.Property<double>("EstoqueReservado")
-                        .HasColumnType("double precision")
-                        .HasColumnName("estoqueReservado");
-
-                    b.Property<int>("IdCategoria")
-                        .HasColumnType("integer")
-                        .HasColumnName("idCategoria");
-
-                    b.Property<int>("IdMarca")
-                        .HasColumnType("integer")
-                        .HasColumnName("idMarca");
-
-                    b.Property<string>("ImagemUrl")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("urlImagem");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("nome");
-
-                    b.Property<string>("Observacao")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("observacao");
-
-                    b.Property<double>("PrecoCusto")
-                        .HasColumnType("double precision")
-                        .HasColumnName("precoCusto");
-
-                    b.Property<double>("PrecoVenda")
-                        .HasColumnType("double precision")
-                        .HasColumnName("precoVenda");
-
-                    b.Property<string>("UnidadeMedida")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("unidadeMedida");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdCategoria");
-
-                    b.HasIndex("IdMarca");
-
-                    b.ToTable("produtos");
-                });
-
-            modelBuilder.Entity("RastreamentoPedido.Core.Model.Produto.ProdutoCategoria", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id_categoria");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("nome");
-
-                    b.Property<int>("ProdutoId")
-                        .HasColumnType("integer")
-                        .HasColumnName("produtoId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("produtoCategoria");
-                });
-
-            modelBuilder.Entity("RastreamentoPedido.Core.Model.Produto.ProdutoEncargos", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id_encargos");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ProdutoId")
-                        .HasColumnType("integer");
-
-                    b.Property<double>("ValorDespesas")
-                        .HasColumnType("double precision")
-                        .HasColumnName("valorDespesas");
-
-                    b.Property<double>("ValorFrete")
-                        .HasColumnType("double precision")
-                        .HasColumnName("valorFrete");
-
-                    b.Property<double>("ValorOutros")
-                        .HasColumnType("double precision")
-                        .HasColumnName("valorOutros");
-
-                    b.Property<double>("ValorSeguro")
-                        .HasColumnType("double precision")
-                        .HasColumnName("valorSeguro");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("produtoEncargos");
-                });
-
-            modelBuilder.Entity("RastreamentoPedido.Core.Model.Produto.ProdutoMarca", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id_marca");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("nome");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("produtoMarca");
-                });
-
-            modelBuilder.Entity("RastreamentoPedido.Core.Model.Produto.ProdutoPeso", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id_produtoPeso");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DtPesoAtualizado")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("dtPesoAtualizado");
-
-                    b.Property<int>("IdProduto")
-                        .HasColumnType("integer");
-
-                    b.Property<double>("PesoBruto")
-                        .HasColumnType("double precision")
-                        .HasColumnName("pesoBruto");
-
-                    b.Property<double>("PesoLiquido")
-                        .HasColumnType("double precision")
-                        .HasColumnName("pesoLiquido");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("produtoPeso");
-                });
-
             modelBuilder.Entity("RastreamentoPedidos.Model.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -488,41 +302,6 @@ namespace RastreamentoPedidos.API.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("RastreamentoPedido.Core.Model.Produto.Produto", b =>
-                {
-                    b.HasOne("RastreamentoPedido.Core.Model.Produto.ProdutoEncargos", "ProdutoEncargos")
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RastreamentoPedido.Core.Model.Produto.ProdutoPeso", "ProdutoPeso")
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RastreamentoPedido.Core.Model.Produto.ProdutoCategoria", "ProdutoCategoria")
-                        .WithMany()
-                        .HasForeignKey("IdCategoria")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RastreamentoPedido.Core.Model.Produto.ProdutoMarca", "ProdutoMarca")
-                        .WithMany()
-                        .HasForeignKey("IdMarca")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ProdutoCategoria");
-
-                    b.Navigation("ProdutoEncargos");
-
-                    b.Navigation("ProdutoMarca");
-
-                    b.Navigation("ProdutoPeso");
                 });
 #pragma warning restore 612, 618
         }

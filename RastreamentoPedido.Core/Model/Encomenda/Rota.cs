@@ -1,7 +1,9 @@
 ﻿using RastreamentoPedido.Core.DomainObjects;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RastreamentoPedido.Core.Model.Encomenda
 {
+    [NotMapped]
     public class Rota : IAggregateRoot
     {
         public int Id { get; set; }

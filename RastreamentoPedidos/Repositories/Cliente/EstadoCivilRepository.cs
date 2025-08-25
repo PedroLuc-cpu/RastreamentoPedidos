@@ -6,77 +6,68 @@ using RastreamentoPedido.Core.Repositories.IEstadoCivilRepository;
 
 namespace RastreamentoPedidos.API.Repositories.Cliente
 {
-    public class EstadoCivilRepository : IEstadoCivilRepository
+    public class EstadoCivilRepository(IDapperContext dapperContext) : IEstadoCivilRepository
     {
-        private readonly IDapperContext _dapperContext;
+        private readonly IDapperContext _dapperContext = dapperContext;
 
-        public EstadoCivilRepository(IDapperContext dapperContext)
-        {
-            _dapperContext = dapperContext;
-        }
         public async Task<EstadoCivil> AdicionarEstadoCivil(EstadoCivil estadoCivil)
-        {         
-            using (var connection = _dapperContext.ConnectionCreate())
+        {
+            using var connection = _dapperContext.ConnectionCreate();
+            var paramSQL = EstadoCivilQueries.AdicionarEstadoCivil(estadoCivil);
+            var id = await connection.ExecuteScalarAsync<int>(paramSQL.Sql, paramSQL.Parametros);
+            if (id > 0)
             {
-                var paramSQL = EstadoCivilQueries.AdicionarEstadoCivil(estadoCivil);
-                var id = await connection.ExecuteScalarAsync<int>(paramSQL.Sql, paramSQL.Parametros);
-                if (id > 0)
-                {
-                    estadoCivil.Id = id;
-                }
-                return estadoCivil;
+                estadoCivil.Id = id;
             }
+            return estadoCivil;
 
         }
-
         public async Task<EstadoCivil> AtualizarEstadoCivil(EstadoCivil estadoCivil)
         {
-            var sql = "UPDATE \"estadoCivil\" SET \"EstadoCivilDescricao\" = @EstadoCivilDescricao WHERE \"idestadocivil\" = @idestadocivil;";
+            var sql = "UPDATE est_civil SET \"estCivil\" = @EstadoCivilDescricao WHERE \"idEstCivil\" = @idestadocivil;";
             var parametros = new Dictionary<string, object>
             {
                 { "idestadocivil", estadoCivil.Id },
                 { "EstadoCivilDescricao", estadoCivil.EstadoCivilDescricao }
             };
-            using (var connection = _dapperContext.ConnectionCreate())
-            {
-                var linhasAfetadas = await connection.ExecuteAsync(sql, parametros);
-                return estadoCivil;
-            }
+            using var connection = _dapperContext.ConnectionCreate();
+            var linhasAfetadas = await connection.ExecuteAsync(sql, parametros);
+            return estadoCivil;
         }
 
         public async Task<EstadoCivil> CarregarEstadoCivilPorDescricao(string descricao)
         {
-            EstadoCivil estadoCivil = new EstadoCivil();
+            EstadoCivil estadoCivil = new();
             using (var connection = _dapperContext.ConnectionCreate())
             {
                 var paramSQL = EstadoCivilQueries.ObterEstadoCivilPorDescricao(descricao);
                 var registro = await connection.QueryFirstOrDefaultAsync(paramSQL.Sql, paramSQL.Parametros);
                 if (registro != null)
                 {
-                    if (registro.idestadocivil > 0)
+                    if (registro.idEstCivil > 0)
                     {
-                        estadoCivil.Id = registro.idestadocivil;
-                        estadoCivil.EstadoCivilDescricao = registro.EstadoCivilDescricao;
+                        estadoCivil.Id = registro.idEstCivil;
+                        estadoCivil.EstadoCivilDescricao = registro.estCivil;
                     }
                 }
-                
+
             }
             return estadoCivil;
         }
 
         public async Task<EstadoCivil> CarregarEstadoCivilPorId(int id)
         {
-            EstadoCivil estadoCivil = new EstadoCivil();
+            EstadoCivil estadoCivil = new();
             using (var connection = _dapperContext.ConnectionCreate())
             {
                 var paramSQL = EstadoCivilQueries.ObterEstadoCivilPorId(id);
                 var registro = await connection.QueryFirstOrDefaultAsync(paramSQL.Sql, paramSQL.Parametros);
                 if (registro != null)
                 {
-                    if (registro.idestadocivil > 0)
+                    if (registro.idEstCivil > 0)
                     {
-                        estadoCivil.Id = registro.idestadocivil;
-                        estadoCivil.EstadoCivilDescricao = registro.EstadoCivilDescricao;
+                        estadoCivil.Id = registro.idEstCivil;
+                        estadoCivil.EstadoCivilDescricao = registro.estCivil;
                     }
                 }
 
@@ -86,37 +77,34 @@ namespace RastreamentoPedidos.API.Repositories.Cliente
 
         public async Task<IEnumerable<EstadoCivil>> CarregarTodosEstadosCivis()
         {
-            IList<EstadoCivil> estadoCivils = new List<EstadoCivil>();
-            using (var connection = _dapperContext.ConnectionCreate())
+            IList<EstadoCivil> estadoCivils = [];
+
+            using var connection = _dapperContext.ConnectionCreate();
+            var paramSQL = EstadoCivilQueries.ObterTodosEstadosCivis();
+            var registros = await connection.QueryAsync(paramSQL.Sql, paramSQL.Parametros);
+            if (registros != null)
             {
-                var paramSQL = EstadoCivilQueries.ObterTodosEstadosCivis();
-                var registros = await connection.QueryAsync(paramSQL.Sql, paramSQL.Parametros);
-                if (registros != null)
+                foreach (var registro in registros)
                 {
-                    foreach (var registro in registros)
+                    estadoCivils.Add(new EstadoCivil
                     {
-                        estadoCivils.Add(new EstadoCivil
-                        {
-                            Id = registro.idestadocivil,
-                            EstadoCivilDescricao = registro.EstadoCivilDescricao
-                        });
-                    }
+                        Id = registro.idEstCivil,
+                        EstadoCivilDescricao = registro.estCivil
+                    });
                 }
-                return estadoCivils;
             }
+            return estadoCivils;
         }
         public Task<bool> DeletarEstadoCivil(int Id)
         {
-            var sql = "DELETE FROM \"estadoCivil\" WHERE \"idestadocivil\" = @idestadocivil;";
+            var sql = "DELETE FROM est_civil WHERE \"idEstCivil\" = @idestadocivil;";
             var parametros = new Dictionary<string, object>
             {
                 { "idestadocivil", Id },
             };
-            using (var connection = _dapperContext.ConnectionCreate())
-            {
-                var linhasAfetadas = connection.ExecuteAsync(sql, parametros);
-                return Task.FromResult(linhasAfetadas.Result > 0);
-            }
+            using var connection = _dapperContext.ConnectionCreate();
+            var linhasAfetadas = connection.ExecuteAsync(sql, parametros);
+            return Task.FromResult(linhasAfetadas.Result > 0);
 
         }
     }

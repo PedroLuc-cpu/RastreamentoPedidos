@@ -1,8 +1,10 @@
 ﻿using RastreamentoPedido.Core.DomainObjects;
 using RastreamentoPedido.Core.Model.Clientes;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RastreamentoPedido.Core.Model.Encomenda
 {
+    [NotMapped]
     public class Encomendas : IAggregateRoot
     {
         public int Id { get; set; }

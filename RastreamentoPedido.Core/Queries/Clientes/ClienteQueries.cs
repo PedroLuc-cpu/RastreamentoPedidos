@@ -8,7 +8,7 @@ namespace RastreamentoPedido.Core.Queries.Clientes
         {
             return new QueryParamsSQL
             {
-                Sql = "INSERT INTO \"Clientes\" (\"Email\", \"Nome\", \"Documento\", \"Ativo\", \"Sexo\", \"EstadoCivilId\", \"DataNascimento\" )" +
+                Sql = "INSERT INTO \"cliente\" (\"email\", \"nome\", \"documento\", \"ativo\", \"sexo\", \"idEstadoCivil\", \"dataNascimento\" )" +
                       "VALUES (@Email, @Nome, @Documento, @Ativo, @Sexo, @EstadoCivilId, @DataNascimento) RETURNING *",
                 Parametros = new Dictionary<string, object>
                 {
@@ -26,7 +26,7 @@ namespace RastreamentoPedido.Core.Queries.Clientes
         {
             return new QueryParamsSQL
             {
-                Sql = "SELECT * FROM \"Clientes\"",
+                Sql = "SELECT * FROM \"cliente\"",
                 Parametros = new Dictionary<string, object>()
             };
         }
@@ -34,7 +34,7 @@ namespace RastreamentoPedido.Core.Queries.Clientes
         {
             return new QueryParamsSQL
             {
-                Sql = "SELECT * FROM \"Clientes\" WHERE \"Email\" = @Email",
+                Sql = "SELECT * FROM \"cliente\" WHERE \"email\" = @Email",
                 Parametros = new Dictionary<string, object> { { "Email", email } }
             };
         }
@@ -42,7 +42,7 @@ namespace RastreamentoPedido.Core.Queries.Clientes
         {
             return new QueryParamsSQL
             {
-                Sql = "SELECT * FROM \"Clientes\" WHERE \"Documento\" = @Documento",
+                Sql = "SELECT * FROM \"cliente\" WHERE \"documento\" = @Documento",
                 Parametros = new Dictionary<string, object> { { "Documento", documento } }
             };
         }
@@ -50,7 +50,7 @@ namespace RastreamentoPedido.Core.Queries.Clientes
         {
             return new QueryParamsSQL
             {
-                Sql = "SELECT * FROM \"Clientes\" WHERE \"idCliente\" = @Id",
+                Sql = "SELECT * FROM \"cliente\" WHERE \"idCliente\" = @Id",
                 Parametros = new Dictionary<string, object> { { "Id", id } }
             };
         }
@@ -58,7 +58,7 @@ namespace RastreamentoPedido.Core.Queries.Clientes
         {
             return new QueryParamsSQL
             {
-                Sql = "SELECT * FROM \"Clientes\" WHERE \"Nome\" ILIKE @Nome",
+                Sql = "SELECT * FROM \"cliente\" WHERE \"Nome\" ILIKE @Nome",
                 Parametros = new Dictionary<string, object> { { "Nome", $"%{nome}%" } }
             };
         }

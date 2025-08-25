@@ -25,15 +25,15 @@ namespace RastreamentoPedidos.API.Controllers.EstadoCivilController
             return estadosCivis.Any() ? Ok(estadosCivis) : CustomResponse("Nenhum estado civil encontrado.");
         }
         [HttpPost]
-        [ProducesResponseType(typeof(EstadoCivil), 200)]
+        [ProducesResponseType(typeof(EstadoCivil), 201)]
         [ProducesResponseType(typeof(EstadoCivilRequest), 400)]
         public async Task<IActionResult> AdcionarEstadoCivil([FromBody] EstadoCivilRequest estadoCivilRequest)
         {
-            EstadoCivil addCliente = new EstadoCivil();
+            EstadoCivil addCliente = new();
 
             var estadoCivilExistente = await _estadoCivilRepository.CarregarEstadoCivilPorDescricao(estadoCivilRequest.EstadoCivil);
 
-            if (estadoCivilExistente != null)
+            if (estadoCivilExistente.Id > 0)
             {
                 return CustomResponse("Estado civil já cadastrado.");
             }

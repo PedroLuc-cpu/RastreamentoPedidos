@@ -23,7 +23,7 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
         }
         public async Task<IList<Enderecos>> CarregarPorIdCliente(int idCliente)
         {
-            IList<Enderecos> enderecos = new List<Enderecos>();
+            IList<Enderecos> enderecos = [];
             enderecos.Clear();
             var sql = """SELECT * FROM enderecos WHERE "idCliente" = @IdCliente """;
             var parametros = new { IdCliente = idCliente };

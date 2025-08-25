@@ -8,7 +8,7 @@ namespace RastreamentoPedido.Core.Queries
         {
             return new QueryParamsSQL
             {
-                Sql = "SELECT idestadocivil, \"EstadoCivilDescricao\" FROM \"estadoCivil\" WHERE idestadocivil = @idestadocivil",
+                Sql = """SELECT * FROM est_civil WHERE "idEstCivil" = @idestadocivil;""",
                 Parametros = new Dictionary<string, object> { { "idestadocivil", id } }
             };
         }
@@ -16,7 +16,7 @@ namespace RastreamentoPedido.Core.Queries
         {
             return new QueryParamsSQL
             {
-                Sql = "SELECT idestadocivil, \"EstadoCivilDescricao\" FROM \"estadoCivil\"",
+                Sql = """SELECT * FROM est_civil """,
                 Parametros = new Dictionary<string, object>()
             };
         }
@@ -24,7 +24,7 @@ namespace RastreamentoPedido.Core.Queries
         {
             return new QueryParamsSQL
             {
-                Sql = "SELECT idestadocivil, \"EstadoCivilDescricao\" FROM \"estadoCivil\" WHERE \"EstadoCivilDescricao\" = @EstadoCivilDescricao",
+                Sql = """SELECT * FROM est_civil WHERE "estCivil" = @EstadoCivilDescricao""",
                 Parametros = new Dictionary<string, object> { { "EstadoCivilDescricao", estadoCivilDescricao } }
             };
         }
@@ -32,7 +32,7 @@ namespace RastreamentoPedido.Core.Queries
         {
             return new QueryParamsSQL
             {
-                Sql = "INSERT INTO \"estadoCivil\" (\"EstadoCivilDescricao\") VALUES (@EstadoCivilDescricao) RETURNING idestadocivil",
+                Sql = "INSERT INTO est_civil (\"estCivil\") VALUES (@EstadoCivilDescricao) RETURNING \"idEstCivil\"",
                 Parametros = new Dictionary<string, object>
                 {
                     { "EstadoCivilDescricao", estadoCivil.EstadoCivilDescricao }

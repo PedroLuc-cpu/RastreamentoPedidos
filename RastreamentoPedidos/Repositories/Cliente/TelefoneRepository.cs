@@ -46,7 +46,7 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
 
         public async Task<IList<Telefone>> CarregarPorIdCliente(int idCliente)
         {
-            IList<Telefone> telefones = new List<Telefone>();
+            IList<Telefone> telefones = [];
             using (var connection = _dapper.ConnectionCreate())
             {
                 var paramSQL = TelefoneQueries.ObterTelefonePorIdCliente(idCliente);
@@ -63,7 +63,7 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
 
         public async Task<Telefone> ObterTelefonePorIdCliente(int idCliente)
         {
-            Telefone telefone = new Telefone();
+            Telefone telefone = new();
             using (var connection = _dapper.ConnectionCreate())
             {
                 var paramSQL = TelefoneQueries.ObterTelefonePadraoPorIdCliente(idCliente);

@@ -1,8 +1,10 @@
 ﻿using RastreamentoPedido.Core.DomainObjects;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RastreamentoPedido.Core.Model.Endereco
 {
+    [NotMapped]
     public class Cidade : IAggregateRoot
     {
         [Key]

@@ -1,0 +1,1 @@
+ALTER TABLE cliente ADD email VARCHAR(50)

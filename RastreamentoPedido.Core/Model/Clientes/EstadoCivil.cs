@@ -1,8 +1,9 @@
-﻿
-using RastreamentoPedido.Core.DomainObjects;
+﻿using RastreamentoPedido.Core.DomainObjects;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RastreamentoPedido.Core.Model.Clientes
 {
+    [NotMapped]
     public class EstadoCivil : IAggregateRoot
     {
         public int Id { get; set; } = 0;
