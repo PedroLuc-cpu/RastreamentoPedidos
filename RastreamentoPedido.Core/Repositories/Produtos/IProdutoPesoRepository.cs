@@ -1,4 +1,4 @@
-﻿using RastreamentoPedido.Core.Model.Produto;
+﻿using RastreamentoPedido.Core.Model.ProdutoModel;
 
 namespace RastreamentoPedido.Core.Repositories.Produtos
 {
@@ -7,7 +7,7 @@ namespace RastreamentoPedido.Core.Repositories.Produtos
         Task<ProdutoPeso> Inserir(ProdutoPeso produtoPeso);
         Task<ProdutoPeso> Alterar(ProdutoPeso produtoPeso);
         Task<ProdutoPeso> CarregarPorId(int id);
-        Task<ProdutoPeso> CarregarPorNome(string nome);
-        Task<IList<ProdutoPeso>> ListarTodos();
+        Task<ProdutoPeso> CarregarPorIdProduto(int idProduto);
+        Task<IList<ProdutoPeso>> ListarTodos(int idProduto);
     }
 }

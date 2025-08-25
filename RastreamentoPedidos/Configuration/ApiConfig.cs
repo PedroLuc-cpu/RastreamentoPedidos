@@ -6,11 +6,13 @@ using RastreamentoPedido.Core.Data;
 using RastreamentoPedido.Core.Repositories.Clientes;
 using RastreamentoPedido.Core.Repositories.Encomenda;
 using RastreamentoPedido.Core.Repositories.IEstadoCivilRepository;
+using RastreamentoPedido.Core.Repositories.Produtos;
 using RastreamentoPedido.Core.Service;
 using RastreamentoPedidos.API.Configuration.ModelBinders;
 using RastreamentoPedidos.API.Hubs;
 using RastreamentoPedidos.API.Repositories.Cliente;
 using RastreamentoPedidos.API.Repositories.Encomendas;
+using RastreamentoPedidos.API.Repositories.Produto;
 using RastreamentoPedidos.API.Services;
 using RastreamentoPedidos.Data;
 using RastreamentoPedidos.Repositories;
@@ -112,10 +114,17 @@ namespace RastreamentoPedidos.API.Configuration
             services.AddScoped<ITpLogradouroRepository, TpLogradouroRepository>();
             services.AddScoped<IUFRepository, UFRepository>();
 
-            // Encomendas
+            /// Encomendas
             services.AddScoped<IStatusEncomendaRepository, StatusEncomendaRepository>();
             services.AddScoped<IEncomendaRepository, EncomendaRepository>();
             services.AddHttpClient<ICidadeService, CidadeServices>();
+
+            /// Produtos
+            services.AddScoped<IProdutoRepository, ProdutoRepository>();
+            services.AddScoped<IProdutoCategoriaRepository, ProdutoCategoriaRepository>();
+            services.AddScoped<IProdutoMarcaRepository, ProdutoMarcaRepository>();
+            services.AddScoped<IProdutoPesoRepository, ProdutoPesoRepository>();
+            services.AddScoped<IProdutoEncargoRepository, ProdutoEncargoRepository>();
         }
 
         public static class UserHandler

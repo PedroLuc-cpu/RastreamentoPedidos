@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using RastreamentoPedido.Core.Data;
 using RastreamentoPedido.Core.Model.Encomenda;
-using RastreamentoPedido.Core.Model.Produto;
+using RastreamentoPedido.Core.Model.ProdutoModel;
 using RastreamentoPedidos.Model;
 
 namespace RastreamentoPedidos.API.Data

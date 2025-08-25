@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RastreamentoPedido.Core.Model.Produto
+namespace RastreamentoPedido.Core.Model.ProdutoModel
 {
     [Table("produtoPeso")]
     public class ProdutoPeso
