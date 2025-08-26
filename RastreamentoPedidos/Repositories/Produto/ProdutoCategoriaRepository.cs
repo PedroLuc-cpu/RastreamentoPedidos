@@ -11,7 +11,7 @@ namespace RastreamentoPedidos.API.Repositories.Produto
     
         public async Task<ProdutoCategoria> Alterar(ProdutoCategoria produtoCategoria)
         {
-            var sql = """UPDATE "produtoCategoria" SET "produtoId" = @IdProduto, "nome" = @NomeCategoria WHERE "id" = @Id;""";
+            var sql = """UPDATE "produtoCategoria" SET "nome" = @NomeCategoria WHERE "id" = @Id;""";
             var parameters = new { produtoCategoria.Id, NomeCategoria = produtoCategoria.Nome };
             using var conexao = _dapperContext.ConnectionCreate();
             await conexao.ExecuteAsync(sql, parameters);
@@ -50,7 +50,7 @@ namespace RastreamentoPedidos.API.Repositories.Produto
 
         public async Task<ProdutoCategoria> Inserir(ProdutoCategoria produtoCategoria)
         {
-            var sql = """INSERT INTO "produtoCategoria"("produtoId", nome) VALUES (@IdProduto, @NomeCategoria);""";
+            var sql = """INSERT INTO "produtoCategoria"(nome) VALUES (@NomeCategoria);""";
             var parameters = new { NomeCategoria = produtoCategoria.Nome };
             using var conexao = _dapperContext.ConnectionCreate();
             var id = await conexao.ExecuteScalarAsync<int>(sql, parameters);

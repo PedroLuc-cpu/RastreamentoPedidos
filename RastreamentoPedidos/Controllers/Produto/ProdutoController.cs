@@ -362,7 +362,7 @@ namespace RastreamentoPedidos.API.Controllers.Produto
         [HttpPost("categoria/adicionar")]
         [ProducesResponseType(typeof(ProdutoCategoriaResponse), 201)]
         [ProducesResponseType(typeof(ResponseResult), 400)]
-        public async Task<IActionResult> AdicionarCategoria([FromBody] ProdutoCategoriaRequest produtoCategoria)
+        public async Task<IActionResult> AdicionarCategoria([FromBody] ProdutoCategoriaInserirRequest produtoCategoria)
         {
             LimparErrosProcessamento();
             try
@@ -378,7 +378,6 @@ namespace RastreamentoPedidos.API.Controllers.Produto
                 }
                 var categoriaAdicionada = await _produtoCategoriaRepository.Inserir(new ProdutoCategoria
                 {
-                    Id = 0,
                     Nome = produtoCategoria.Nome
                 });
                 return Ok(categoriaAdicionada);
@@ -397,7 +396,7 @@ namespace RastreamentoPedidos.API.Controllers.Produto
             try
             {
                 var categorias = await _produtoCategoriaRepository.ListarTodos();
-                if (categorias.Count == 0)
+                if (categorias.Count > 0)
                 {
                     return Ok(categorias);
                 }
@@ -459,7 +458,7 @@ namespace RastreamentoPedidos.API.Controllers.Produto
         [HttpPut("categoria/alterar")]
         [ProducesResponseType(typeof(ProdutoCategoriaResponse), 200)]
         [ProducesResponseType(typeof(ResponseResult), 400)]
-        public async Task<IActionResult> AlterarCategoria([FromBody] ProdutoCategoriaRequest produtoCategoria)
+        public async Task<IActionResult> AlterarCategoria([FromBody] ProdutoCategoriaAlterarRequest produtoCategoria)
         {
             LimparErrosProcessamento();
             try

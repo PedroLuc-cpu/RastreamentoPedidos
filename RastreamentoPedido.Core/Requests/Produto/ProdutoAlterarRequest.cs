@@ -19,7 +19,7 @@ namespace RastreamentoPedido.Core.Requests.Produto
         public int EstoqueMaximo { get; set; }
         public int EstoqueReservado { get; set; }
         public bool Ativo { get; set; } = true;
-        public ProdutoCategoriaRequest Categoria { get; set; } = new();
+        public ProdutoCategoriaAlterarRequest Categoria { get; set; } = new();
         public ProdutoMarcaRequest Marca { get; set; } = new();
         public string ImagemUrl { get; set; } = string.Empty;
 
