@@ -19,8 +19,8 @@ namespace RastreamentoPedido.Core.Requests.Produto
         public int EstoqueMaximo { get; set; }
         public int EstoqueReservado { get; set; }
         public bool Ativo { get; set; } = true;
-        public ProdutoCategoriaAlterarRequest Categoria { get; set; } = new();
-        public ProdutoMarcaRequest Marca { get; set; } = new();
+        public ProdutoCategoriaInserirRequest Categoria { get; set; } = new();
+        public ProdutoMarcaInserirRequest Marca { get; set; } = new();
         public string ImagemUrl { get; set; } = string.Empty;
 
         private readonly ValidationResult _validationResult = new();

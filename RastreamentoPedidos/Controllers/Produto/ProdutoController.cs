@@ -228,7 +228,7 @@ namespace RastreamentoPedidos.API.Controllers.Produto
         [HttpPost("marca/adicionar")]
         [ProducesResponseType(typeof(ProdutoMarcaResponse), 201)]
         [ProducesResponseType(typeof(ResponseResult), 400)]
-        public async Task<IActionResult> AdicionarMarca([FromBody] ProdutoMarcaRequest produtoMarca)
+        public async Task<IActionResult> AdicionarMarca([FromBody] ProdutoMarcaAlterarRequest produtoMarca)
         {
             LimparErrosProcessamento();
             try
@@ -325,7 +325,7 @@ namespace RastreamentoPedidos.API.Controllers.Produto
         [HttpPut("marca/alterar")]
         [ProducesResponseType(typeof(ProdutoMarcaResponse), 200)]
         [ProducesResponseType(typeof(ResponseResult), 400)]
-        public async Task<IActionResult> AlterarMarca([FromBody] ProdutoMarcaRequest produtoMarca)
+        public async Task<IActionResult> AlterarMarca([FromBody] ProdutoMarcaAlterarRequest produtoMarca)
         {
             LimparErrosProcessamento();
             try
@@ -790,8 +790,8 @@ namespace RastreamentoPedidos.API.Controllers.Produto
                 EstoqueMaximo = produtoRequest.EstoqueMaximo,
                 EstoqueReservado = produtoRequest.EstoqueReservado,
                 Ativo = produtoRequest.Ativo,
-                ProdutoCategoria = await _produtoCategoriaRepository.CarregarPorId(produtoRequest.Categoria.IdCategoria),
-                ProdutoMarca = await _produtoMarcaRepository.CarregarPorId(produtoRequest.Marca.IdMarca),
+                ProdutoCategoria = await _produtoCategoriaRepository.CarregarPorNome(produtoRequest.Categoria.Nome),
+                ProdutoMarca = await _produtoMarcaRepository.CarregarPorNome(produtoRequest.Marca.Nome),
                 ImagemUrl = produtoRequest.ImagemUrl
             };
         }
