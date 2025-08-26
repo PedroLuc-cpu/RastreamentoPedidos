@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RastreamentoPedidos.API.Data;
@@ -11,9 +12,11 @@ using RastreamentoPedidos.API.Data;
 namespace RastreamentoPedidos.API.Migrations
 {
     [DbContext(typeof(RastreamentoPedidosContext))]
-    partial class RastreamentoPedidosContextModelSnapshot : ModelSnapshot
+    [Migration("20250826174407_ConfigColunaNumericosParaIntegerTProduto_CEstoque")]
+    partial class ConfigColunaNumericosParaIntegerTProduto_CEstoque
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -284,20 +287,20 @@ namespace RastreamentoPedidos.API.Migrations
                         .HasColumnName("dataCadastro")
                         .HasDefaultValueSql("NOW()");
 
-                    b.Property<int?>("EstoqueAtual")
-                        .HasColumnType("integer")
+                    b.Property<decimal?>("EstoqueAtual")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("estoqueAtual");
 
-                    b.Property<int?>("EstoqueMaximo")
-                        .HasColumnType("integer")
+                    b.Property<decimal?>("EstoqueMaximo")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("estoqueMaximo");
 
-                    b.Property<int?>("EstoqueMinimo")
-                        .HasColumnType("integer")
+                    b.Property<decimal?>("EstoqueMinimo")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("estoqueMinimo");
 
-                    b.Property<int?>("EstoqueReservado")
-                        .HasColumnType("integer")
+                    b.Property<decimal?>("EstoqueReservado")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("estoqueReservado");
 
                     b.Property<int?>("IdCategoria")

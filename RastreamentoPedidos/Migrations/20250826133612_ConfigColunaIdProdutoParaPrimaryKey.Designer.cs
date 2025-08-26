@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RastreamentoPedidos.API.Data;
@@ -11,9 +12,11 @@ using RastreamentoPedidos.API.Data;
 namespace RastreamentoPedidos.API.Migrations
 {
     [DbContext(typeof(RastreamentoPedidosContext))]
-    partial class RastreamentoPedidosContextModelSnapshot : ModelSnapshot
+    [Migration("20250826133612_ConfigColunaIdProdutoParaPrimaryKey")]
+    partial class ConfigColunaIdProdutoParaPrimaryKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -208,7 +211,7 @@ namespace RastreamentoPedidos.API.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("IdProduto")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<double>("ValorDespesas")
                         .HasColumnType("double precision")
@@ -257,7 +260,7 @@ namespace RastreamentoPedidos.API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("id_produto");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -284,20 +287,20 @@ namespace RastreamentoPedidos.API.Migrations
                         .HasColumnName("dataCadastro")
                         .HasDefaultValueSql("NOW()");
 
-                    b.Property<int?>("EstoqueAtual")
-                        .HasColumnType("integer")
+                    b.Property<double?>("EstoqueAtual")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("estoqueAtual");
 
-                    b.Property<int?>("EstoqueMaximo")
-                        .HasColumnType("integer")
+                    b.Property<double?>("EstoqueMaximo")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("estoqueMaximo");
 
-                    b.Property<int?>("EstoqueMinimo")
-                        .HasColumnType("integer")
+                    b.Property<double?>("EstoqueMinimo")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("estoqueMinimo");
 
-                    b.Property<int?>("EstoqueReservado")
-                        .HasColumnType("integer")
+                    b.Property<double?>("EstoqueReservado")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("estoqueReservado");
 
                     b.Property<int?>("IdCategoria")
@@ -321,11 +324,11 @@ namespace RastreamentoPedidos.API.Migrations
                         .HasColumnType("varchar(500)")
                         .HasColumnName("observacao");
 
-                    b.Property<decimal?>("PrecoCusto")
+                    b.Property<double?>("PrecoCusto")
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("precoCusto");
 
-                    b.Property<decimal>("PrecoVenda")
+                    b.Property<double>("PrecoVenda")
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("precoVenda");
 
@@ -357,7 +360,7 @@ namespace RastreamentoPedidos.API.Migrations
                         .HasColumnName("dtPesoAtualizado");
 
                     b.Property<int>("IdProduto")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<double>("PesoBruto")
                         .HasColumnType("double precision")

@@ -4,11 +4,12 @@ namespace RastreamentoPedido.Core.Repositories.Produtos
 {
     public interface IProdutoRepository
     {
-        Task<Produto> Inserir(Produto produto);
-        Task<Produto> Alterar(Produto produto);
-        Task<Produto> CarregarPorId(int id);
-        Task<Produto> CarregarPorCodigo(string codigo);
-        Task<Produto> CarregarPorNome(string nome);
-        Task<IList<Produto>> ListarTodos(int pagina = 1, int tamanhoPagina = 25);
+        Task<ProdutoModel> Inserir(ProdutoModel produto);
+        Task<ProdutoModel> Alterar(ProdutoModel produto);
+        Task<ProdutoModel> CarregarPorId(int id);
+        Task<ProdutoModel> CarregarPorCodigo(string codigo);
+        Task<ProdutoModel> CarregarPorCodigoBarra(string codigoBarra);
+        Task<ProdutoModel> CarregarPorNome(string nome);
+        Task<IList<ProdutoModel>> ListarTodos(int pagina, int tamanhoPagina, string nome, bool ativo);
     }
 }

@@ -22,8 +22,7 @@ namespace RastreamentoPedidos.API.Repositories.Produto
                 """;
             var paramentro = new
             {
-                produtoEncargo.ProdutoId,
-                IdProduto = produtoEncargo.ProdutoId,
+                produtoEncargo.IdProduto,
                 produtoEncargo.ValorFrete,
                 produtoEncargo.ValorSeguro,
                 produtoEncargo.ValorDespesas,
@@ -44,7 +43,7 @@ namespace RastreamentoPedidos.API.Repositories.Produto
             if (registro != null)
             {
                 produtoEncargos.Id = registro.id_encargos;
-                produtoEncargos.ProdutoId = registro.ProdutoId;
+                produtoEncargos.IdProduto = registro.ProdutoId;
                 produtoEncargos.ValorFrete = registro.valorFrete;
                 produtoEncargos.ValorSeguro = registro.valorSeguro;
                 produtoEncargos.ValorDespesas = registro.valorDespesas;
@@ -63,7 +62,7 @@ namespace RastreamentoPedidos.API.Repositories.Produto
             if (registro != null)
             {
                 produtoEncargos.Id = registro.id_encargos;
-                produtoEncargos.ProdutoId = registro.ProdutoId;
+                produtoEncargos.IdProduto = registro.ProdutoId;
                 produtoEncargos.ValorFrete = registro.valorFrete;
                 produtoEncargos.ValorSeguro = registro.valorSeguro;
                 produtoEncargos.ValorDespesas = registro.valorDespesas;
@@ -75,7 +74,7 @@ namespace RastreamentoPedidos.API.Repositories.Produto
         public async Task<ProdutoEncargos> Inserir(ProdutoEncargos produtoEncargo)
         {
             var sql = """INSERT INTO "produtoEncargos"("ProdutoId", "valorFrete", "valorSeguro", "valorDespesas", "valorOutros")	VALUES (?, ?, ?, ?, ?);""";
-            var paramentro = new { produtoEncargo.ProdutoId, produtoEncargo.ValorFrete, produtoEncargo.ValorSeguro, produtoEncargo.ValorDespesas, produtoEncargo.ValorOutros };
+            var paramentro = new { produtoEncargo.IdProduto, produtoEncargo.ValorFrete, produtoEncargo.ValorSeguro, produtoEncargo.ValorDespesas, produtoEncargo.ValorOutros };
             using var conexao = _dapperContext.ConnectionCreate();
             var id = await conexao.ExecuteScalarAsync<int>(sql, paramentro);
             produtoEncargo.Id = id;
@@ -99,7 +98,7 @@ namespace RastreamentoPedidos.API.Repositories.Produto
                     listar.Add(new ProdutoEncargos
                     {
                         Id = registro.id_encargos,
-                        ProdutoId = registro.ProdutoId,
+                        IdProduto = registro.ProdutoId,
                         ValorFrete = registro.valorFrete,
                         ValorSeguro = registro.valorSeguro,
                         ValorDespesas = registro.valorDespesas,

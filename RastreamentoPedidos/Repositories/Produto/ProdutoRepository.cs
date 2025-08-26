@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using RastreamentoPedido.Core.Data;
+using RastreamentoPedido.Core.Model.ProdutoModel;
 using RastreamentoPedido.Core.Repositories.Produtos;
 
 namespace RastreamentoPedidos.API.Repositories.Produto
@@ -9,7 +10,7 @@ namespace RastreamentoPedidos.API.Repositories.Produto
         private readonly IDapperContext _dapperContext = dapperContext;
         private readonly IProdutoCategoriaRepository _produtoCategoriaRepository = produtoCategoria;
         private readonly IProdutoMarcaRepository _produtoMarcaRepository = produtoMarca;
-        public async Task<RastreamentoPedido.Core.Model.ProdutoModel.Produto> Alterar(RastreamentoPedido.Core.Model.ProdutoModel.Produto produto)
+        public async Task<ProdutoModel> Alterar(ProdutoModel produto)
         {
             var sql = """
                 UPDATE produtos
@@ -44,49 +45,62 @@ namespace RastreamentoPedidos.API.Repositories.Produto
             return produto;
         }
 
-        public async Task<RastreamentoPedido.Core.Model.ProdutoModel.Produto> CarregarPorCodigo(string codigo)
+        public async Task<ProdutoModel> CarregarPorCodigo(string codigo)
         {
             var sql = "SELECT * FROM produtos WHERE codigo = @Codigo";
             var parametros = new {Codigo = codigo};
             using var conexao = _dapperContext.ConnectionCreate();
-            var registro = await conexao.QueryFirstOrDefault(sql, parametros);
+            var registro = await conexao.QueryFirstOrDefaultAsync(sql, parametros);
             if (registro != null)
             {
-                return PreencherObj(registro);
+                return await PreencherObj(registro);
             }
-            return new RastreamentoPedido.Core.Model.ProdutoModel.Produto();
+            return new ProdutoModel();
+        }
+        public async Task<ProdutoModel> CarregarPorCodigoBarra(string codigoBarra)
+        {
+            var sql = "SELECT * FROM produtos WHERE \"codigoBarras\" = @CodigoBarra";
+            var parametros = new { CodigoBarra = codigoBarra };
+            using var conexao = _dapperContext.ConnectionCreate();
+            var registro = await conexao.QueryFirstOrDefaultAsync(sql, parametros);
+            if (registro != null)
+            {
+                return await PreencherObj(registro);
+            }
+            return new ProdutoModel();
         }
 
-        public async Task<RastreamentoPedido.Core.Model.ProdutoModel.Produto> CarregarPorId(int id)
+        public async Task<ProdutoModel> CarregarPorId(int id)
         {
             var sql = "SELECT * FROM produtos WHERE id_produto = @IdProduto";
             var parametros = new { IdProduto = id };
             using var conexao = _dapperContext.ConnectionCreate();
-            var registro = await conexao.QueryFirstOrDefault(sql, parametros);
+            var registro = await conexao.QueryFirstOrDefaultAsync(sql, parametros);
             if (registro != null)
             {
-                return PreencherObj(registro);
+                return await PreencherObj(registro);
             }
-            return new RastreamentoPedido.Core.Model.ProdutoModel.Produto();
+            return new ProdutoModel();
         }
 
-        public async Task<RastreamentoPedido.Core.Model.ProdutoModel.Produto> CarregarPorNome(string nome)
+        public async Task<ProdutoModel> CarregarPorNome(string nome)
         {
             var sql = "SELECT * FROM produtos WHERE nome = @Nome";
             var parametros = new { Nome = nome };
             using var conexao = _dapperContext.ConnectionCreate();
-            var registro = await conexao.QueryFirstOrDefault(sql, parametros);
+            var registro = await conexao.QueryFirstOrDefaultAsync(sql, parametros);
             if (registro != null)
             {
-                return PreencherObj(registro);
+                return await PreencherObj(registro);
             }
-            return new RastreamentoPedido.Core.Model.ProdutoModel.Produto();
+            return new ProdutoModel();
         }
 
-        public async Task<RastreamentoPedido.Core.Model.ProdutoModel.Produto> Inserir(RastreamentoPedido.Core.Model.ProdutoModel.Produto produto)
+        public async Task<ProdutoModel> Inserir(ProdutoModel produto)
         {
             var sql = """
                 INSERT INTO produtos(
+                    id_produto,
                     nome, 
                     observacao, 
                     "codigoBarras", 
@@ -104,6 +118,7 @@ namespace RastreamentoPedidos.API.Repositories.Produto
                     "urlImagem"
                     )	
                     VALUES (
+                    @IdProduto
                     @Nome,
                     @Obs,
                     @CodigoBarras,
@@ -122,6 +137,7 @@ namespace RastreamentoPedidos.API.Repositories.Produto
                 """;
             var parametros = new
             {
+                IdProduto = produto.Id,
                 produto.Nome,
                 Obs = produto.Observacao,
                 produto.CodigoBarras,
@@ -144,14 +160,40 @@ namespace RastreamentoPedidos.API.Repositories.Produto
             return produto;
         }
 
-        public Task<IList<RastreamentoPedido.Core.Model.ProdutoModel.Produto>> ListarTodos(int pagina = 1, int tamanhoPagina = 25)
+        public async Task<IList<ProdutoModel>> ListarTodos(int pagina, int tamanhoPagina, string nome, bool ativo)
         {
-            throw new NotImplementedException();
+            IList<ProdutoModel> lista = [];
+            var sql = """
+                SELECT id_produto, nome, observacao, "codigoBarras",
+                       codigo, "unidadeMedida", "precoVenda", "precoCusto", 
+                       "estoqueAtual", "estoqueMinimo", "estoqueMaximo", 
+                       "estoqueReservado", ativo, "dataCadastro", 
+                       "idCategoria", "idMarca", "urlImagem"
+                FROM produtos WHERE nome ILIKE @Nome AND ativo = @Ativo Limit @Limit OFFSET @OFFSET;
+                """;
+            var parametros = new
+            {
+                Nome = $"%{nome}%",
+                Ativo = ativo,
+                Limit = tamanhoPagina,
+                OFFSET = (pagina - 1) * tamanhoPagina
+            };
+            using var conexao = _dapperContext.ConnectionCreate();
+            var registros = await conexao.QueryAsync(sql, parametros);
+            if (registros != null)
+            {
+                
+                foreach (var item in registros)
+                {
+                    lista.Add(await PreencherObj(item));
+                }
+            }
+            return lista;
         }
 
-        private async Task<RastreamentoPedido.Core.Model.ProdutoModel.Produto> PreencherObj(dynamic item)
+        private async Task<ProdutoModel> PreencherObj(dynamic item)
         {
-            RastreamentoPedido.Core.Model.ProdutoModel.Produto produto = new();
+            ProdutoModel produto = new();
             try
             {
                 produto.Id = item.id_produto;

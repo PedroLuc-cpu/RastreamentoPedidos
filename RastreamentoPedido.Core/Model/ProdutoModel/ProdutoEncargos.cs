@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace RastreamentoPedido.Core.Model.ProdutoModel
 {
@@ -10,7 +11,7 @@ namespace RastreamentoPedido.Core.Model.ProdutoModel
         [Column("id_encargos")]
         public int Id { get; set; }
         [ForeignKey("id_produto")]
-        public int ProdutoId { get; set; }
+        public int IdProduto { get; set; }
         [Column("dataUltimoEncarco")]
         public DateTime UltimoEncarco;
         [Column("valorFrete")]
@@ -23,5 +24,8 @@ namespace RastreamentoPedido.Core.Model.ProdutoModel
         public double ValorOutros { get; set; } = 0.00;
         [NotMapped]
         public double ValorTotal => ValorFrete + ValorSeguro + ValorDespesas + ValorOutros;
+        [NotMapped]
+        [JsonIgnore]
+        public ProdutoModel Produto { get; set; } = new ProdutoModel();
     }
 }

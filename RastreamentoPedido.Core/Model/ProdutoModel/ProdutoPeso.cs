@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace RastreamentoPedido.Core.Model.ProdutoModel
 {
@@ -18,5 +19,8 @@ namespace RastreamentoPedido.Core.Model.ProdutoModel
         public double PesoLiquido { get; set; } = 0.00;
         [Column("dtPesoAtualizado")]
         public DateTime DtPesoAtualizado { get; set; } = DateTime.Now;
+        [NotMapped]
+        [JsonIgnore]
+        public ProdutoModel Produto { get; set; } = new ProdutoModel();
     }
 }
