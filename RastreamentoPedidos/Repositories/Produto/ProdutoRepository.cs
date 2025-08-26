@@ -14,7 +14,7 @@ namespace RastreamentoPedidos.API.Repositories.Produto
         {
             var sql = """
                 UPDATE produtos
-                SET nome= @Nome, observacao= @Observacao, "codigoBarras"= @CodigoBarra, codigo= @Codigo, 
+                SET nome= @Nome, observacao= @Observacao, "codigoBarras"= @CodigoBarras, codigo= @Codigo, 
                     "unidadeMedida"= @UnidadeMedida, "precoVenda"= @PrecoVenda, "precoCusto"= @PrecoCusto,
                     "estoqueAtual"= @EstoqueAtual, "estoqueMinimo"= @EstoqueMinimo, "estoqueMaximo"= @EstoqueMaximo, 
                     "estoqueReservado"= @EstoqueReservado, ativo= @Ativo, "idCategoria"= @IdCategoria, "idMarca"= @IdMarca, "urlImagem"= @UrlImagem
@@ -35,8 +35,8 @@ namespace RastreamentoPedidos.API.Repositories.Produto
                 produto.EstoqueMaximo,
                 produto.EstoqueReservado,
                 produto.Ativo,
-                produto.IdCategoria,
-                produto.IdMarca,
+                IdCategoria = produto.ProdutoCategoria.Id,
+                idMarca = produto.ProdutoMarca.Id,
                 UrlImagem = produto.ImagemUrl,
             };
 
@@ -100,7 +100,6 @@ namespace RastreamentoPedidos.API.Repositories.Produto
         {
             var sql = """
                 INSERT INTO produtos(
-                    id_produto,
                     nome, 
                     observacao, 
                     "codigoBarras", 
@@ -118,7 +117,6 @@ namespace RastreamentoPedidos.API.Repositories.Produto
                     "urlImagem"
                     )	
                     VALUES (
-                    @IdProduto
                     @Nome,
                     @Obs,
                     @CodigoBarras,
@@ -137,7 +135,6 @@ namespace RastreamentoPedidos.API.Repositories.Produto
                 """;
             var parametros = new
             {
-                IdProduto = produto.Id,
                 produto.Nome,
                 Obs = produto.Observacao,
                 produto.CodigoBarras,
@@ -150,8 +147,8 @@ namespace RastreamentoPedidos.API.Repositories.Produto
                 produto.EstoqueMaximo,
                 produto.EstoqueReservado,
                 produto.Ativo,
-                produto.IdCategoria,
-                produto.IdMarca,
+                IdCategoria = produto.ProdutoCategoria.Id <= 0 ? null : produto.ProdutoCategoria.Id,
+                IdMarca = produto.ProdutoMarca.Id <= 0 ? null : produto.ProdutoMarca.Id,
                 UrlImagem = produto.ImagemUrl,
             };
             using var conexao = _dapperContext.ConnectionCreate();

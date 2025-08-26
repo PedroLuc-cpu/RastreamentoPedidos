@@ -86,21 +86,6 @@ namespace RastreamentoPedidos.API.Controllers.Produto
                 {
                     return CustomResponse("Nenhum produto foi encontrado com o ID informado.");
                 }
-                var produtoCodigoBarraExitente = await _produtoRepository.CarregarPorCodigoBarra(produto.CodigoBarras);
-                if (produtoCodigoBarraExitente.Id > 0 && produtoCodigoBarraExitente.Id != produto.IdProduto)
-                {
-                    return CustomResponse("Já existe um produto cadastrado com o código de barras informado.");
-                }
-                var produtoCodigoExistente = await _produtoRepository.CarregarPorCodigo(produto.Codigo);
-                if (produtoCodigoExistente.Id > 0 && produtoCodigoExistente.Id != produto.IdProduto)
-                {
-                    return CustomResponse("Já existe um produto cadastrado com o código informado.");
-                }
-                var produtoNomeExistente = await _produtoRepository.CarregarPorNome(produto.Nome);
-                if (produtoNomeExistente.Id > 0 && produtoNomeExistente.Id != produto.IdProduto)
-                {
-                    return CustomResponse("Já existe um produto cadastrado com o nome informado.");
-                }
                 ProdutoModel produtoMapeado = await MapearProduto(produto);
                 produtoMapeado.Id = produto.IdProduto;
                 var produtoAlterado = await _produtoRepository.Alterar(produtoMapeado);
@@ -772,7 +757,6 @@ namespace RastreamentoPedidos.API.Controllers.Produto
         {
             return new ProdutoModel
             {
-                Id = 0,
                 Nome = produtoRequest.Nome,
                 Observacao = produtoRequest.Observacao,
                 CodigoBarras = produtoRequest.CodigoBarras,
@@ -807,8 +791,8 @@ namespace RastreamentoPedidos.API.Controllers.Produto
                 EstoqueMaximo = produtoRequest.EstoqueMaximo,
                 EstoqueReservado = produtoRequest.EstoqueReservado,
                 Ativo = produtoRequest.Ativo,
-                ProdutoCategoria = await _produtoCategoriaRepository.CarregarPorNome(produtoRequest.Categoria.Nome),
-                ProdutoMarca = await _produtoMarcaRepository.CarregarPorNome(produtoRequest.Marca.Nome),
+                ProdutoCategoria = await _produtoCategoriaRepository.CarregarPorId(produtoRequest.Categoria.IdCategoria),
+                ProdutoMarca = await _produtoMarcaRepository.CarregarPorId(produtoRequest.Marca.IdMarca),
                 ImagemUrl = produtoRequest.ImagemUrl
             };
         }

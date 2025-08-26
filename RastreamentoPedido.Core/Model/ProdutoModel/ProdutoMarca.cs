@@ -9,7 +9,7 @@ namespace RastreamentoPedido.Core.Model.ProdutoModel
     {
         [Key]
         [Column("id_marca")]
-        public int Id { get; set; }
+        public int? Id { get; set; }
         [Column("nome")]
         public string Nome { get; set; } = string.Empty;
         [NotMapped]

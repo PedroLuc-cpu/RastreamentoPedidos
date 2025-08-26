@@ -1,9 +1,7 @@
 ﻿using Dapper;
-using Microsoft.Win32;
 using RastreamentoPedido.Core.Data;
 using RastreamentoPedido.Core.Model.ProdutoModel;
 using RastreamentoPedido.Core.Repositories.Produtos;
-using System.Collections.Generic;
 
 namespace RastreamentoPedidos.API.Repositories.Produto
 {
