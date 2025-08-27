@@ -1,0 +1,117 @@
+﻿using Bogus;
+using Microsoft.AspNetCore.Mvc.Testing;
+using RastreamentoPedido.Core.Data;
+using RastreamentoPedido.Core.Model.Clientes;
+using RastreamentoPedido.Core.Model.Usuario;
+using RastreamentoPedido.Core.Requests.Cliente;
+using RastreamentoPedido.Test.Configuration;
+using RastreamentoPedido.Test.Extensions;
+using RastreamentoPedidos.Data;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Json;
+using System.Text.Json;
+
+namespace RastreamentoPedido.Test.TestesApi.Utils
+{
+    public class MetodosAuxiliares
+    {
+        private readonly RastreamentoPedidoWebApplicationFactory<Program> _factory;
+        private readonly Faker _faker;
+        private readonly HttpClient _client;
+        private readonly IDapperContext _dapperContext;
+
+        public MetodosAuxiliares(RastreamentoPedidoWebApplicationFactory<Program> factory)
+        {
+            _factory = factory;
+            _faker = new Faker("pt_BR");
+            _client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false,
+                BaseAddress = new Uri("http://localhost")
+
+            });
+            _dapperContext = new DapperContext(_factory.Configuration);
+            
+        }
+
+        public HttpClient Client => _client;
+        public Faker Faker => _faker;
+
+        public async Task RealizarLoginApiAdministrador()
+        {
+            if (!TokenValido(Sessions.Instance.UserTokenAdministrador))
+            {
+                var userData = new UsuarioLogin
+                {
+                    Email = "pedrolucas@bemasoft.com.br",
+                    Senha = "123456"
+                };
+                var response = await _client.PostAsJsonAsync("/api/identidade/autenticar", userData);
+                response.EnsureSuccessStatusCode();
+
+                var result = await response.Content.ReadAsStringAsync();
+                Sessions.Instance.UserTokenAdministrador = "";
+                if (result != null)
+                {
+                    UsuarioRespostaLogin? reposta = JsonSerializer.Deserialize<UsuarioRespostaLogin?>(result);
+
+                    if (reposta != null)
+                        Sessions.Instance.UserTokenAdministrador = reposta.AccessToken;
+                }
+            }
+            _client.AtribuirToken(Sessions.Instance.UserTokenAdministrador);
+        }
+
+
+        public ClienteInserirRequest GerarInserirClienteValido()
+        {
+            var cliente = new ClienteInserirRequest
+            {
+                Nome = _faker.Person.FullName,
+                Documento = "39082847086",
+                Email = _faker.Internet.Email(),
+                DataNascimento = _faker.Person.DateOfBirth,
+                Ativo = true,
+                EstadoCivil = new EstadoCivilRequest { EstadoCivil = "solteiro(a)"},
+                Sexo = true,
+            };
+            return cliente;
+        }
+
+        public ClienteAlterarResquest GerarAlteraClienteValido(ClienteModel cliente)
+        {
+            return new ClienteAlterarResquest
+            {
+                IdCliente = cliente.IdCliente,
+                Nome = cliente.Nome,
+                Documento = cliente.Documento,
+                Email = cliente.Email,
+                DataNascimento = cliente.DataNascimento,
+                Ativo = cliente.Ativo,
+                EstadoCivil = new EstadoCivilRequest { EstadoCivil = cliente.EstadoCivil.EstadoCivilDescricao },
+                Sexo = cliente.Sexo,
+            };
+        }
+
+
+        private static bool TokenValido(string token)
+        {
+            if (string.IsNullOrEmpty(token))
+            {
+                return false;
+            }
+            var handler = new JwtSecurityTokenHandler();
+            if (handler.ReadToken(token) is not JwtSecurityToken jwtToken)
+            {
+                return false;
+            }
+            var dataExpiracao = jwtToken.ValidTo;
+            if (dataExpiracao < DateTime.UtcNow)
+            {
+                return false;
+            }
+            return true;
+        }
+
+    }
+}

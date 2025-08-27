@@ -8,7 +8,7 @@ namespace RastreamentoPedido.Core.Data.Queries.Clientes
         {
             return new QueryParamsSQL
             {
-                Sql = "SELECT \"idUF\", sigla FROM uf",
+                Sql = """SELECT "idUF", nome, sigla, "idPais", "codUF" FROM public.uf;""",
                 Parametros = new Dictionary<string, object>()
             };
         }
@@ -17,7 +17,7 @@ namespace RastreamentoPedido.Core.Data.Queries.Clientes
         {
             return new QueryParamsSQL
             {
-                Sql = "SELECT \"idUF\", sigla FROM uf WHERE \"idUF\" = @id",
+                Sql = """SELECT "idUF", nome, sigla, "idPais", "codUF" FROM public.uf WHERE "idUF" = @id;""",
                 Parametros = new Dictionary<string, object> { { "id", id } }
             };
         }

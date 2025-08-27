@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace RastreamentoPedido.Core.Requests.Cliente
 {
-    public class ClienteRequest
+    public class ClienteInserirRequest
     {
         public string Nome { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
@@ -44,7 +44,7 @@ namespace RastreamentoPedido.Core.Requests.Cliente
 
     }
 
-    public class ClienteRequestValidor : AbstractValidator<ClienteRequest>
+    public class ClienteRequestValidor : AbstractValidator<ClienteInserirRequest>
     {
         public ClienteRequestValidor()
         {
@@ -85,7 +85,7 @@ namespace RastreamentoPedido.Core.Requests.Cliente
 
         public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>
         {
-            var result = await ValidateAsync(ValidationContext<ClienteRequest>.CreateWithOptions((ClienteRequest)model, x => x.IncludeProperties(propertyName)));
+            var result = await ValidateAsync(ValidationContext<ClienteInserirRequest>.CreateWithOptions((ClienteInserirRequest)model, x => x.IncludeProperties(propertyName)));
             if (result.IsValid)
             {
                 return [];

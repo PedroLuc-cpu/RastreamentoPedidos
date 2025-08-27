@@ -10,7 +10,7 @@ namespace RastreamentoPedido.Core.Model.Encomenda
         public int Id { get; set; }
         public string CodigoRastreamento { get; set; } = string.Empty;
         public int ClienteId { get; set; }
-        public Cliente Cliente { get; set; } = new();
+        public ClienteModel Cliente { get; set; } = new();
         public DateTime DataEncomenda { get; set; }
         public string Descricao { get; set; } = string.Empty;
         public int StatusEncomendaId { get; set; }

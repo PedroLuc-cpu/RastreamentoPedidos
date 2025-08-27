@@ -14,6 +14,6 @@ namespace RastreamentoPedido.Core.Model.Endereco
         public int IdUF { get; set; }
         public UF UF { get; set; } = new UF();
         public string CodIbge { get; set; } = string.Empty;
-        
+        public bool IntegrarSuframa { get; set; }
     }
 }

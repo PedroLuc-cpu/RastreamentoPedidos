@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using RastreamentoPedido.Core.Converters;
 using RastreamentoPedido.Core.Data;
+using RastreamentoPedido.Core.Repositories.Cliente;
 using RastreamentoPedido.Core.Repositories.Clientes;
 using RastreamentoPedido.Core.Repositories.Encomenda;
 using RastreamentoPedido.Core.Repositories.IEstadoCivilRepository;
@@ -113,6 +114,7 @@ namespace RastreamentoPedidos.API.Configuration
             services.AddScoped<ITelefoneRepository, TelefoneRepository>();
             services.AddScoped<ITpLogradouroRepository, TpLogradouroRepository>();
             services.AddScoped<IUFRepository, UFRepository>();
+            services.AddScoped<IPaisRepository, PaisRepository>();
 
             /// Encomendas
             services.AddScoped<IStatusEncomendaRepository, StatusEncomendaRepository>();

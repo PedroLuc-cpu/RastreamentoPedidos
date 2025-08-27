@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RastreamentoPedido.Core.Communication;
 using RastreamentoPedido.Core.Model.Clientes;
+using RastreamentoPedido.Core.Repositories.Cliente;
 using RastreamentoPedido.Core.Repositories.Clientes;
 using RastreamentoPedido.Core.Requests.Cliente;
 using RastreamentoPedido.WebApi.Core.Controllers;

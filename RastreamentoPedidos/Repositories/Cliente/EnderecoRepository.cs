@@ -1,26 +1,43 @@
 ﻿using Dapper;
-using Microsoft.EntityFrameworkCore;
 using RastreamentoPedido.Core.Data;
 using RastreamentoPedido.Core.Model.Endereco;
 using RastreamentoPedido.Core.Repositories.Clientes;
 using RastreamentoPedido.Core.Repositories.Encomenda;
-using RastreamentoPedidos.Data;
 
-namespace RastreamentoPedidos.Repositories.ClienteRepository
+namespace RastreamentoPedidos.API.Repositories.Cliente
 {
-    public class EnderecoRepository : IEnderecoRepository
+    public class EnderecoRepository(IDapperContext context, ITpLogradouroRepository tpLogradouroRepository, ICidadeRepository cidadeRepository, IEncomendaRepository encomendaRepository) : IEnderecoRepository
     {
-        private readonly IDapperContext _context;
-        private readonly ITpLogradouroRepository _tpLogradouroRepository;
-        private readonly ICidadeRepository _cidadeRepository;
-        private readonly IEncomendaRepository _encomendaRepository;
-        public EnderecoRepository(IDapperContext context, ITpLogradouroRepository tpLogradouroRepository, ICidadeRepository cidadeRepository, IEncomendaRepository encomendaRepository )
+        private readonly IDapperContext _context = context;
+        private readonly ITpLogradouroRepository _tpLogradouroRepository = tpLogradouroRepository;
+        private readonly ICidadeRepository _cidadeRepository = cidadeRepository;
+        private readonly IEncomendaRepository _encomendaRepository = encomendaRepository;
+
+        public async Task<Enderecos> Alterar(Enderecos endereco)
         {
-            _context = context;
-            _tpLogradouroRepository = tpLogradouroRepository;
-            _cidadeRepository = cidadeRepository;
-            _encomendaRepository = encomendaRepository;
+            var sql = """
+                    UPDATE endereco
+                    SET "idCliente"= @IdCidade, "idLogradouro"= @IdLogradouro, 
+                        "idCidade"= @IdCidade, "idEncomenda"= @IdEncomenda,
+                        complemento= @Complemento, bairro= @Bairro, numero= @Numero, rua= @Rua, cep= @Cep
+                    WHERE "idCliente" = @IdCidade;
+                """;
+            var parametros = new {
+                idCliente = endereco.IdPessoa,
+                idLogradouro = endereco.IdTpLogradouro,
+                idCidade = endereco.IdCidade,
+                idEncomenda = endereco.IdEncomenda,
+                endereco.Complemento,
+                endereco.Bairro,
+                endereco.Numero,
+                endereco.Rua,
+                endereco.CEP
+            };
+            using var conexao = _context.ConnectionCreate();
+            await conexao.ExecuteAsync(sql, parametros);
+            return endereco;
         }
+
         public async Task<IList<Enderecos>> CarregarPorIdCliente(int idCliente)
         {
             IList<Enderecos> enderecos = [];
@@ -37,9 +54,39 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
             return enderecos;
         }
 
+        public async Task<Enderecos> Inserir(Enderecos endereco)
+        {
+            var sql = """
+                INSERT INTO endereco(
+                    "idCliente", 
+                    "idLogradouro", 
+                    "idCidade", 
+                    "idEncomenda", 
+                    complemento, bairro, numero, rua, cep) VALUES(@idCliente, @idLogradouro, @idCidade, @idEncomenda, @Complemento, @Bairro, @Numero, @Rua, @Cep); 
+            """;
+            var parametros = new
+            {
+                idCliente = endereco.IdPessoa,
+                idLogradouro = endereco.IdTpLogradouro,
+                idCidade = endereco.IdCidade,
+                idEncomenda = endereco.IdEncomenda,
+                endereco.Complemento,
+                endereco.Bairro,
+                endereco.Numero,
+                endereco.Rua,
+                endereco.CEP
+            };
+            using var conexao = _context.ConnectionCreate();
+            var idEndereco = await conexao.ExecuteScalarAsync<int>(sql, parametros);
+            endereco.Id = idEndereco;
+            return endereco;
+
+
+        }
+
         private async Task<Enderecos> PreencherObj(dynamic item)
         {
-            Enderecos enderecos = new Enderecos();
+            Enderecos enderecos = new();
             try
             {
                 enderecos.Id = item.idEndereco;

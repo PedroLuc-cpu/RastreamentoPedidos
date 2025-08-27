@@ -4,7 +4,7 @@ namespace RastreamentoPedido.Core.Queries.Clientes
 {
     public class ClienteQueries
     {
-        public static QueryParamsSQL AdicionarCliente(Cliente cliente)
+        public static QueryParamsSQL AdicionarCliente(ClienteModel cliente)
         {
             return new QueryParamsSQL
             {

@@ -7,13 +7,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace RastreamentoPedido.Core.Model.Clientes
 {
     [NotMapped]
-    public class Cliente : IAggregateRoot
+    public class ClienteModel : IAggregateRoot
     {
         [Key]
         public int IdCliente { get; set; }
         public int? IdEncomenda { get; set; }
         public int EstadoCivilId { get; set; }
         public string Nome { get; set; } = string.Empty;
+        public int IdEmail { get; set; }
+        public int IdEndereco { get; set; }
         public string Email { get; set; } = string.Empty;
         public EstadoCivil EstadoCivil { get; set; } = new EstadoCivil();
         public bool Ativo { get; set; } = true;

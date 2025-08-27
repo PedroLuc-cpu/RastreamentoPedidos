@@ -1,13 +1,14 @@
 ﻿using RastreamentoPedido.Core.Model.Clientes;
 
-namespace RastreamentoPedido.Core.Repositories.Clientes
+namespace RastreamentoPedido.Core.Repositories.Cliente
 {
-    public interface IClienteRepository : IRepository<Cliente>
+    public interface IClienteRepository : IRepository<ClienteModel>
     {
-        Task<IList<Cliente>> CarregarTodos();
-        Task<Cliente> CarregarPorId(int id);
-        Task<Cliente> CarregarPorEmail(string email);
-        Task<Cliente> CarregarPorDocumento(string documento);
-        Task<Cliente> Adicionar(Cliente cliente);
+        Task<IList<ClienteModel>> CarregarTodos();
+        Task<ClienteModel> CarregarPorId(int id);
+        Task<ClienteModel> CarregarPorEmail(string email);
+        Task<ClienteModel> CarregarPorDocumento(string documento);
+        Task<ClienteModel> Inserir(ClienteModel cliente);
+        Task<ClienteModel> Alterar(ClienteModel cliente);
     }
 }

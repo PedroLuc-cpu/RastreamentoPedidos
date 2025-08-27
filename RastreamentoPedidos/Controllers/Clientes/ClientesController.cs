@@ -1,30 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RastreamentoPedido.Core.Communication;
 using RastreamentoPedido.Core.Model.Clientes;
-using RastreamentoPedido.Core.Repositories.Clientes;
+using RastreamentoPedido.Core.Repositories.Cliente;
 using RastreamentoPedido.Core.Repositories.IEstadoCivilRepository;
 using RastreamentoPedido.Core.Requests.Cliente;
 using RastreamentoPedido.Core.Utils;
 using RastreamentoPedido.Core.Utils.ValidacaoStrings;
 using RastreamentoPedido.WebApi.Core.Controllers;
 
-namespace RastreamentoPedidos.Controllers
+namespace RastreamentoPedidos.API.Controllers.Clientes
 {
     [Produces("application/json")]
     [Route("api/cliente")]
     //[ApiExplorerSettings(GroupName = "cliente-v1")]
-    public class ClientesController : MainController
+    public class ClientesController(IClienteRepository clienteRepository, IEstadoCivilRepository estadoCivilRepository) : MainController
     {
-        private readonly IClienteRepository _clienteRepository;
-        private readonly IEstadoCivilRepository _estadoCivilRepository;
-        public ClientesController(IClienteRepository clienteRepository, IEstadoCivilRepository estadoCivilRepository)
-        {
-            _clienteRepository = clienteRepository;
-            _estadoCivilRepository = estadoCivilRepository;
-        }
+        private readonly IClienteRepository _clienteRepository = clienteRepository;
+        private readonly IEstadoCivilRepository _estadoCivilRepository = estadoCivilRepository;
 
         [HttpGet]
-        [ProducesResponseType(typeof(Cliente), 200)]
+        [ProducesResponseType(typeof(ClienteModel), 200)]
         [ProducesResponseType(typeof(ResponseResult), 400)]
         public async Task<IActionResult> ObterClientes()
         {
@@ -38,7 +33,7 @@ namespace RastreamentoPedidos.Controllers
         }
 
         [HttpGet("id/{idCliente:int}")]
-        [ProducesResponseType(typeof(Cliente), 200)]
+        [ProducesResponseType(typeof(ClienteModel), 200)]
         [ProducesResponseType(typeof(ResponseResult), 400)]
         public async Task<IActionResult> ObterClientePorId(int idCliente)
         {
@@ -55,7 +50,7 @@ namespace RastreamentoPedidos.Controllers
         }
 
         [HttpGet("email/{email}")]
-        [ProducesResponseType(typeof(Cliente), 200)]
+        [ProducesResponseType(typeof(ClienteModel), 200)]
         [ProducesResponseType(typeof(ResponseResult), 400)]
         public async Task<IActionResult> ObterClientePorEmail(string email)
         {
@@ -79,7 +74,7 @@ namespace RastreamentoPedidos.Controllers
         }
 
         [HttpGet("doc/{doc}")]
-        [ProducesResponseType(typeof(Cliente), 200)]
+        [ProducesResponseType(typeof(ClienteModel), 200)]
         [ProducesResponseType(typeof(ResponseResult), 400)]
         public async Task<IActionResult> CarregarPorDocValido(string doc)
         {
@@ -117,12 +112,12 @@ namespace RastreamentoPedidos.Controllers
             return Ok(cliente);
         }
 
-        [HttpPost]
-        [ProducesResponseType(typeof(Cliente), 200)]
+        [HttpPost("adicionar")]
+        [ProducesResponseType(typeof(ClienteModel), 200)]
         [ProducesResponseType(typeof(ResponseResult), 400)]
-        public async Task<IActionResult> AdicionarCliente([FromBody]ClienteRequest clienteRequest)
+        public async Task<IActionResult> AdicionarCliente([FromBody]ClienteInserirRequest clienteRequest)
         {
-            Cliente addCliente = new Cliente();
+            
 
             if (!clienteRequest.ValidationResult.IsValid)
             {
@@ -148,32 +143,74 @@ namespace RastreamentoPedidos.Controllers
                 return CustomResponse("Já existe um cliente cadastrado com este documento.");
             }
 
+            ClienteModel cliente = await ClienteRequestToClienteInserir(clienteRequest);
 
-            if (addCliente == null)
-            {
-                return CustomResponse("o cliente é obrigatório.");
-            }
-            if (clienteRequest != null)
-            {   
-                addCliente.Nome = clienteRequest.Nome;
-                addCliente.Email = clienteRequest.Email;
-                addCliente.Documento = clienteRequest.Documento;
-                addCliente.Ativo = clienteRequest.Ativo;
-                addCliente.Sexo = clienteRequest.Sexo;
-                addCliente.DataNascimento = clienteRequest.DataNascimento;
-                if (clienteRequest.EstadoCivil != null)
-                {
-                    addCliente.EstadoCivil = new EstadoCivil
-                    {
-                        Id = carregarEstadoCivil.Id,
-                        EstadoCivilDescricao = carregarEstadoCivil.EstadoCivilDescricao
-                    };
-                }
-
-            }
-            var clienteAdicionado = await _clienteRepository.Adicionar(addCliente);
+            var clienteAdicionado = await _clienteRepository.Inserir(cliente);
 
             return Ok(clienteAdicionado);
+        }
+        [HttpPut("alterar")]
+        [ProducesResponseType(typeof(ClienteModel), 200)]
+        [ProducesResponseType(typeof(ResponseResult), 400)]
+        public async Task<IActionResult> AlterarCliente([FromBody] ClienteAlterarResquest clienteRequest)
+        {
+            if (!clienteRequest.ValidationResult.IsValid)
+            {
+                return CustomResponse(clienteRequest.ValidationResult);
+            }
+            var clienteExistente = await _clienteRepository.CarregarPorId(clienteRequest.IdCliente);
+            var clienteExistenteEmail = await _clienteRepository.CarregarPorEmail(clienteRequest.Email);
+            var clienteExistenteDocumento = await _clienteRepository.CarregarPorDocumento(clienteRequest.Documento);
+            var carregarEstadoCivil = await _estadoCivilRepository.CarregarEstadoCivilPorDescricao(clienteRequest.EstadoCivil.EstadoCivil);
+            if (clienteExistente.IdCliente <= 0)
+            {
+                return CustomResponse("Nenhum cliente foi encontrado para o ID informado.");
+            }
+            if (carregarEstadoCivil == null)
+            {
+                return CustomResponse("O estado civil informado não existe.");
+            }
+            if (clienteExistenteEmail.Email == clienteRequest.Email && clienteExistenteEmail.IdCliente != clienteRequest.IdCliente)
+            {
+                return CustomResponse("Já existe um cliente cadastrado com este e-mail.");
+            }
+            if (clienteExistenteDocumento.Documento == clienteRequest.Documento && clienteExistenteDocumento.IdCliente != clienteRequest.IdCliente)
+            {
+                return CustomResponse("Já existe um cliente cadastrado com este documento.");
+            }
+            ClienteModel cliente = await ClienteRequestToClienteAlterar(clienteRequest);
+            cliente.IdCliente = clienteRequest.IdCliente;
+            var clienteAlterado = await _clienteRepository.Alterar(cliente);
+            return Ok(clienteAlterado);
+        }
+
+        private async Task<ClienteModel> ClienteRequestToClienteAlterar(ClienteAlterarResquest request)
+        {
+            return new ClienteModel
+            {
+                IdCliente = request.IdCliente,
+                Nome = request.Nome,
+                Email = request.Email,
+                Documento = request.Documento,
+                Ativo = request.Ativo,
+                Sexo = request.Sexo,
+                DataNascimento = request.DataNascimento,
+                EstadoCivil = await _estadoCivilRepository.CarregarEstadoCivilPorDescricao(request.EstadoCivil.EstadoCivil),
+            };
+        }
+
+        private async Task<ClienteModel> ClienteRequestToClienteInserir(ClienteInserirRequest request)
+        {
+            return new ClienteModel
+            {
+                Nome = request.Nome,
+                Email = request.Email,
+                Documento = request.Documento,
+                Ativo = request.Ativo,
+                Sexo = request.Sexo,
+                DataNascimento = request.DataNascimento,
+                EstadoCivil = await _estadoCivilRepository.CarregarEstadoCivilPorDescricao(request.EstadoCivil.EstadoCivil),
+            };
         }
 
     }

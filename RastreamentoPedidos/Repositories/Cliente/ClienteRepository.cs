@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using RastreamentoPedido.Core.Data;
 using RastreamentoPedido.Core.Model.Clientes;
 using RastreamentoPedido.Core.Queries.Clientes;
+using RastreamentoPedido.Core.Repositories.Cliente;
 using RastreamentoPedido.Core.Repositories.Clientes;
 using RastreamentoPedido.Core.Repositories.IEstadoCivilRepository;
 
@@ -25,7 +26,7 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
             _estadoCivilRepository = estadoCivilRepository;
         }
 
-        public async Task<Cliente> Adicionar(Cliente cliente)
+        public async Task<ClienteModel> Inserir(ClienteModel cliente)
         {
             using (var connection = _dapperContext.ConnectionCreate())
             {
@@ -36,9 +37,9 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
             return cliente;
         }
 
-        public async Task<Cliente> CarregarPorDocumento(string documento)
+        public async Task<ClienteModel> CarregarPorDocumento(string documento)
         {
-            Cliente cliente = new Cliente();
+            ClienteModel cliente = new();
             using (var connection = _dapperContext.ConnectionCreate())
             {
                 var paramSQL = ClienteQueries.CarregarClientePorDocumento(documento);
@@ -52,9 +53,9 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
 
         }
 
-        public async Task<Cliente> CarregarPorEmail(string email)
+        public async Task<ClienteModel> CarregarPorEmail(string email)
         {
-            Cliente cliente = new Cliente();
+            ClienteModel cliente = new();
             using (var connection = _dapperContext.ConnectionCreate())
             {
                 var paramSQL = ClienteQueries.CarregarClientePorEmail(email);
@@ -67,9 +68,9 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
            return cliente;
         }
 
-        public async Task<Cliente> CarregarPorId(int id)
+        public async Task<ClienteModel> CarregarPorId(int id)
         {
-            Cliente cliente = new Cliente();
+            ClienteModel cliente = new();
             using (var connection = _dapperContext.ConnectionCreate())
             {
                 var paramSQL = ClienteQueries.CarregarClientePorId(id);
@@ -82,9 +83,9 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
             return cliente;
         }
 
-        public async Task<IList<Cliente>> CarregarTodos()
+        public async Task<IList<ClienteModel>> CarregarTodos()
         {
-            IList<Cliente> clientes = new List<Cliente>();
+            IList<ClienteModel> clientes = [];
             clientes.Clear();
             using (var connection = _dapperContext.ConnectionCreate())
             {
@@ -100,10 +101,37 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
             }
             return clientes;
         }
-
-        private async Task<Cliente> PreencherObjeto(dynamic item)
+        public async Task<ClienteModel> Alterar(ClienteModel cliente)
         {
-            Cliente cliente = new();
+            var sql = """
+                
+                UPDATE public.cliente
+                SET "idEncomenda" = @IdEncomenda, "idEstadoCivil" = @IdEstadoCivil, "idEmail" = @idEmail,
+                    "idEndereco" = @IdEndereco, nome = @Nome, ativo = @Ativo, "dataNascimento" = @DataNascimento,
+                    documento = @Documento, email = @Email, sexo = @Sexo
+                WHERE "idCliente" = @IdCliente; 
+                """;
+            var parametros = new
+            {
+                cliente.IdCliente,
+                cliente.IdEncomenda,
+                IdEstadoCivil = cliente.EstadoCivil.Id,
+                idEmail = cliente.IdEmail,
+                idEndereco = cliente.IdEndereco,
+                cliente.Nome,
+                cliente.Ativo,
+                cliente.DataNascimento,
+                cliente.Documento,
+                cliente.Email,
+                cliente.Sexo
+            };
+            using var conexao = _dapperContext.ConnectionCreate();
+            await conexao.ExecuteAsync(sql, parametros);
+            return cliente;
+        }
+        private async Task<ClienteModel> PreencherObjeto(dynamic item)
+        {
+            ClienteModel cliente = new();
             try
             {
                 cliente.IdCliente = item.idCliente;
