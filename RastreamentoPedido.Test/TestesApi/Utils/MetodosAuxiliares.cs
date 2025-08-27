@@ -62,6 +62,17 @@ namespace RastreamentoPedido.Test.TestesApi.Utils
             _client.AtribuirToken(Sessions.Instance.UserTokenAdministrador);
         }
 
+        public async Task<HttpResponseMessage> CriarCliente(ClienteInserirRequest objeto)
+        {
+            var response = await _client.PostAsJsonAsync("/api/cliente", objeto);
+            return response;
+        }
+
+        public async Task<HttpResponseMessage> AlterarClientes(ClienteAlterarResquest objeto)
+        {
+            var response = await _client.PutAsJsonAsync("/api/cliente/alterar", objeto);
+            return response;
+        }
 
         public ClienteInserirRequest GerarInserirClienteValido()
         {
