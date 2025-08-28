@@ -37,9 +37,34 @@ namespace RastreamentoPedido.Test.TestesApi.Utils
         public HttpClient Client => _client;
         public Faker Faker => _faker;
 
-        public async Task RealizarLoginApiAdministrador()
+        public async Task RealizarCadastroDoUsuarioNovo()
         {
-            if (!TokenValido(Sessions.Instance.UserTokenAdministrador))
+            var userData = new UsuarioRegistro
+            {
+                NomeUsuario = "pedrolucas.dev",
+                Email = "pedrolucas@bemasoft.com.br",
+                NomeCompleto = "Pedro Lucas Santos dos Santos",
+                Senha = "123456",
+                SenhaConfirmacao = "123456",
+            };
+            var response = await _client.PostAsJsonAsync("/api/identidade/nova-conta", userData);
+            response.EnsureSuccessStatusCode();
+
+            var result = await response.Content.ReadAsStringAsync();
+            Sessions.Instance.UserTokenEntregador = "";
+            if (result != null)
+            {
+                UsuarioRespostaLogin? resposta = JsonSerializer.Deserialize<UsuarioRespostaLogin>(result);
+                
+                if (resposta != null)
+                    Sessions.Instance.UserTokenEntregador = resposta.AccessToken;
+            }
+            _client.AtribuirToken(Sessions.Instance.UserTokenEntregador);
+        }
+
+        public async Task RealizarLoginApiEntregador()
+        {
+            if (!TokenValido(Sessions.Instance.UserTokenEntregador))
             {
                 var userData = new UsuarioLogin
                 {
@@ -50,21 +75,21 @@ namespace RastreamentoPedido.Test.TestesApi.Utils
                 response.EnsureSuccessStatusCode();
 
                 var result = await response.Content.ReadAsStringAsync();
-                Sessions.Instance.UserTokenAdministrador = "";
+                Sessions.Instance.UserTokenEntregador = "";
                 if (result != null)
                 {
                     UsuarioRespostaLogin? reposta = JsonSerializer.Deserialize<UsuarioRespostaLogin?>(result);
 
                     if (reposta != null)
-                        Sessions.Instance.UserTokenAdministrador = reposta.AccessToken;
+                        Sessions.Instance.UserTokenEntregador = reposta.AccessToken;
                 }
             }
-            _client.AtribuirToken(Sessions.Instance.UserTokenAdministrador);
+            _client.AtribuirToken(Sessions.Instance.UserTokenEntregador);
         }
 
         public async Task<HttpResponseMessage> CriarCliente(ClienteInserirRequest objeto)
         {
-            var response = await _client.PostAsJsonAsync("/api/cliente", objeto);
+            var response = await _client.PostAsJsonAsync("/api/cliente/adicionar", objeto);
             return response;
         }
 
@@ -79,7 +104,7 @@ namespace RastreamentoPedido.Test.TestesApi.Utils
             var cliente = new ClienteInserirRequest
             {
                 Nome = _faker.Person.FullName,
-                Documento = "39082847086",
+                Documento = GeradorCpfValido.GerarCPF(),
                 Email = _faker.Internet.Email(),
                 DataNascimento = _faker.Person.DateOfBirth,
                 Ativo = true,
