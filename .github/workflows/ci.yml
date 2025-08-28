@@ -48,6 +48,14 @@ jobs:
             sleep 2
           done
 
+      - name: Executar scripts SQL
+        run: |
+          export PGPASSWORD=$DB_PASS
+          for f in .\RastreamentoPedido.Core\SQL\*.sql; do
+            echo "Executando $f..."
+            psql -h $DB_HOST -U $DB_USER -d $DB_NAME -f "$f"
+          done
+          
       - name: Restaurar pacotes
         run: dotnet restore
 
