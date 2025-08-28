@@ -63,7 +63,7 @@ jobs:
       - name: Rodar migrations
         run: |
           export CONNECTION_STRING="Host=$DB_HOST;Port=$DB_PORT;Database=$DB_NAME;Username=$DB_USER;Password=$DB_PASS"
-          dotnet ef database update --connection "$CONNECTION_STRING" --project .\RastreamentoPedidos
+          dotnet ef database update --connection "$CONNECTION_STRING" --project RastreamentoPedidos
 
       - name: Rodar testes
         run: dotnet test --no-build --verbosity normal
