@@ -22,7 +22,7 @@ jobs:
           --health-retries=5
 
     env:
-      ASPNETCORE_ENVIRONMENT: Test
+      ASPNETCORE_ENVIRONMENT: Testing
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       DOTNET_NOLOGO: true
       DB_HOST: localhost
