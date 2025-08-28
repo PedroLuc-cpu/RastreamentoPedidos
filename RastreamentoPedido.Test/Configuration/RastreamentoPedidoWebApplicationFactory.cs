@@ -18,8 +18,8 @@ namespace RastreamentoPedido.Test.Configuration
         {
             _configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", false, true)
-                //.AddJsonFile("appsettings.Test.json", optional: true, reloadOnChange: true)
+                //.AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile("appsettings.Testing.json", optional: true, reloadOnChange: true)
                 .Build();
         }
 
