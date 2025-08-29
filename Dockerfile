@@ -1,24 +1,27 @@
-# Usa a imagem oficial do .NET SDK para build
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /app
 
-# Copia o arquivo de solução e restaura as dependências
+# Copia os arquivos para restaurar
 COPY *.sln .
 COPY RastreamentoPedidos/*.csproj ./RastreamentoPedidos/
+COPY RastreamentoPedido.Core/*.csproj ./RastreamentoPedido.Core/
+COPY RastreamentoPedido.WebApi.Core/*.csproj ./RastreamentoPedido.WebApi.Core/
+COPY Clients.Web/*.csproj ./Clients.Web/
+COPY RastreamentoPedido.Test/*.csproj ./RastreamentoPedido.Test/
+
 RUN dotnet restore
 
-# Copia o restante do código e faz o build
-COPY RastreamentoPedidos/. ./RastreamentoPedidos/
+# Copia tudo
+COPY . .
+
+# Publica
 WORKDIR /app/RastreamentoPedidos
-RUN dotnet publish -c Release -o out
+RUN dotnet publish -c Release -o /app/out
 
-# Usa a imagem oficial do ASP.NET Core Runtime para execução
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+# Runtime
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
-COPY --from=build /app/RastreamentoPedidos/out .
+COPY --from=build /app/out .
 
-# Expõe a porta padrão
 EXPOSE 80
-
-# Comando de inicialização
-ENTRYPOINT ["dotnet", "RastreamentoPedidos.dll"]
+ENTRYPOINT ["dotnet", "RastreamentoPedidos.API.dll"]

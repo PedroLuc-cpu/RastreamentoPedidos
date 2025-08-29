@@ -1,15 +1,54 @@
-version: '3.7'
+version: '3.9'
+
 services:
-  postgres:
-    image: bitnami/postgresql:latest
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rastreamentopedido-api
+    restart: always
     ports:
-      - "5435:5435"
+      - "5000:5000" # Porta interna da API
+    environment:
+      ASPNETCORE_URLS: http://+:5000
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__Default: Host=postgres;Port=5432;Database=rastreamentopedido_db;Username=postgres;Password=postgres
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
+  postgres:
+    image: bitnami/postgresql:16
+    container_name: rastreamentopedido-db
+    restart: always
+    ports:
+      - "5432:5432" # Exposição opcional para fora
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: rastr_pedidos
+      POSTGRES_DB: rastreamentopedido_db
     volumes:
       - postgres_data:/bitnami/postgresql
+    networks:
+      - app-network
+
+  nginx:
+    image: nginx:latest
+    container_name: rastreamentopedido-nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   postgres_data:
