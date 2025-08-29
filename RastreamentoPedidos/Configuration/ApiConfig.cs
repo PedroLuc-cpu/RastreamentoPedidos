@@ -116,7 +116,6 @@ namespace RastreamentoPedidos.API.Configuration
         private static void RegisterServices(IServiceCollection services)
         {
             services.AddHealthChecks();
-            services.AddHealthChecksUI();
             services.AddScoped<IDapperContext, DapperContext>();
             services.AddScoped<DapperContext>();
 
