@@ -21,6 +21,12 @@ namespace RastreamentoPedidos.API.Configuration
                                 .EnableDetailedErrors();
             });
 
+            services.AddHealthChecks()
+                    .AddNpgSql(configuration.GetConnectionString("Default") ?? "", name: "PostgreSQL Check", tags: ["db", "data"]);
+
+            services.AddHealthChecksUI()
+                    .AddInMemoryStorage();
+
             services.AddScoped<RastreamentoPedidosContext>();
 
             services.AddDefaultIdentity<ApplicationUser>()

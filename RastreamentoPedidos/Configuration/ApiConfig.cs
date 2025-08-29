@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using RastreamentoPedido.Core.Converters;
@@ -96,12 +98,25 @@ namespace RastreamentoPedidos.API.Configuration
 
             app.MapControllers();
 
+            app.MapHealthChecks("/healthz", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse,
+
+            });
+
+            app.UseHealthChecksUI(options =>
+            {
+                options.UIPath = "/dashbord";
+            });
+
             return app;
         }
 
         private static void RegisterServices(IServiceCollection services)
         {
             services.AddHealthChecks();
+            services.AddHealthChecksUI();
             services.AddScoped<IDapperContext, DapperContext>();
             services.AddScoped<DapperContext>();
 
