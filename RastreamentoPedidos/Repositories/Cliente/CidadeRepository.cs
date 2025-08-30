@@ -89,7 +89,17 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
         {
             var cidades = new List<Cidade>();
             cidades.Clear();
-            var sql = """SELECT "idCidade", nome, cep, "idUF", "codIBJE", "integrarSuframa" FROM cidade;""";
+            var sql = """
+                SELECT 
+                    cidade."idCidade", cidade.nome as cidade, 
+                	cidade.cep, cidade."idUF", 
+                	cidade."codIBJE", cidade."integrarSuframa",
+                	uf."idUF", uf.nome as uf, uf.sigla as uf_sigla, uf."idPais", uf."codUF",
+                	pais."idPais", pais.nome as pais, pais.sigla as pais_sigla, pais.cod_bcb as pais_cod_bcb
+                FROM public.cidade
+                INNER JOIN uf ON cidade."idUF" = uf."idUF"
+                INNER JOIN pais ON uf."idPais" = pais."idPais";
+                """;
             using var conexao = _context.ConnectionCreate();
             var registros = await conexao.QueryAsync(sql);
             if (registros != null)
@@ -99,11 +109,26 @@ namespace RastreamentoPedidos.Repositories.ClienteRepository
                     cidades.Add(new Cidade
                     {
                         IdCidade = item.idCidade,
-                        Nome = item.nome,
+                        Nome = item.cidade,
                         Cep = item.cep,
-                        UF = await _ufRepository.CarregarPorId(item.idUF),
                         CodIbge = item.codIBJE,
-                        IntegrarSuframa = item.integrarSuframa
+                        IntegrarSuframa = item.integrarSuframa,
+                        UF = new UF
+                        {
+                            IdUF = item.idUF,
+                            Nome = item.uf,
+                            Sigla = item.uf_sigla,
+                            CodUf = item.codUF,
+                            Pais = new Pais
+                            {
+                                IdPais = item.idPais,
+                                Nome = item.pais,
+                                Sigla = item.pais_sigla,
+                                Cod_bcb = item.pais_cod_bcb,
+                            }
+                        },
+                        
+                        
                     });
                 }
             }
