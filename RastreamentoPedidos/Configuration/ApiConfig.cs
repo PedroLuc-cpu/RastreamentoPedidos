@@ -53,14 +53,18 @@ namespace RastreamentoPedidos.API.Configuration
             UserHandler.ConnectedUsers.Clear();
             UserHandler.UserSections.Clear();
 
+            string[]? UrlEIpsAutorizados = configuration.GetSection("UrlEIpsAutorizados").Get<string[]>();
+
+
             services.AddCors(options =>
             {
                 options.AddPolicy("Total", builder =>
                 {
-                    builder.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyOrigin()
-                        .AllowAnyHeader();
+                    builder
+                    .AllowAnyMethod()
+                    .WithOrigins(UrlEIpsAutorizados ?? [])
+                    .AllowAnyHeader()
+                    .AllowCredentials();
                 });
             });
 

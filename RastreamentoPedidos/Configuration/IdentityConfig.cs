@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RastreamentoPedido.Core.Configuration;
-using RastreamentoPedido.WebApi.Core.Identidade;
 using RastreamentoPedidos.Model;
 using RastreamentoPedido.Core.DomainObjects;
 using RastreamentoPedido.Core.Model.Encomenda;
@@ -29,24 +28,63 @@ namespace RastreamentoPedidos.API.Configuration
 
             services.AddScoped<RastreamentoPedidosContext>();
 
-            services.AddDefaultIdentity<ApplicationUser>()
-                .AddRoles<IdentityRole>()
+            //services.AddDefaultIdentity<ApplicationUser>()
+            //    .AddRoles<IdentityRole>()
+            //    .AddErrorDescriber<IdentityMensagensPortugues>()
+            //    .AddEntityFrameworkStores<RastreamentoPedidosContext>()
+            //    .AddDefaultTokenProviders();
+
+            //services.Configure<IdentityOptions>(options =>
+            //{
+            //    options.Password.RequireDigit = false;
+            //    options.Password.RequireLowercase = false;
+            //    options.Password.RequireNonAlphanumeric = false;
+            //    options.Password.RequireUppercase = false;
+            //    options.Password.RequiredLength = 6;
+            //    options.User.RequireUniqueEmail = true;
+            //    options.SignIn.RequireConfirmedEmail = true;
+            //});
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = true;
+                options.Password.RequireDigit = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 6;
+            })
                 .AddErrorDescriber<IdentityMensagensPortugues>()
                 .AddEntityFrameworkStores<RastreamentoPedidosContext>()
                 .AddDefaultTokenProviders();
 
-            services.Configure<IdentityOptions>(options =>
+            services.ConfigureApplicationCookie(options =>
             {
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequiredLength = 6;
-                options.User.RequireUniqueEmail = true;
-                options.SignIn.RequireConfirmedEmail = true;
+                options.Cookie.Name = "ApiCookieAuth";
+                options.Cookie.HttpOnly = true;
+                /// quando o https for obrigatório
+                //options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+                options.Cookie.SameSite = SameSiteMode.Strict;
+                options.ExpireTimeSpan = TimeSpan.FromDays(1);
+                options.SlidingExpiration = true;
+
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
+                options.Events.OnRedirectToAccessDenied = context =>
+                {
+                    context.Response.StatusCode = 403;
+                    return Task.CompletedTask;
+                };
+
             });
 
-            services.AddJwtConfiguration();
+
+
+            //services.AddJwtConfiguration();
 
             //CreateRoles(services.BuildServiceProvider()).Wait();
 

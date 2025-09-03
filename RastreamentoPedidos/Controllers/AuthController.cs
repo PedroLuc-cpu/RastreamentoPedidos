@@ -119,6 +119,15 @@ namespace RastreamentoPedidos.Controllers
             return CustomResponse("Usuário ou Senha incorretos.");
         }
 
+        [HttpPost("sair")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(UsuarioToken), 200)]
+        public async Task<IActionResult> Sair()
+        {
+            await _signInManager.SignOutAsync();
+            return CustomResponse("Usuário deslogado com sucesso");
+        }
+
         [HttpPost("mudar-senha")]
         [Authorize]
         [ProducesResponseType(typeof(UsuarioRespostaLogin), 200)]
