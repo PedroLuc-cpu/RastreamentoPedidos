@@ -29,7 +29,8 @@ namespace RastreamentoPedidos.API.Configuration
                 options.UseNpgsql(connectionString,
                                 assembly => assembly.MigrationsAssembly(typeof(RastreamentoPedidosContext).Assembly.FullName))
                                 .EnableSensitiveDataLogging()
-                                .EnableDetailedErrors();                                
+                                .EnableDetailedErrors();
+                options.UseNpgsql(connectionString, o => o.EnableRetryOnFailure());
             });
 
             services.AddHealthChecks()
