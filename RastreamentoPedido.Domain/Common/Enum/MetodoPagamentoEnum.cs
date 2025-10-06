@@ -1,0 +1,11 @@
+﻿namespace RastreamentoPedido.Domain.Common.Enum
+{
+    public enum MetodoPagamentoEnum
+    {
+        CartaoCredito = 1,
+        CartaoDebito = 2,
+        Pix = 3,
+        Boleto = 4,
+        TransferenciaBancaria = 5,
+    }
+}
